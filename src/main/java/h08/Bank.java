@@ -1,6 +1,7 @@
 package h08;
 
 import h08.exceptions.AccountException;
+import h08.exceptions.TooManyAccountsException;
 
 
 public class Bank {
@@ -8,11 +9,17 @@ public class Bank {
     private String name;
     private int BIC;
     private Account[] accounts;
+    private final int MAX_ACCOUNTS;
+    private int currentAccounts = 0;
 
-    public Bank(String name, int BIC, Account[] accounts) {
+
+
+
+    public Bank(String name, int BIC, int maxAccounts) {
         this.name = name;
         this.BIC = BIC;
-        this.accounts = accounts;
+        this.MAX_ACCOUNTS = maxAccounts;
+        this.accounts = new Account[maxAccounts];
     }
 
     public void withdrawWithAssert(long IBAN, double amount){
@@ -29,7 +36,7 @@ public class Bank {
 
     }
 
-    public void withdrawWithRTE(long IBAN, double amount){
+    public void withdrawWithExc(long IBAN, double amount){
 
         if(amount <= 0)
             throw new RuntimeException("amount can't be zero or negative!");
@@ -57,7 +64,7 @@ public class Bank {
         accounts[index].setBalance(newBalance);
     }
 
-    public void depositWithRTE(long IBAN, double amount){
+    public void depositWithExc(long IBAN, double amount){
         if(amount <= 0)
             throw new RuntimeException("amount can't be zero or negative!");
 
@@ -92,12 +99,20 @@ public class Bank {
         this.BIC = BIC;
     }
 
-    public void setAccounts(Account[] accounts) {
+    public Account[] getAccounts() {
+        return accounts;
+    }
+
+    private void setAccounts(Account[] accounts){
         this.accounts = accounts;
     }
 
-    public Account[] getAccounts() {
-        return accounts;
+    public int getMAX_ACCOUNTS() {
+        return MAX_ACCOUNTS;
+    }
+
+    public int getCurrentAccounts() {
+        return currentAccounts;
     }
 
     private int getAccountIndex(long IBAN){
@@ -112,13 +127,33 @@ public class Bank {
     public void addAccount(Account account){
         if(account == null)
             throw new AccountException("Account can't be null!");
+
+        if(currentAccounts == MAX_ACCOUNTS)
+            throw new TooManyAccountsException("Maximum amount of accounts is reached!");
+
         for (int i = 0; i < accounts.length; i++) {
+
             if(accounts[i] == null) {
                 accounts[i] = account;
+                accounts[i].setBank(this);
+                currentAccounts++;
                 return;
             }
         }
-        throw new AccountException("Too many accounts!");
+
+    }
+
+    public void removeAccount(Account account){
+        if(account == null)
+            throw new AccountException("Account can't be null!");
+        for (int i = 0; i < accounts.length; i++) {
+            if(accounts[i] != null && account.getIBAN() == accounts[i].getIBAN()) {
+                accounts[i] = null;
+                if(i < MAX_ACCOUNTS - 1)
+                    System.arraycopy(accounts, i + 1, accounts, i, accounts.length - i - 1);
+                currentAccounts--;
+            }
+        }
     }
 
     public void printAccounts(){
@@ -126,6 +161,8 @@ public class Bank {
             accounts) {
             if(a !=null)
                 System.out.println(a.getFirstName() + " | " + a.getLastName() + " | " + a.getBank().getName() + " | " + a.getBalance());
+            else
+                System.out.println(" null ");
 
         }
     }

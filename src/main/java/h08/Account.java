@@ -1,6 +1,5 @@
 package h08;
 
-import h08.exceptions.BankException;
 import h08.exceptions.IllegalNameException;
 
 public class Account {
@@ -9,7 +8,7 @@ public class Account {
     private String lastName;
     private long IBAN;
     private double balance;
-    private final Bank bank;
+    private Bank bank;
 
     public Account(String firstName, String lastName, long IBAN, double balance, Bank bank){
         assert firstName != null;
@@ -20,8 +19,7 @@ public class Account {
         this.IBAN = IBAN;
         this.bank = bank;
         bank.addAccount(this);
-        this.balance = balance;
-        //bank.depositWithAssert(IBAN, balance);
+        bank.depositWithAssert(IBAN, balance);
 
 
 
@@ -50,6 +48,10 @@ public class Account {
 
     public Bank getBank() {
         return bank;
+    }
+
+    public void setBank(Bank bank) {
+        this.bank = bank;
     }
 
     public long getIBAN() {
