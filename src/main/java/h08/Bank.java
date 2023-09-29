@@ -1,6 +1,8 @@
 package h08;
 
 import h08.exceptions.AccountException;
+import h08.exceptions.BankException;
+import h08.exceptions.NoSuchBankException;
 import h08.exceptions.TooManyAccountsException;
 
 
@@ -44,7 +46,7 @@ public class Bank {
         int index = getAccountIndex(IBAN);
 
         if(index < 0)
-            throw new RuntimeException("Cannot find IBAN!");
+            throw new AccountException("Cannot find IBAN!");
 
         double newBalance = accounts[index].getBalance() - amount;
 
@@ -71,15 +73,54 @@ public class Bank {
         int index = getAccountIndex(IBAN);
 
         if(index < 0)
-            throw new RuntimeException("Cannot find IBAN!");
+            throw new AccountException("Cannot find IBAN!");
 
         double newBalance = accounts[index].getBalance() + amount;
         accounts[index].setBalance(newBalance);
 
     }
 
-    public void transfer(Account sender, Account receiver){
+    public void transfer(long senderIBAN, long receiverIBAN,int receiverBIC, Bank[] banks, double amount) throws BankException {
+        if(banks == null)
+            throw new BankException("Banks cannot be null!");
+        int index;
 
+        try {
+           index  = getBankIndex(receiverBIC,banks);
+        }catch (NoSuchBankException b){
+            return;
+        }
+
+        Bank receiverBank = banks[index];
+
+        try{
+            withdrawWithExc(senderIBAN,amount);
+        }catch (AccountException a){
+            System.out.println("Cannot find sender account");
+            return;
+        }catch(RuntimeException r){
+            System.out.println(r.getMessage());
+            return;
+        }catch (Exception ignored){
+            return;
+        }
+        try{
+            receiverBank.depositWithExc(receiverIBAN,amount);
+        }catch (AccountException a){
+            System.out.println("Cannot find receiver account");
+        }catch (RuntimeException r){
+            System.out.println(r.getMessage());
+        }catch (Exception ignored){
+        }
+
+    }
+
+    private int getBankIndex(int BIC, Bank[] banks) throws BankException {
+        for (int i = 0; i < banks.length; i++) {
+            if(BIC == banks[i].getBIC())
+                return i;
+        }
+        throw new NoSuchBankException();
     }
 
 
@@ -121,7 +162,7 @@ public class Bank {
                 return i;
         }
 
-        return -1;
+        throw new AccountException("Cannot find account!");
     }
 
     public void addAccount(Account account){
