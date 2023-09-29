@@ -77,7 +77,6 @@ public class Bank {
 
         double newBalance = accounts[index].getBalance() + amount;
         accounts[index].setBalance(newBalance);
-
     }
 
     public void transfer(long senderIBAN, long receiverIBAN,int receiverBIC, Bank[] banks, double amount) throws BankException {
@@ -88,6 +87,7 @@ public class Bank {
         try {
            index  = getBankIndex(receiverBIC,banks);
         }catch (NoSuchBankException b){
+            System.out.println("Cannot find Bank with BIC: " + receiverBIC);
             return;
         }
 
@@ -104,12 +104,15 @@ public class Bank {
         }catch (Exception ignored){
             return;
         }
+
         try{
             receiverBank.depositWithExc(receiverIBAN,amount);
         }catch (AccountException a){
+            depositWithExc(senderIBAN,amount);
             System.out.println("Cannot find receiver account");
         }catch (RuntimeException r){
             System.out.println(r.getMessage());
+            depositWithExc(senderIBAN,amount);
         }catch (Exception ignored){
         }
 
@@ -158,7 +161,7 @@ public class Bank {
 
     private int getAccountIndex(long IBAN){
         for (int i = 0; i < accounts.length; i++) {
-            if(accounts[i].getIBAN() == IBAN)
+            if(accounts[i] != null && accounts[i].getIBAN() == IBAN)
                 return i;
         }
 
@@ -202,8 +205,6 @@ public class Bank {
             accounts) {
             if(a !=null)
                 System.out.println(a.getFirstName() + " | " + a.getLastName() + " | " + a.getBank().getName() + " | " + a.getBalance());
-            else
-                System.out.println(" null ");
 
         }
     }
