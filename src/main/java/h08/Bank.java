@@ -9,18 +9,18 @@ import h08.exceptions.TooManyAccountsException;
 public class Bank {
 
     private String name;
-    private int BIC;
+    private final int bic;
     private Account[] accounts;
-    private final int MAX_ACCOUNTS;
-    private int currentAccounts = 0;
+    private final int maxAccounts;
+    private int numberOfAddedAccounts  = 0;
 
 
 
 
-    public Bank(String name, int BIC, int maxAccounts) {
+    public Bank(String name, int bic, int maxAccounts) {
         this.name = name;
-        this.BIC = BIC;
-        this.MAX_ACCOUNTS = maxAccounts;
+        this.bic = bic;
+        this.maxAccounts = maxAccounts;
         this.accounts = new Account[maxAccounts];
     }
 
@@ -41,7 +41,7 @@ public class Bank {
     public void withdrawWithExc(long IBAN, double amount){
 
         if(amount <= 0)
-            throw new RuntimeException("amount can't be zero or negative!");
+            throw new IllegalArgumentException("amount can't be zero or negative!");
 
         int index = getAccountIndex(IBAN);
 
@@ -68,7 +68,7 @@ public class Bank {
 
     public void depositWithExc(long IBAN, double amount){
         if(amount <= 0)
-            throw new RuntimeException("amount can't be zero or negative!");
+            throw new IllegalArgumentException("amount can't be zero or negative!");
 
         int index = getAccountIndex(IBAN);
 
@@ -120,7 +120,7 @@ public class Bank {
 
     private int getBankIndex(int BIC, Bank[] banks) throws BankException {
         for (int i = 0; i < banks.length; i++) {
-            if(BIC == banks[i].getBIC())
+            if(BIC == banks[i].getBic())
                 return i;
         }
         throw new NoSuchBankException();
@@ -135,13 +135,10 @@ public class Bank {
         this.name = name;
     }
 
-    public int getBIC() {
-        return BIC;
+    public int getBic() {
+        return bic;
     }
 
-    public void setBIC(int BIC) {
-        this.BIC = BIC;
-    }
 
     public Account[] getAccounts() {
         return accounts;
@@ -151,17 +148,17 @@ public class Bank {
         this.accounts = accounts;
     }
 
-    public int getMAX_ACCOUNTS() {
-        return MAX_ACCOUNTS;
+    public int getMaxAccounts() {
+        return maxAccounts;
     }
 
     public int getCurrentAccounts() {
-        return currentAccounts;
+        return numberOfAddedAccounts ;
     }
 
     private int getAccountIndex(long IBAN){
         for (int i = 0; i < accounts.length; i++) {
-            if(accounts[i] != null && accounts[i].getIBAN() == IBAN)
+            if(accounts[i] != null && accounts[i].getIban() == IBAN)
                 return i;
         }
 
@@ -172,7 +169,7 @@ public class Bank {
         if(account == null)
             throw new AccountException("Account can't be null!");
 
-        if(currentAccounts == MAX_ACCOUNTS)
+        if(numberOfAddedAccounts  == maxAccounts)
             throw new TooManyAccountsException("Maximum amount of accounts is reached!");
 
         for (int i = 0; i < accounts.length; i++) {
@@ -180,7 +177,7 @@ public class Bank {
             if(accounts[i] == null) {
                 accounts[i] = account;
                 accounts[i].setBank(this);
-                currentAccounts++;
+                numberOfAddedAccounts ++;
                 return;
             }
         }
@@ -191,11 +188,12 @@ public class Bank {
         if(account == null)
             throw new AccountException("Account can't be null!");
         for (int i = 0; i < accounts.length; i++) {
-            if(accounts[i] != null && account.getIBAN() == accounts[i].getIBAN()) {
+            if(accounts[i] != null && account.getIban() == accounts[i].getIban()) {
                 accounts[i] = null;
-                if(i < MAX_ACCOUNTS - 1)
+                if(i < maxAccounts - 1)
                     System.arraycopy(accounts, i + 1, accounts, i, accounts.length - i - 1);
-                currentAccounts--;
+                numberOfAddedAccounts --;
+                return;
             }
         }
     }

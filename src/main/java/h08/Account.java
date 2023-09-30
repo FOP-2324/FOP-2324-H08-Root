@@ -6,20 +6,20 @@ public class Account {
 
     private String firstName;
     private String lastName;
-    private long IBAN;
+    private final long iban;
     private double balance;
     private Bank bank;
 
-    public Account(String firstName, String lastName, long IBAN, double balance, Bank bank){
+    public Account(String firstName, String lastName, long iban, double balance, Bank bank){
         assert firstName != null;
         assert lastName != null;
 
         this.firstName = firstName;
         this.lastName = lastName;
-        this.IBAN = IBAN;
+        this.iban = iban;
         this.bank = bank;
         bank.addAccount(this);
-        bank.depositWithAssert(IBAN, balance);
+        bank.depositWithAssert(iban, balance);
 
 
 
@@ -54,15 +54,11 @@ public class Account {
         this.bank = bank;
     }
 
-    public long getIBAN() {
-        return IBAN;
+    public long getIban() {
+        return iban;
     }
 
-    public void setIBAN(long IBAN) {
-        if(IBAN <= 0)
-            throw new RuntimeException("Invalid IBAN!");
-        this.IBAN = IBAN;
-    }
+
 
     public double getBalance() {
         return balance;
