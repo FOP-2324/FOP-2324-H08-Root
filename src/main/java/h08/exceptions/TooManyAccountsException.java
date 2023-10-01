@@ -1,5 +1,7 @@
 package h08.exceptions;
 
+import h08.Account;
+
 public class TooManyAccountsException extends AccountException{
     /**
      * Constructs a new account exception with the specified detail message.
@@ -9,7 +11,7 @@ public class TooManyAccountsException extends AccountException{
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public TooManyAccountsException(String message) {
-        super(message);
+    public TooManyAccountsException(String message, Account account) {
+        super(message, account);
     }
 }

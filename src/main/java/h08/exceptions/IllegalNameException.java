@@ -1,5 +1,7 @@
 package h08.exceptions;
 
+import h08.Account;
+
 public class IllegalNameException extends AccountException{
 
     /**
@@ -12,7 +14,7 @@ public class IllegalNameException extends AccountException{
      *                unknown.)
      * @since 1.4
      */
-    public IllegalNameException() {
-        super("name can't be null!");
+    public IllegalNameException(Account account) {
+        super("name for account is invalid!",account);
     }
 }

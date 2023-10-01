@@ -6,11 +6,18 @@ public class Account {
 
     private String firstName;
     private String lastName;
+
     private final long iban;
     private double balance;
-    private Bank bank;
 
-    public Account(String firstName, String lastName, long iban, double balance, Bank bank){
+    private Bank bank;
+    private final Customer customer;
+
+    private final TransactionHistory history;
+
+    public Account(String firstName, String lastName, long iban, double balance, Bank bank, Customer customer, TransactionHistory history){
+        this.customer = customer;
+        this.history = history;
         assert firstName != null;
         assert lastName != null;
 
@@ -32,7 +39,7 @@ public class Account {
 
     public void setFirstName(String firstName) {
         if(firstName == null)
-            throw new IllegalNameException();
+            throw new IllegalNameException(this);
         this.firstName = firstName;
     }
 
@@ -42,7 +49,7 @@ public class Account {
 
     public void setLastName(String lastName) {
         if(firstName == null)
-            throw new IllegalNameException();
+            throw new IllegalNameException(this);
         this.lastName = lastName;
     }
 
@@ -66,5 +73,24 @@ public class Account {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public TransactionHistory getHistory() {
+        return history;
+    }
+
+    @Override
+    public String toString() {
+        return "Account{" +
+            "firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", iban=" + iban +
+            ", balance=" + balance +
+            ", bank=" + bank +
+            '}';
     }
 }

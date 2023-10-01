@@ -5,23 +5,26 @@ import h08.exceptions.BankException;
 import h08.exceptions.NoSuchBankException;
 import h08.exceptions.TooManyAccountsException;
 
+import java.util.Arrays;
+
 
 public class Bank {
 
     private String name;
     private final int bic;
     private Account[] accounts;
-    private final int maxAccounts;
+    private final int capacity;
     private int numberOfAddedAccounts  = 0;
+    private Branch[] branches = new Branch[0];
 
 
 
 
-    public Bank(String name, int bic, int maxAccounts) {
+    public Bank(String name, int bic, int capacity) {
         this.name = name;
         this.bic = bic;
-        this.maxAccounts = maxAccounts;
-        this.accounts = new Account[maxAccounts];
+        this.capacity = capacity;
+        this.accounts = new Account[capacity];
     }
 
     public void withdrawWithAssert(long IBAN, double amount){
@@ -46,7 +49,7 @@ public class Bank {
         int index = getAccountIndex(IBAN);
 
         if(index < 0)
-            throw new AccountException("Cannot find IBAN!");
+            throw new AccountException("Cannot find account!",null);
 
         double newBalance = accounts[index].getBalance() - amount;
 
@@ -73,7 +76,7 @@ public class Bank {
         int index = getAccountIndex(IBAN);
 
         if(index < 0)
-            throw new AccountException("Cannot find IBAN!");
+            throw new AccountException("Cannot find IBAN!", null);
 
         double newBalance = accounts[index].getBalance() + amount;
         accounts[index].setBalance(newBalance);
@@ -81,7 +84,7 @@ public class Bank {
 
     public void transfer(long senderIBAN, long receiverIBAN,int receiverBIC, Bank[] banks, double amount) throws BankException {
         if(banks == null)
-            throw new BankException("Banks cannot be null!");
+            throw new BankException("Banks cannot be null!",null);
         int index;
 
         try {
@@ -118,12 +121,12 @@ public class Bank {
 
     }
 
-    private int getBankIndex(int BIC, Bank[] banks) throws BankException {
+    private int getBankIndex(int bic, Bank[] banks) throws BankException {
         for (int i = 0; i < banks.length; i++) {
-            if(BIC == banks[i].getBic())
+            if(bic == banks[i].getBic())
                 return i;
         }
-        throw new NoSuchBankException();
+        throw new NoSuchBankException(bic);
     }
 
 
@@ -148,8 +151,8 @@ public class Bank {
         this.accounts = accounts;
     }
 
-    public int getMaxAccounts() {
-        return maxAccounts;
+    public int getCapacity() {
+        return capacity;
     }
 
     public int getCurrentAccounts() {
@@ -162,15 +165,15 @@ public class Bank {
                 return i;
         }
 
-        throw new AccountException("Cannot find account!");
+        throw new AccountException("Cannot find account!",null);
     }
 
     public void addAccount(Account account){
         if(account == null)
-            throw new AccountException("Account can't be null!");
+            throw new AccountException("Account can't be null!",null);
 
-        if(numberOfAddedAccounts  == maxAccounts)
-            throw new TooManyAccountsException("Maximum amount of accounts is reached!");
+        if(numberOfAddedAccounts  == capacity)
+            throw new TooManyAccountsException("Maximum amount of accounts is reached!",account);
 
         for (int i = 0; i < accounts.length; i++) {
 
@@ -186,11 +189,11 @@ public class Bank {
 
     public void removeAccount(Account account){
         if(account == null)
-            throw new AccountException("Account can't be null!");
+            throw new AccountException("Account can't be null!",null);
         for (int i = 0; i < accounts.length; i++) {
             if(accounts[i] != null && account.getIban() == accounts[i].getIban()) {
                 accounts[i] = null;
-                if(i < maxAccounts - 1)
+                if(i < capacity - 1)
                     System.arraycopy(accounts, i + 1, accounts, i, accounts.length - i - 1);
                 numberOfAddedAccounts --;
                 return;
@@ -207,5 +210,14 @@ public class Bank {
         }
     }
 
-
+    @Override
+    public String toString() {
+        return "Bank{" +
+            "name='" + name + '\'' +
+            ", bic=" + bic +
+            ", accounts=" + Arrays.toString(accounts) +
+            ", maxAccounts=" + capacity +
+            ", numberOfAddedAccounts=" + numberOfAddedAccounts +
+            '}';
+    }
 }

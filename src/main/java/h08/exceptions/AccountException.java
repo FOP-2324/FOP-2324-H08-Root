@@ -1,5 +1,7 @@
 package h08.exceptions;
 
+import h08.Account;
+
 public class AccountException extends RuntimeException{
 
     /**
@@ -10,7 +12,7 @@ public class AccountException extends RuntimeException{
      * @param message the detail message. The detail message is saved for
      *                later retrieval by the {@link #getMessage()} method.
      */
-    public AccountException(String message) {
-        super(message);
+    public AccountException(String message, Account account) {
+        super(account != null ? (message + account) : message);
     }
 }
