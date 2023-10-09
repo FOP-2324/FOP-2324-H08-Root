@@ -10,6 +10,6 @@ public class NoSuchBankException extends BankException {
      * a call to {@link #initCause}.
      */
     public NoSuchBankException(int bic) {
-        super(bic < 0 ? "invalid bic!" : bic + "can't be found!",null);
+        super(bic < 0 ? "invalid bic!" : bic + "can't be found!");
     }
 }

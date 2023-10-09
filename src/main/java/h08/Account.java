@@ -18,6 +18,7 @@ public class Account {
     public Account(String firstName, String lastName, long iban, double balance, Bank bank, Customer customer, TransactionHistory history){
         this.customer = customer;
         this.history = history;
+
         assert firstName != null;
         assert lastName != null;
 
@@ -91,6 +92,8 @@ public class Account {
             ", iban=" + iban +
             ", balance=" + balance +
             ", bank=" + bank +
+            ", customer=" + customer +
+            ", history=" + history +
             '}';
     }
 }

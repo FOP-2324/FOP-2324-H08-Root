@@ -1,10 +1,8 @@
 package h08;
 
-import h08.exceptions.AccountException;
-import h08.exceptions.BankException;
-import h08.exceptions.NoSuchBankException;
-import h08.exceptions.TooManyAccountsException;
+import h08.exceptions.*;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 
 
@@ -27,7 +25,7 @@ public class Bank {
         this.accounts = new Account[capacity];
     }
 
-    public void withdrawWithAssert(long IBAN, double amount){
+    public void withdrawWithAssert(long IBAN, double amount) throws BankException {
 
         assert amount > 0;
 
@@ -35,13 +33,16 @@ public class Bank {
 
         assert index >= 0;
 
-        double newBalance = accounts[index].getBalance() - amount;
+        Account account = accounts[index];
+        if(account.getBalance() - amount < 0)
+            throw new BankException("Can't withdraw money, because " + account + "has insufficient funds!", account.getBank());
+        double newBalance = account.getBalance() - amount;
 
-        accounts[index].setBalance(newBalance);
+        account.setBalance(newBalance);
 
     }
 
-    public void withdrawWithExc(long IBAN, double amount){
+    public void withdrawWithExc(long IBAN, double amount) throws BankException {
 
         if(amount <= 0)
             throw new IllegalArgumentException("amount can't be zero or negative!");
@@ -49,11 +50,15 @@ public class Bank {
         int index = getAccountIndex(IBAN);
 
         if(index < 0)
-            throw new AccountException("Cannot find account!",null);
+            throw new AccountException("Cannot find account!");
 
-        double newBalance = accounts[index].getBalance() - amount;
+        Account account = accounts[index];
+        if(account.getBalance() - amount < 0)
+            throw new BankException("Can't withdraw money, because " + account + "has insufficient funds!", account.getBank());
 
-        accounts[index].setBalance(newBalance);
+        double newBalance = account.getBalance() - amount;
+
+        account.setBalance(newBalance);
     }
 
     public void depositWithAssert(long IBAN, double amount){
@@ -82,9 +87,10 @@ public class Bank {
         accounts[index].setBalance(newBalance);
     }
 
-    public void transfer(long senderIBAN, long receiverIBAN,int receiverBIC, Bank[] banks, double amount) throws BankException {
+    /*public void transfer(long senderIBAN, long receiverIBAN,int receiverBIC, Bank[] banks, double amount) throws BankException {
         if(banks == null)
             throw new BankException("Banks cannot be null!",null);
+
         int index;
 
         try {
@@ -119,7 +125,53 @@ public class Bank {
         }catch (Exception ignored){
         }
 
+    }*/
+    public void transfer(long senderIBAN, long receiverIBAN,int receiverBIC, Bank[] banks, double amount) throws BankException, TransactionException {
+        if(banks == null)
+            throw new BankException("Banks cannot be null!",null);
+
+        int senderIndex = getAccountIndex(senderIBAN);
+        int receiverIndex = getAccountIndex(receiverIBAN);
+        long transactionNumber = generateTransactionNumber();
+
+        if(senderIndex < 0)
+            throw new AccountException("Can't find sender account with IBAN: " + senderIBAN);
+        if(receiverIndex < 0)
+            throw new AccountException("Can't find receiver account with IBAN: " + receiverIBAN);
+
+        Account senderAccount = accounts[senderIndex];
+        Bank receiverBank = banks[getBankIndex(receiverBIC,banks)];
+        Account receiverAccount = receiverBank.accounts[receiverIndex];
+
+        if(senderAccount.getBalance() < amount)
+            throw new AccountException("Account has insufficient funds", senderAccount);
+
+        // create transaction and handle exceptions
+        try{
+            Transaction transaction = new Transaction(senderAccount,receiverAccount,amount,transactionNumber,"(senderAccount + receiverAccount.toString())", LocalDate.now(),Status.OPEN);
+            senderAccount.getHistory().add(transaction);
+            receiverAccount.getHistory().add(transaction);
+        } catch (TransactionException transactionException) {
+            System.out.println(transactionException.getMessage());
+            return;
+        }catch (Exception ignored){
+        }
+
+        try {
+            withdrawWithExc(senderIBAN,amount);
+            depositWithExc(receiverIBAN,amount);
+        }catch(IllegalArgumentException | BankException argumentException){
+            System.out.println(argumentException.getMessage());
+        }catch(AccountException accountException){
+            System.out.println(senderAccount + "Account error!");
+            throw new BankException("Account at index " + senderIndex + " is invalid!",this);
+        }catch (Exception ignored){
+
+        }
+
+
     }
+
 
     private int getBankIndex(int bic, Bank[] banks) throws BankException {
         for (int i = 0; i < banks.length; i++) {
@@ -142,6 +194,13 @@ public class Bank {
         return bic;
     }
 
+    public int getNumberOfAddedAccounts() {
+        return numberOfAddedAccounts;
+    }
+
+    public Branch[] getBranches() {
+        return branches;
+    }
 
     public Account[] getAccounts() {
         return accounts;
@@ -201,6 +260,10 @@ public class Bank {
         }
     }
 
+    private long generateTransactionNumber(){
+        return System.currentTimeMillis();
+    }
+
     public void printAccounts(){
         for (Account a :
             accounts) {
@@ -210,13 +273,13 @@ public class Bank {
         }
     }
 
+
     @Override
     public String toString() {
         return "Bank{" +
             "name='" + name + '\'' +
             ", bic=" + bic +
-            ", accounts=" + Arrays.toString(accounts) +
-            ", maxAccounts=" + capacity +
+            ", capacity=" + capacity +
             ", numberOfAddedAccounts=" + numberOfAddedAccounts +
             '}';
     }

@@ -15,6 +15,10 @@ public class BankException extends Exception{
      *                later retrieval by the {@link #getMessage()} method.
      */
     public BankException(String message, Bank bank) {
-        super(bank != null ? message + bank : message);
+        super(message + bank );
+    }
+
+    public BankException(String message){
+        super(message);
     }
 }

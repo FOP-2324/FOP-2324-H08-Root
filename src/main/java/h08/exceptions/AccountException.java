@@ -13,6 +13,10 @@ public class AccountException extends RuntimeException{
      *                later retrieval by the {@link #getMessage()} method.
      */
     public AccountException(String message, Account account) {
-        super(account != null ? (message + account) : message);
+        super(message + account );
+    }
+
+    public AccountException(String message){
+        super(message);
     }
 }

@@ -15,6 +15,10 @@ public class IllegalNameException extends AccountException{
      * @since 1.4
      */
     public IllegalNameException(Account account) {
-        super("name for account is invalid!",account);
+        super("name for account is invalid! ",account);
+    }
+
+    public IllegalNameException(){
+        super("name for account is invalid!");
     }
 }
