@@ -154,43 +154,48 @@ public class Bank {
      * @param amount how much money should be transferred.
      * @return the last status of the {@link Transaction}
      */
-    public Status transfer(long senderIBAN, long receiverIBAN,int receiverBIC, Bank[] banks, double amount, String description) throws BankException, TransactionException {
+    public Status transfer(long senderIBAN, long receiverIBAN,int receiverBIC, Bank[] banks, double amount, String description) throws TransactionException {
         //TODO: rework transaction exception catch block
-        if(banks == null)
-            throw new NullPointerException("Banks can't be null!");
+        if(banks == null){
+            System.err.println("banks cannot be null!");
+            return CANCELLED;
+        }
         long transactionNumber = generateTransactionNumber();
         int senderIndex = 0;
         int receiverIndex = 0;
 
-        //if you can't find the receiver or sender, just return CANCELLED.
+        //will never be null after the try block.
+        Bank receiverBank = null;
+
+        //if you can't find the receiver or sender,print the message and return CANCELLED.
         try{
              senderIndex = getAccountIndex(senderIBAN);
              receiverIndex = getAccountIndex(receiverIBAN);
+            receiverBank = banks[getBankIndex(receiverBIC,banks)];
 
-        }catch (IllegalArgumentException iae){
+        }catch (IllegalArgumentException | BankException exception){
+            System.err.println(exception.getMessage());
             return CANCELLED;
-        }catch (Exception ignored){}
+        }
+        catch (Exception ignored){
+            return CANCELLED;
+        }
 
         Account senderAccount = accounts[senderIndex];
-        Bank receiverBank = banks[getBankIndex(receiverBIC,banks)];
         Account receiverAccount = receiverBank.accounts[receiverIndex];
 
-        //declare open Transaction
+        //declare and initialize open Transaction
         Transaction transaction = new Transaction(senderAccount,receiverAccount,amount,transactionNumber,description, LocalDate.now(), OPEN);
-        if(senderAccount.getBalance() < amount){
-            senderAccount.getHistory().add(transaction);
-            receiverAccount.getHistory().add(transaction);
-            return OPEN;
-        }
 
         try {
             withdrawWithExc(senderIBAN,amount);
             depositWithExc(receiverIBAN,amount);
-            transaction = new Transaction(senderAccount,receiverAccount,amount,transactionNumber,description, LocalDate.now(), CLOSED);
+            transaction = new Transaction(senderAccount,receiverAccount,amount,transactionNumber,description, LocalDate.now(),CLOSED);
             senderAccount.getHistory().add(transaction);
             receiverAccount.getHistory().add(transaction);
         }catch(IllegalArgumentException argumentException){
-
+            System.out.println(argumentException.getMessage());
+            return CANCELLED;
         }
         catch(TransactionException transactionException){
             System.out.println(transactionException.getMessage());
@@ -204,7 +209,7 @@ public class Bank {
             receiverAccount.getHistory().add(transaction);
             return OPEN;
         } catch (Exception ignored){
-
+            return CANCELLED;
         }
 
         return CLOSED;

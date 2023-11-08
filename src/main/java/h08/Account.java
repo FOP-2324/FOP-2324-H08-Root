@@ -16,6 +16,7 @@ public class Account {
 
     private final TransactionHistory history;
 
+    //TODO: exercise for students
 
     public Account(Customer customer, String firstName, String lastName, long iban, double balance, Bank bank, TransactionHistory history) {
 
@@ -34,6 +35,8 @@ public class Account {
         bank.addAccount(this);
         bank.depositWithAssert(iban,balance);
     }
+
+    //TODO: exercise for students
     public Account(Customer customer, String firstName, String lastName, double balance, Bank bank, TransactionHistory history) {
 
         assert firstName != null;
@@ -54,6 +57,7 @@ public class Account {
 
 
 
+    //TODO: exercise for students
 
     private long generateIban(long seed){
         //TODO: implement
@@ -109,5 +113,18 @@ public class Account {
 
     public TransactionHistory getHistory() {
         return history;
+    }
+
+    //TODO: exercise for students
+    @Override
+    public String toString() {
+        return "Account{" +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", iban=" + iban +
+            ", balance=" + balance +
+            ", bank=" + bank.getName() +
+            ", latest transaction=" + history.getLatestTransaction() +
+            '}';
     }
 }

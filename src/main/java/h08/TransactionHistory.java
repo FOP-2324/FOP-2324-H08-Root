@@ -15,6 +15,7 @@ public class TransactionHistory {
         this.transactions = new Transaction[capacity];
     }
 
+    //TODO: exercise for students
     public void add(Transaction transaction) throws TransactionException {
         // If transaction number already exists, throw exception
         // Remove the oldest transaction if capacity is reached
@@ -50,10 +51,25 @@ public class TransactionHistory {
         return transactions[index];
     }
 
+    //TODO: exercise for students
+    public Transaction getLatestTransaction(){
+        if(nextIndex == 0)
+            return transactions[nextIndex];
+        return transactions[nextIndex - 1];
+    }
+
     public Transaction[] getTransactions() {
         // Return a copy of the transactions array starting from the first element (depending on the nextIndex)
         Transaction[] copiedTransactions = new Transaction[capacity];
         System.arraycopy(this.transactions,0,copiedTransactions,0,this.transactions.length);
         return copiedTransactions;
+    }
+
+    public Transaction[] checkOpenTransactions() throws TransactionException{
+        for (Transaction t :
+            transactions) {
+
+        }
+        return null;
     }
 }
