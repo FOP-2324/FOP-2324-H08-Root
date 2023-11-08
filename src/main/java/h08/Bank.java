@@ -1,7 +1,13 @@
 package h08;
 
-import h08.exceptions.AccountException;
 
+import h08.exceptions.AccountException;
+import h08.exceptions.BankException;
+import h08.exceptions.TransactionException;
+
+import java.time.LocalDate;
+
+import static h08.Status.*;
 import static org.tudalgo.algoutils.student.Student.crash;
 
 public class Bank {
@@ -38,7 +44,7 @@ public class Bank {
     }
 
     public void depositWithExc(long iban, double amount){
-        //TODO: implement with Java Standard Exception
+
         if(amount <= 0)
             throw new IllegalArgumentException("amount can't be zero or negative!");
 
@@ -68,17 +74,29 @@ public class Bank {
         account.setBalance(newBalance);
     }
 
-    public void withdrawWithExc(long iban, double amount){
-        //TODO: implement with Java standard Exception
-        crash("not implemented");
+    public void withdrawWithExc(long iban, double amount) throws BankException {
+        //TODO: test
+        if(amount <= 0)
+            throw new IllegalArgumentException("amount can't be zero or negative!");
+
+        //indirect exception
+        int index = getAccountIndex(iban);
+
+        Account account = accounts[index];
+        if(account.getBalance() - amount < 0)
+            throw new BankException("Can't withdraw money, because " + account + "has insufficient funds!");
+
+        double newBalance = account.getBalance() - amount;
+
+        account.setBalance(newBalance);
+
     }
 
 
     public void addAccount(Account account) {
-        //TODO: change AccountException
-        //crash("not implemented");
+        //TODO: test
         if(account == null)
-            throw new AccountException("Account can't be null!");
+            throw new NullPointerException("Account can't be null!");
 
         if(numberOfAddedAccounts  == capacity)
             throw new IllegalArgumentException("Maximum amount of accounts is reached!");
@@ -119,6 +137,14 @@ public class Bank {
         throw new IllegalArgumentException("Cannot find account with IBAN: " + iban);
     }
 
+    protected boolean ibanIsAlreadyUsed(long iban){
+        for (int i = 0; i < accounts.length; i++) {
+            if (accounts[i] != null && accounts[i].getIban() == iban)
+                return true;
+        }
+        return false;
+    }
+
     /**
      * This method creates a new Transaction and executes the actual money transfer. It ensures that the money transfer is an atomic operation.
      * @param senderIBAN the sender account's IBAN.
@@ -128,12 +154,71 @@ public class Bank {
      * @param amount how much money should be transferred.
      * @return the last status of the {@link Transaction}
      */
-    public Status transfer(long senderIBAN, long receiverIBAN,int receiverBIC, Bank[] banks, double amount){
-        //TODO: implement with custom Exceptions
-        crash("not implemented");
-        return null;
+    public Status transfer(long senderIBAN, long receiverIBAN,int receiverBIC, Bank[] banks, double amount, String description) throws BankException, TransactionException {
+        //TODO: rework transaction exception catch block
+        if(banks == null)
+            throw new NullPointerException("Banks can't be null!");
+        long transactionNumber = generateTransactionNumber();
+        int senderIndex = 0;
+        int receiverIndex = 0;
+
+        //if you can't find the receiver or sender, just return CANCELLED.
+        try{
+             senderIndex = getAccountIndex(senderIBAN);
+             receiverIndex = getAccountIndex(receiverIBAN);
+
+        }catch (IllegalArgumentException iae){
+            return CANCELLED;
+        }catch (Exception ignored){}
+
+        Account senderAccount = accounts[senderIndex];
+        Bank receiverBank = banks[getBankIndex(receiverBIC,banks)];
+        Account receiverAccount = receiverBank.accounts[receiverIndex];
+
+        //declare open Transaction
+        Transaction transaction = new Transaction(senderAccount,receiverAccount,amount,transactionNumber,description, LocalDate.now(), OPEN);
+        if(senderAccount.getBalance() < amount){
+            senderAccount.getHistory().add(transaction);
+            receiverAccount.getHistory().add(transaction);
+            return OPEN;
+        }
+
+        try {
+            withdrawWithExc(senderIBAN,amount);
+            depositWithExc(receiverIBAN,amount);
+            transaction = new Transaction(senderAccount,receiverAccount,amount,transactionNumber,description, LocalDate.now(), CLOSED);
+            senderAccount.getHistory().add(transaction);
+            receiverAccount.getHistory().add(transaction);
+        }catch(IllegalArgumentException argumentException){
+
+        }
+        catch(TransactionException transactionException){
+            System.out.println(transactionException.getMessage());
+            transaction = new Transaction(senderAccount,receiverAccount,amount,transactionNumber,description, LocalDate.now(), CANCELLED);
+            senderAccount.getHistory().add(transaction);
+            receiverAccount.getHistory().add(transaction);
+            return CANCELLED;
+        }catch(BankException bankException){
+            System.out.println(bankException.getMessage());
+            senderAccount.getHistory().add(transaction);
+            receiverAccount.getHistory().add(transaction);
+            return OPEN;
+        } catch (Exception ignored){
+
+        }
+
+        return CLOSED;
     }
 
+    private int getBankIndex(int bic, Bank[] banks) throws BankException {
+        if(banks == null)
+            throw new NullPointerException("Banks cannot be null!");
+        for (int i = 0; i < banks.length; i++) {
+            if(bic == banks[i].getBic())
+                return i;
+        }
+        throw new BankException(bic);
+    }
     private long generateTransactionNumber(){
         return System.currentTimeMillis();
     }

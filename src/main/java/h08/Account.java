@@ -16,23 +16,7 @@ public class Account {
 
     private final TransactionHistory history;
 
-    public Account(Customer customer, String firstName, String lastName, double balance, Bank bank, TransactionHistory history) {
 
-        assert firstName != null;
-        assert lastName != null;
-        assert bank != null;
-
-        this.bank = bank;
-        this.customer = customer;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.iban = generateIban();
-        this.balance = balance;
-        this.history = history;
-
-        bank.addAccount(this);
-        bank.depositWithAssert(iban,balance);
-    }
     public Account(Customer customer, String firstName, String lastName, long iban, double balance, Bank bank, TransactionHistory history) {
 
         assert firstName != null;
@@ -50,13 +34,37 @@ public class Account {
         bank.addAccount(this);
         bank.depositWithAssert(iban,balance);
     }
+    public Account(Customer customer, String firstName, String lastName, double balance, Bank bank, TransactionHistory history) {
+
+        assert firstName != null;
+        assert lastName != null;
+        assert bank != null;
+
+        this.bank = bank;
+        this.customer = customer;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.iban = generateIban(System.currentTimeMillis());
+        this.balance = balance;
+        this.history = history;
+
+        bank.addAccount(this);
+        bank.depositWithAssert(iban,balance);
+    }
 
 
 
-    private long generateIban(){
+
+    private long generateIban(long seed){
         //TODO: implement
-        crash("not implement");
-        return 0;
+        //crash("not implement");
+
+        long nameHash = String.join("",getFirstName(),getLastName()).hashCode();
+        long iban = nameHash * seed;
+        if(bank.ibanIsAlreadyUsed(iban)) {
+            iban = generateIban(iban) << 33;
+        }
+        return Math.abs(iban);
     }
 
     public Customer getCustomer() {
