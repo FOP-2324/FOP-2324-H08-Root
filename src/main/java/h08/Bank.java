@@ -17,16 +17,14 @@ public class Bank {
     private final Account[] accounts;
     private final int capacity;
     private int numberOfAddedAccounts = 0;
-    private final Branch[] branches;
 
-    public Bank(String name, int bic, int capacity, Branch[] branches) {
+    public Bank(String name, int bic, int capacity) {
         assert name != null;
 
         this.name = name;
         this.bic = bic;
         this.accounts = new Account[capacity];
         this.capacity = capacity;
-        this.branches = branches;
     }
 
 
@@ -257,7 +255,4 @@ public class Bank {
         this.numberOfAddedAccounts = numberOfAddedAccounts;
     }
 
-    public Branch[] getBranches() {
-        return branches;
-    }
 }
