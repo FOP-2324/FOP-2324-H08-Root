@@ -60,9 +60,6 @@ public class Account {
     //TODO: exercise for students
 
     private long generateIban(long seed){
-        //TODO: implement
-        //crash("not implement");
-
         long nameHash = String.join("",getFirstName(),getLastName()).hashCode();
         long iban = nameHash * seed;
         if(bank.ibanIsAlreadyUsed(iban)) {

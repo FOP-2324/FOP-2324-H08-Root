@@ -2,6 +2,8 @@ package h08;
 
 import h08.exceptions.TransactionException;
 
+import java.time.LocalDate;
+
 public class TransactionHistory {
 
     private final int capacity;
@@ -65,11 +67,33 @@ public class TransactionHistory {
         return copiedTransactions;
     }
 
-    public Transaction[] checkOpenTransactions() throws TransactionException{
+    public Transaction[] checkOpenTransactions(){
+        Transaction[] openTransactions = new Transaction[capacity];
+        int currentIndex = 0;
         for (Transaction t :
             transactions) {
 
+            if(t.status() == Status.OPEN){
+                //If the transaction is older than 4 weeks, cancel it and notify user.
+                if(t.date().plusWeeks(4).isAfter(LocalDate.now())){
+                    try{
+                        t.sourceAccount().getBank().transfer(t.sourceAccount().getIban(),t.targetAccount().getIban(),t.targetAccount().getBank(),t.amount(),t.description());
+                    }catch (TransactionException transactionException){
+                        System.out.println("Can't execute transfer: " + t);
+                        t = new Transaction(t.sourceAccount(),t.targetAccount(),t.amount(),t.transactionNumber(),t.description(),t.date(),Status.CANCELLED);
+                    }
+                    //if transaction is older than 2 weeks, notify user.
+                }else if(t.date().plusWeeks(2).isAfter(LocalDate.now())){
+                    try{
+                        t.sourceAccount().getBank().transfer(t.sourceAccount().getIban(),t.targetAccount().getIban(),t.targetAccount().getBank(),t.amount(),t.description());
+                    }catch (TransactionException transactionException){
+                        System.out.println("Can't execute transfer: " + t + " 2 Weeks remaining until transfer gets cancelled!");
+                    }
+                }
+                openTransactions[currentIndex] = t;
+                currentIndex++;
+            }
         }
-        return null;
+        return openTransactions;
     }
 }

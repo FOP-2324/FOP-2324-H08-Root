@@ -213,6 +213,63 @@ public class Bank {
         return CLOSED;
     }
 
+    public Status transfer(long senderIBAN, long receiverIBAN,Bank receiverBank, double amount, String description) throws TransactionException {
+        //TODO: rework transaction exception catch block
+
+        long transactionNumber = generateTransactionNumber();
+        int senderIndex = 0;
+        int receiverIndex = 0;
+
+
+
+
+        //if you can't find the receiver or sender,print the message and return CANCELLED.
+        try{
+            senderIndex = getAccountIndex(senderIBAN);
+            receiverIndex = getAccountIndex(receiverIBAN);
+
+        }catch (IllegalArgumentException exception){
+            System.err.println(exception.getMessage());
+            return CANCELLED;
+        }
+        catch (Exception ignored){
+            return CANCELLED;
+        }
+
+        Account senderAccount = accounts[senderIndex];
+        Account receiverAccount = receiverBank.accounts[receiverIndex];
+
+        //declare and initialize open Transaction
+        Transaction transaction = new Transaction(senderAccount,receiverAccount,amount,transactionNumber,description, LocalDate.now(), OPEN);
+
+        try {
+            withdrawWithExc(senderIBAN,amount);
+            depositWithExc(receiverIBAN,amount);
+            transaction = new Transaction(senderAccount,receiverAccount,amount,transactionNumber,description, LocalDate.now(),CLOSED);
+            senderAccount.getHistory().add(transaction);
+            receiverAccount.getHistory().add(transaction);
+        }catch(IllegalArgumentException argumentException){
+            System.out.println(argumentException.getMessage());
+            return CANCELLED;
+        }
+        catch(TransactionException transactionException){
+            System.out.println(transactionException.getMessage());
+            transaction = new Transaction(senderAccount,receiverAccount,amount,transactionNumber,description, LocalDate.now(), CANCELLED);
+            senderAccount.getHistory().add(transaction);
+            receiverAccount.getHistory().add(transaction);
+            return CANCELLED;
+        }catch(BankException bankException){
+            System.out.println(bankException.getMessage());
+            senderAccount.getHistory().add(transaction);
+            receiverAccount.getHistory().add(transaction);
+            return OPEN;
+        } catch (Exception ignored){
+            return CANCELLED;
+        }
+
+        return CLOSED;
+    }
+
     private int getBankIndex(int bic, Bank[] banks) throws BankException {
         if(banks == null)
             throw new NullPointerException("Banks cannot be null!");

@@ -19,4 +19,17 @@ public record Transaction(
         if(date.isAfter(LocalDate.now()))
             throw new BadTimestampException(date);
     }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+            "sourceAccount=" + sourceAccount +
+            ", targetAccount=" + targetAccount +
+            ", amount=" + amount +
+            ", transactionNumber=" + transactionNumber +
+            ", description='" + description + '\'' +
+            ", date=" + date +
+            ", status=" + status +
+            '}';
+    }
 }
