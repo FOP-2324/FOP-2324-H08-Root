@@ -201,7 +201,6 @@ public class Bank {
         return Math.abs(iban);
     }
 
-
     /**
      * Adds the specified account to the bank.
      *
@@ -475,15 +474,15 @@ public class Bank {
         if (o == null || getClass() != o.getClass()) return false;
         Bank bank = (Bank) o;
         return getBic() == bank.getBic()
-            && capacity == bank.capacity
-            && size == bank.size
+            && capacity() == bank.capacity()
+            && size() == bank.size()
             && Objects.equals(getName(), bank.getName())
             && Arrays.equals(getAccounts(), bank.getAccounts());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getName(), getBic(), capacity, size, Arrays.hashCode(getAccounts()));
+        return Objects.hash(getName(), getBic(), capacity(), size(), Arrays.hashCode(getAccounts()));
     }
 
     @Override

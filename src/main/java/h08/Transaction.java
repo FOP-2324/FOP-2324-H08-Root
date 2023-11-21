@@ -21,7 +21,6 @@ public record Transaction(
     String description,
     LocalDate date,
     Status status
-
 ) {
     public Transaction {
         if (amount <= 0) {
