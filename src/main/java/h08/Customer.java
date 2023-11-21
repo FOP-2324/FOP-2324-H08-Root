@@ -1,20 +1,35 @@
 package h08;
 
-import h08.exceptions.BadTimestampException;
-
 import java.time.LocalDate;
 
+/**
+ * Represents a customer.
+ *
+ * @param firstName   the first name of the customer
+ * @param lastName    the last name of the customer
+ * @param address     the address of the customer
+ * @param dateOfBirth the date of birth of the customer
+ */
 public record Customer(
     String firstName,
     String lastName,
     String address,
     LocalDate dateOfBirth
 ) {
-
+    /**
+     * Constructs a new customer.
+     *
+     * @param firstName   the first name of the customer
+     * @param lastName    the last name of the customer
+     * @param address     the address of the customer
+     * @param dateOfBirth the date of birth of the customer
+     */
     public Customer {
         assert firstName != null;
         assert lastName != null;
-        if (dateOfBirth().isAfter(LocalDate.now()))
-            throw new BadTimestampException(dateOfBirth);
+        assert address != null;
+        if (dateOfBirth.isAfter(LocalDate.now())) {
+            throw new IllegalArgumentException("Date of birth cannot be in the future!");
+        }
     }
 }
