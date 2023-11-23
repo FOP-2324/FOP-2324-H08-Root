@@ -3,6 +3,7 @@ package h08;
 import h08.exceptions.BadTimestampException;
 import java.time.LocalDate;
 
+//vorgegeben
 public record Transaction(
     Account sourceAccount,
     Account targetAccount,

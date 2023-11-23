@@ -136,8 +136,8 @@ public class Bank {
     }
 
     protected boolean ibanIsAlreadyUsed(long iban){
-        for (int i = 0; i < accounts.length; i++) {
-            if (accounts[i] != null && accounts[i].getIban() == iban)
+        for (Account account : accounts) {
+            if (account != null && account.getIban() == iban)
                 return true;
         }
         return false;

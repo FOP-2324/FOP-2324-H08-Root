@@ -14,7 +14,8 @@ public record Customer(
     public Customer {
         assert firstName != null;
         assert lastName != null;
-        if (dateOfBirth().isAfter(LocalDate.now()))
+        assert dateOfBirth != null;
+        if (dateOfBirth.isAfter(LocalDate.now()))
             throw new BadTimestampException(dateOfBirth);
     }
 }

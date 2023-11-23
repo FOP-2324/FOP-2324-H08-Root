@@ -1,6 +1,7 @@
 package h08;
 
-import static org.tudalgo.algoutils.student.Student.crash;
+
+import java.util.Objects;
 
 public class Account {
 
@@ -47,7 +48,7 @@ public class Account {
         this.customer = customer;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.iban = generateIban(System.currentTimeMillis());
+        this.iban = generateIban(System.nanoTime());
         this.balance = balance;
         this.history = history;
 
@@ -61,9 +62,9 @@ public class Account {
 
     private long generateIban(long seed){
         long nameHash = String.join("",getFirstName(),getLastName()).hashCode();
-        long iban = nameHash * seed;
+        long iban = Objects.hash(customer.hashCode(),seed);
         if(bank.ibanIsAlreadyUsed(iban)) {
-            iban = generateIban(iban) << 33;
+            iban = generateIban(iban);
         }
         return Math.abs(iban);
     }
