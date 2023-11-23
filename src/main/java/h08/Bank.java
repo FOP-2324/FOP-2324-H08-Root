@@ -57,31 +57,18 @@ public class Bank {
 
 
     /**
-     * Constructs a new bank with the specified name, BIC, capacity and transferable banks.
+     * Constructs a new bank with the specified name, BIC and capacity.
      *
-     * @param name              the name of the bank
-     * @param bic               the BIC of the bank
-     * @param capacity          the capacity of the bank
-     * @param transferableBanks the banks to which this bank can transfer money
+     * @param name     the name of the bank
+     * @param bic      the BIC of the bank
+     * @param capacity the capacity of the bank
      */
-    public Bank(String name, int bic, int capacity, Bank[] transferableBanks) {
+    public Bank(String name, int bic, int capacity) {
         this.name = name;
         this.bic = bic;
         this.accounts = new Account[capacity];
         this.capacity = capacity;
-        this.transferableBanks = transferableBanks;
-    }
-
-    /**
-     * Constructs a new bank with the specified name, BIC, default capacity of {@value DEFAULT_CAPACITY} and
-     * transferable banks.
-     *
-     * @param name              the name of the bank
-     * @param bic               the BIC of the bank
-     * @param transferableBanks the banks to which this bank can transfer money
-     */
-    public Bank(String name, int bic, Bank[] transferableBanks) {
-        this(name, bic, DEFAULT_CAPACITY, transferableBanks);
+        this.transferableBanks = new Bank[0];
     }
 
     /**
@@ -91,7 +78,7 @@ public class Bank {
      * @param bic  the BIC of the bank
      */
     public Bank(String name, int bic) {
-        this(name, bic, DEFAULT_CAPACITY, new Bank[0]);
+        this(name, bic, DEFAULT_CAPACITY);
     }
 
     /**
@@ -210,14 +197,8 @@ public class Bank {
         if (size == capacity) {
             throw new IllegalStateException("Bank is full!");
         }
-        for (int i = 0; i < accounts.length; i++) {
-            if (accounts[i] == null) {
-                accounts[i] = new Account(customer, generateIban(customer, 1), 0, this,
-                    new TransactionHistory(transactionHistoryCapacity));
-                size++;
-                return;
-            }
-        }
+        accounts[size++] = new Account(customer, generateIban(customer, 1), 0, this,
+            new TransactionHistory(transactionHistoryCapacity));
     }
 
     /**
@@ -267,8 +248,7 @@ public class Bank {
         }
         int index = getAccountIndex(iban);
         Account removedAccount = accounts[index];
-        accounts[index] = null;
-        size--;
+        System.arraycopy(accounts, index, accounts, index, size - 1);
         return removedAccount;
     }
 
