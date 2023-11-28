@@ -55,7 +55,6 @@ public class Bank {
      */
     private int transactionHistoryCapacity = DEFAULT_TRANSACTION_CAPACITY;
 
-
     /**
      * Constructs a new bank with the specified name, BIC and capacity.
      *
@@ -165,7 +164,7 @@ public class Bank {
      * @param iban the IBAN to check
      * @return {@code true} if the specified IBAN is already used by an account of the bank
      */
-    private boolean isIbanAlreadyUsed(long iban) {
+    protected boolean isIbanAlreadyUsed(long iban) {
         for (int i = 0; i < size; i++) {
             if (accounts[i].getIban() == iban) {
                 return true;
@@ -180,7 +179,7 @@ public class Bank {
      * @param seed the seed to generate the IBAN
      * @return the generated IBAN
      */
-    private long generateIban(Customer customer, long seed) {
+    protected long generateIban(Customer customer, long seed) {
         long iban = Math.abs(customer.hashCode() * seed);
         if (isIbanAlreadyUsed(iban)) {
             iban = generateIban(customer, iban);
@@ -338,7 +337,7 @@ public class Bank {
      *
      * @return the generated transaction number
      */
-    private long generateTransactionNumber() {
+    protected long generateTransactionNumber() {
         return System.currentTimeMillis();
     }
 
