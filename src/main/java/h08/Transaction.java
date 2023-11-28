@@ -22,13 +22,26 @@ public record Transaction(
     LocalDate date,
     Status status
 ) {
+    /**
+     * Constructs a new transaction with the specified source account, target account, amount, transaction number,
+     *
+     * @param sourceAccount     the source account of the transaction
+     * @param targetAccount     the target account of the transaction
+     * @param amount            the amount of money that is transferred
+     * @param transactionNumber the transaction number of the transaction
+     * @param description       the description of the transaction
+     * @param date              the date of the transaction
+     * @param status            the status of the transaction
+     * @throws BadTimestampException if the date is in the future
+     */
     public Transaction {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Amount cannot be zero or negative!");
-        }
-
+        assert sourceAccount != null;
+        assert targetAccount != null;
+        assert description != null;
+        assert date != null;
+        assert status != null;
         if (date.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Date cannot be in the future!");
+            throw new BadTimestampException(date);
         }
     }
 }

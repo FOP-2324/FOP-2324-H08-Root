@@ -183,9 +183,9 @@ public class Bank {
     private long generateIban(Customer customer, long seed) {
         long iban = Math.abs(customer.hashCode() * seed);
         if (isIbanAlreadyUsed(iban)) {
-            iban = generateIban(customer, iban) << 33;
+            iban = generateIban(customer, iban);
         }
-        return Math.abs(iban);
+        return iban;
     }
 
     /**
@@ -197,7 +197,7 @@ public class Bank {
         if (size == capacity) {
             throw new IllegalStateException("Bank is full!");
         }
-        accounts[size++] = new Account(customer, generateIban(customer, 1), 0, this,
+        accounts[size++] = new Account(customer, generateIban(customer, System.nanoTime()), 0, this,
             new TransactionHistory(transactionHistoryCapacity));
     }
 
@@ -304,7 +304,7 @@ public class Bank {
      */
     public void deposit(long iban, double amount) {
         if (amount <= 0) {
-            throw new IllegalArgumentException("Amount cannot be zero or negative!");
+            throw new IllegalArgumentException(String.valueOf(amount));
         }
         int index = getAccountIndex(iban);
         Account account = accounts[index];
@@ -322,13 +322,13 @@ public class Bank {
      */
     public void withdraw(long iban, double amount) {
         if (amount <= 0) {
-            throw new IllegalArgumentException("Amount cannot be zero or negative!");
+            throw new IllegalArgumentException(String.valueOf(amount));
         }
         int index = getAccountIndex(iban);
         Account account = accounts[index];
         double newBalance = account.getBalance() - amount;
         if (newBalance < 0) {
-            throw new IllegalArgumentException("Amount cannot be negative!");
+            throw new IllegalArgumentException(String.valueOf(newBalance));
         }
         account.setBalance(newBalance);
     }
@@ -386,14 +386,18 @@ public class Bank {
             );
             senderHistory.update(transaction);
             receiverHistory.update(transaction);
-        } catch (IllegalArgumentException e) {
+        } catch (TransactionException | BadTimestampException e) {
             transaction = new Transaction(
-                senderAccount, receiverAccount,
-                amount, transactionNumber,
-                description, LocalDate.now(), Status.CANCELLED
+                transaction.sourceAccount(), transaction.targetAccount(),
+                transaction.amount(), transaction.transactionNumber(),
+                transaction.description(), transaction.date(), Status.CANCELLED
             );
-            senderHistory.update(transaction);
-            receiverHistory.update(transaction);
+            try {
+                senderHistory.update(transaction);
+                receiverHistory.update(transaction);
+            } catch (TransactionException ignored) {
+                // Cannot happen
+            }
             return Status.CANCELLED;
         }
         return transaction.status();
@@ -405,20 +409,33 @@ public class Bank {
      *
      * @return the open transactions
      */
-    public Transaction[] checkOpenTransactions() {
+    public Transaction[] checkOpenTransactions() throws TransactionException {
+        LocalDate today = LocalDate.now();
+        int transactionsOlderThanFourWeeks = 0;
         int length = 0;
         for (int i = 0; i < size; i++) {
-            length += accounts[i].getHistory().getTransactions(Status.OPEN).length;
+            Transaction[] currentTransactions = accounts[i].getHistory().getTransactions(Status.OPEN);
+            length += currentTransactions.length;
+
+            // Compute possible exception to transactions older than 4 weeks.
+            for (Transaction transaction : currentTransactions) {
+                if (transaction.date().plusWeeks(4).isAfter(today)) {
+                    transactionsOlderThanFourWeeks++;
+                }
+            }
         }
         Transaction[] openTransactions = new Transaction[length];
+        Transaction[] olderThanFourWeeksTransactions = new Transaction[transactionsOlderThanFourWeeks];
+
+        // Index counter for next free index in result array
         int index = 0;
+        int indexOlderThanFourWeeks = 0;
         for (int i = 0; i < size; i++) {
             Account account = accounts[i];
             Transaction[] transactions = account.getHistory().getTransactions(Status.OPEN);
             for (Transaction transaction : transactions) {
                 Account sourceAccount = transaction.sourceAccount();
                 Account targetAccount = transaction.targetAccount();
-                LocalDate today = LocalDate.now();
                 boolean olderThanTwoWeeks = transaction.date().plusWeeks(2).isAfter(today);
                 boolean olderThanFourWeeks = transaction.date().plusWeeks(4).isAfter(today);
 
@@ -431,9 +448,10 @@ public class Bank {
                     );
                     sourceAccount.getHistory().update(cancelledTransaction);
                     targetAccount.getHistory().update(cancelledTransaction);
+                    olderThanFourWeeksTransactions[indexOlderThanFourWeeks++] = cancelledTransaction;
                 }
                 // If transaction is older than 2 weeks, notify user.
-                if (transaction.date().plusWeeks(2).isAfter(today)) {
+                if (olderThanTwoWeeks) {
                     transfer(
                         sourceAccount.getIban(),
                         targetAccount.getIban(),
@@ -444,6 +462,9 @@ public class Bank {
                 }
                 openTransactions[index++] = transaction;
             }
+        }
+        if (olderThanFourWeeksTransactions.length > 0) {
+            throw new TransactionException(olderThanFourWeeksTransactions);
         }
         return openTransactions;
     }

@@ -86,13 +86,14 @@ public class TransactionHistory {
      * @param transaction the transaction to update
      * @throws NoSuchElementException if the transaction does not exist in this history.
      */
-    public void update(Transaction transaction) {
-        for (int i = 0; i < transactions.length; i++) {
+    public void update(Transaction transaction) throws TransactionException {
+        for (int i = 0; i < size; i++) {
             if (transactions[i].transactionNumber() == transaction.transactionNumber()) {
                 transactions[i] = transaction;
+                return;
             }
         }
-        throw new NoSuchElementException(String.valueOf(transaction));
+        throw new TransactionException("Transaction does not exist!", transaction.transactionNumber());
     }
 
     /**

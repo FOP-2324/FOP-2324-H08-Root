@@ -1,9 +1,16 @@
 package h08;
 
+import java.time.LocalDate;
+
 /**
  * Represents a bank account.
  */
 public class Account {
+
+    /**
+     * The minimum age of a customer.
+     */
+    private static final int MIN_AGE = 18;
 
     /**
      * The customer that owns this account.
@@ -40,12 +47,18 @@ public class Account {
      * @param history  the transaction history of this account
      */
     public Account(Customer customer, long iban, double balance, Bank bank, TransactionHistory history) {
+        assert customer != null;
+        assert iban >= 0;
+        assert bank != null;
+        assert history != null;
+        if (customer.dateOfBirth().isAfter(LocalDate.now().minusYears(MIN_AGE))) {
+            throw new BadTimestampException(customer.dateOfBirth());
+        }
         this.customer = customer;
         this.iban = iban;
         this.balance = balance;
         this.history = history;
         this.bank = bank;
-        bank.deposit(iban, balance);
     }
 
     /**

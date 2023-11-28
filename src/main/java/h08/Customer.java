@@ -16,6 +16,8 @@ public record Customer(
     String address,
     LocalDate dateOfBirth
 ) {
+    static final int MIN_AGE = 18;
+
     /**
      * Constructs a new customer.
      *
@@ -28,8 +30,6 @@ public record Customer(
         assert firstName != null;
         assert lastName != null;
         assert address != null;
-        if (dateOfBirth.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Date of birth cannot be in the future!");
-        }
+        assert dateOfBirth != null;
     }
 }
