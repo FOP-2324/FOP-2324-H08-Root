@@ -4,6 +4,7 @@ package h08;
  * A status describes the state of a transaction.
  */
 public enum Status {
+
     /**
      * The transaction is open.
      */
@@ -18,4 +19,5 @@ public enum Status {
      * The transaction is cancelled.
      */
     CANCELLED,
+
 }

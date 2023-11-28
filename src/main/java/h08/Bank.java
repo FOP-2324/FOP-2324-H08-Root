@@ -9,6 +9,7 @@ import java.util.Objects;
  * Represents a bank. A bank offers accounts to its customers and allows them to transfer money to other accounts.
  */
 public class Bank {
+
     /**
      * The default capacity of a bank.
      */
@@ -28,7 +29,6 @@ public class Bank {
      * The BIC of the bank.
      */
     private final int bic;
-
 
     /**
      * The banks to which this bank can transfer money.
@@ -495,4 +495,5 @@ public class Bank {
             ", size=" + size +
             '}';
     }
+
 }

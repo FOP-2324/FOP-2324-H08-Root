@@ -7,6 +7,7 @@ import java.util.NoSuchElementException;
  * removed.
  */
 public class TransactionHistory {
+
     /**
      * The default capacity of the transaction history.
      */
@@ -192,4 +193,5 @@ public class TransactionHistory {
         }
         return availableTransactions;
     }
+
 }

@@ -16,7 +16,10 @@ public record Customer(
     String address,
     LocalDate dateOfBirth
 ) {
-    static final int MIN_AGE = 18;
+    /**
+     * The minimum age of a customer.
+     */
+    private static final int MIN_AGE = 18;
 
     /**
      * Constructs a new customer.
@@ -32,4 +35,5 @@ public record Customer(
         assert address != null;
         assert dateOfBirth != null;
     }
+
 }

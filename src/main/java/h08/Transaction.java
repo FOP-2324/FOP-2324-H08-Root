@@ -22,6 +22,7 @@ public record Transaction(
     LocalDate date,
     Status status
 ) {
+
     /**
      * Constructs a new transaction with the specified source account, target account, amount, transaction number,
      *
@@ -44,4 +45,5 @@ public record Transaction(
             throw new BadTimestampException(date);
         }
     }
+
 }
