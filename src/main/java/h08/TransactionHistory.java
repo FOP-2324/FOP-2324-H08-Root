@@ -70,7 +70,7 @@ public class TransactionHistory {
      */
     public void add(Transaction transaction) {
         for (Transaction t : transactions) {
-            if (t.transactionNumber() == transaction.transactionNumber()) {
+            if (t != null && t.transactionNumber() == transaction.transactionNumber()) {
                 throw new IllegalArgumentException("This transaction already exists!");
             }
         }
