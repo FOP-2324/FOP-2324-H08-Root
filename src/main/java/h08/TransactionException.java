@@ -36,7 +36,7 @@ public class TransactionException extends Exception {
         for (int i = 0; i < transactions.length; i++) {
             sb.append(transactions[i].transactionNumber());
             if (i < transactions.length - 1) {
-                sb.append(", ");
+                sb.append(",");
             }
         }
         sb.append("]");
