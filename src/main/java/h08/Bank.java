@@ -290,7 +290,10 @@ public class Bank {
         assert bic >= 0;
         int index = getBankIndex(bic);
         Bank removedBank = transferableBanks[index];
-        System.arraycopy(transferableBanks, index, transferableBanks, index, transferableBanks.length - 1);
+        Bank[] newTransferableBanks = new Bank[transferableBanks.length - 1];
+        System.arraycopy(transferableBanks, 0, newTransferableBanks, 0, index);
+        System.arraycopy(transferableBanks, index + 1, newTransferableBanks, index, transferableBanks.length - index - 1);
+        transferableBanks = newTransferableBanks;
         return removedBank;
     }
 
