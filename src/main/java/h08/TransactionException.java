@@ -1,5 +1,6 @@
 package h08;
 
+// TODO H3
 /**
  * Signals that a transaction action has failed.
  */
@@ -32,6 +33,7 @@ public class TransactionException extends Exception {
      * @return a string representation of the mapping of the specified transactions to their transaction numbers
      */
     private static String getTransactionNumbers(Transaction[] transactions) {
+        // Alternatively via String concatenation
         StringBuilder sb = new StringBuilder("Transaction numbers: [");
         for (int i = 0; i < transactions.length; i++) {
             sb.append(transactions[i].transactionNumber());

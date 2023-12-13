@@ -52,7 +52,7 @@ public class TransactionHistory {
     TransactionHistory(TransactionHistory history, int capacity) {
         this.capacity = capacity;
         this.transactions = new Transaction[capacity];
-        System.arraycopy(history.transactions, 0, this.transactions, 0, Math.min(size, history.size));
+        System.arraycopy(history.transactions, 0, this.transactions, 0, Math.min(capacity, history.size));
     }
 
     /**
@@ -69,8 +69,9 @@ public class TransactionHistory {
      * @throws IllegalArgumentException if the transaction number already exists in this history.
      */
     public void add(Transaction transaction) {
-        for (Transaction t : transactions) {
-            if (t != null && t.transactionNumber() == transaction.transactionNumber()) {
+        // TODO H5.1
+        for (int i = 0; i < size; i++) {
+            if (transactions[i].transactionNumber() == transaction.transactionNumber()) {
                 throw new IllegalArgumentException("This transaction already exists!");
             }
         }
@@ -85,9 +86,10 @@ public class TransactionHistory {
      * Updates the specified transaction in this history.
      *
      * @param transaction the transaction to update
-     * @throws NoSuchElementException if the transaction does not exist in this history.
+     * @throws TransactionException if the transaction does not exist in this history.
      */
     public void update(Transaction transaction) throws TransactionException {
+        // TODO H5.2
         for (int i = 0; i < size; i++) {
             if (transactions[i].transactionNumber() == transaction.transactionNumber()) {
                 transactions[i] = transaction;
@@ -105,7 +107,8 @@ public class TransactionHistory {
      * @throws NoSuchElementException if the transaction does not exist in this history.
      */
     public Transaction get(long transactionNumber) {
-        for (Transaction transaction : transactions) {
+        for (int i = 0; i < size; i++) {
+            Transaction transaction = transactions[i];
             if (transaction.transactionNumber() == transactionNumber) {
                 return transaction;
             }
@@ -121,10 +124,11 @@ public class TransactionHistory {
      * @throws IndexOutOfBoundsException if the index is out of bounds
      */
     public Transaction get(int index) {
-        if (index < 0 || index >= nextIndex) {
-            throw new IndexOutOfBoundsException("Index must be between 0 and " + nextIndex);
+        Transaction transaction = transactions[index];
+        if (transaction == null) {
+            throw new IndexOutOfBoundsException(index);
         }
-        return transactions[index];
+        return transaction;
     }
 
     /**

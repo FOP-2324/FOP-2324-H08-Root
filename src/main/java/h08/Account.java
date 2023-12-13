@@ -47,6 +47,7 @@ public class Account {
      * @param history  the transaction history of this account
      */
     public Account(Customer customer, long iban, double balance, Bank bank, TransactionHistory history) {
+        // TODO H4.1
         assert customer != null;
         assert iban >= 0;
         assert bank != null;

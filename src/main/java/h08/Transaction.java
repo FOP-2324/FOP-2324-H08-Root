@@ -36,6 +36,7 @@ public record Transaction(
      * @throws BadTimestampException if the date is in the future
      */
     public Transaction {
+        // TODO H4.2
         assert sourceAccount != null;
         assert targetAccount != null;
         assert description != null;

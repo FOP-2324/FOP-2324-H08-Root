@@ -16,10 +16,6 @@ public record Customer(
     String address,
     LocalDate dateOfBirth
 ) {
-    /**
-     * The minimum age of a customer.
-     */
-    private static final int MIN_AGE = 18;
 
     /**
      * Constructs a new customer.
@@ -30,6 +26,7 @@ public record Customer(
      * @param dateOfBirth the date of birth of the customer
      */
     public Customer {
+        // TODO H1
         assert firstName != null;
         assert lastName != null;
         assert address != null;

@@ -1,9 +1,10 @@
 package h08;
 
 
+import org.tudalgo.algoutils.student.test.StudentTestUtils;
+
 import java.time.LocalDate;
 import java.time.Month;
-import java.util.Arrays;
 
 /**
  * Main entry point in executing the program.
@@ -11,46 +12,60 @@ import java.util.Arrays;
 public class Main {
 
     /**
+     * Epsilon for comparing double values.
+     */
+    private static final double EPSILON = 0.0001;
+
+    /**
      * Main entry point in executing the program.
      *
      * @param args program arguments, currently ignored
      */
     public static void main(String[] args) {
-        //create customers
-        Customer linus = new Customer("Linus ","Torvalds","548 Market St, San Francisco, CA 94104, United States", LocalDate.of(1969, Month.DECEMBER,28));
-        Customer bill = new Customer("Bill", "Gates","One Microsoft Way, Redmond, WA 98052, United States",LocalDate.of(1955,Month.OCTOBER,28));
-        //create banks
+        // TODO H6
+        // 1
+        Customer linus = new Customer("Linus ", "Torvalds", "548 Market St, San Francisco, CA 94104, United States", LocalDate.of(1969, Month.DECEMBER, 28));
+        Customer bill = new Customer("Bill", "Gates", "One Microsoft Way, Redmond, WA 98052, United States", LocalDate.of(1955, Month.OCTOBER, 28));
+        // 2
         Bank linusBank = new Bank("Goldman Sachs", 42);
-        Bank billsBank = new Bank("JPMorgan Chase & Co.",123);
-        //add customer and transferable bank
+        Bank billsBank = new Bank("JPMorgan Chase & Co.", 123);
+        // 3
         linusBank.add(linus);
         linusBank.add(billsBank);
-        //add customer and transferable bank
         billsBank.add(bill);
         billsBank.add(linusBank);
-        //get account reference
+        // 4
         Account linusAccount = linusBank.getAccounts()[0];
         Account billsAccount = billsBank.getAccounts()[0];
-        //deposit
-        linusBank.deposit(linusAccount.getIban(),2000000.00);
-        billsBank.deposit(billsAccount.getIban(),4000000.00);
-        //print accounts before first transaction
-        System.out.println(linusAccount);
-        System.out.println(billsAccount);
-        //test transfer
-        System.out.println(linusBank.transfer(linusAccount.getIban(), billsAccount.getIban(), 123, 100000.00, "For Windux") + "\n");
-        //print accounts
-        System.out.println(linusAccount);
-        System.out.println(billsAccount);
-        //wrong transfer
-        System.out.println(billsBank.transfer(billsAccount.getIban(), linusAccount.getIban(), 24, 4000000.00, "For Lindows")+ "\n");
-        //print accounts and transfers
-        System.out.println(linusAccount);
-        System.out.println(Arrays.toString(linusAccount.getHistory().getTransactions()));
-        System.out.println(billsAccount);
-        System.out.println(Arrays.toString(billsAccount.getHistory().getTransactions()));
-
-
+        // 5
+        linusBank.deposit(linusAccount.getIban(), 20000);
+        billsBank.deposit(billsAccount.getIban(), 20000);
+        // 6
+        linusBank.transfer(linusAccount.getIban(), billsAccount.getIban(), billsBank.getBic(), 1000, "For Windux");
+        // 7
+        StudentTestUtils.testWithinRange(19000 - EPSILON, 19000 + EPSILON, linusAccount.getBalance());
+        StudentTestUtils.testWithinRange(21000 - EPSILON, 21000 + EPSILON, billsAccount.getBalance());
+        StudentTestUtils.testEquals(1, linusAccount.getHistory().size());
+        StudentTestUtils.testEquals(1, billsAccount.getHistory().size());
+        // 8
+        StudentTestUtils.testEquals(
+            Status.CANCELLED,
+            billsBank.transfer(billsAccount.getIban(), linusAccount.getIban(), 24, 4000000.00, "For Lindows")
+        );
+        StudentTestUtils.testEquals(
+            Status.CANCELLED,
+            billsBank.transfer(billsAccount.getIban(), linusAccount.getIban(), 24, 4000000.00, "For Lindows")
+        );
+        StudentTestUtils.testEquals(1, linusAccount.getHistory().size());
+        StudentTestUtils.testEquals(1, billsAccount.getHistory().size());
+        // 9
+        StudentTestUtils.testThrows(
+            IllegalArgumentException.class,
+            () -> linusBank.transfer(
+                linusAccount.getIban(), billsAccount.getIban(), billsBank.getBic(), -1000, "For Windux"
+            )
+        );
+        StudentTestUtils.printTestResults();
     }
 
 }

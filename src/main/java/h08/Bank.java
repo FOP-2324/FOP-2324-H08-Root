@@ -165,6 +165,7 @@ public class Bank {
      * @return {@code true} if the specified IBAN is already used by an account of the bank
      */
     protected boolean isIbanAlreadyUsed(long iban) {
+        // TODO H2.1
         for (int i = 0; i < size; i++) {
             if (accounts[i].getIban() == iban) {
                 return true;
@@ -180,6 +181,7 @@ public class Bank {
      * @return the generated IBAN
      */
     protected long generateIban(Customer customer, long seed) {
+        // TODO H2.2
         long iban = Math.abs(customer.hashCode() * seed);
         if (isIbanAlreadyUsed(iban)) {
             iban = generateIban(customer, iban);
@@ -193,6 +195,7 @@ public class Bank {
      * @throws IllegalStateException if the bank is full
      */
     public void add(Customer customer) {
+        // TODO H2.2
         if (size == capacity) {
             throw new IllegalStateException("Bank is full!");
         }
@@ -239,16 +242,15 @@ public class Bank {
      *
      * @param iban the IBAN of the account to remove
      * @return the removed account
-     * @throws IllegalArgumentException if the IBAN is negative
-     * @throws NoSuchElementException   if the account with the specified IBAN does not exist
+     * @throws NoSuchElementException if the account with the specified IBAN does not exist
      */
     public Account remove(long iban) {
-        if (iban < 0) {
-            throw new IllegalArgumentException("IBAN cannot be negative!");
-        }
+        // TODO H2.3
+        assert iban >= 0;
         int index = getAccountIndex(iban);
         Account removedAccount = accounts[index];
         System.arraycopy(accounts, index, accounts, index, size - 1);
+        size--;
         return removedAccount;
     }
 
@@ -285,9 +287,7 @@ public class Bank {
      * @return the removed bank
      */
     public Bank remove(int bic) {
-        if (bic < 0) {
-            throw new IllegalArgumentException("BIC cannot be negative!");
-        }
+        assert bic >= 0;
         int index = getBankIndex(bic);
         Bank removedBank = transferableBanks[index];
         System.arraycopy(transferableBanks, index, transferableBanks, index, transferableBanks.length - 1);
@@ -303,6 +303,7 @@ public class Bank {
      * @throws NoSuchElementException   if the account with the specified IBAN does not exist
      */
     public void deposit(long iban, double amount) {
+        // TODO H2.4
         if (amount <= 0) {
             throw new IllegalArgumentException(String.valueOf(amount));
         }
@@ -321,6 +322,7 @@ public class Bank {
      * @throws NoSuchElementException   if the account with the specified IBAN does not exist
      */
     public void withdraw(long iban, double amount) {
+        // TODO H2.4
         if (amount <= 0) {
             throw new IllegalArgumentException(String.valueOf(amount));
         }
@@ -353,6 +355,7 @@ public class Bank {
      * @return the status of the transaction
      */
     public Status transfer(long senderIBAN, long receiverIBAN, int receiverBIC, double amount, String description) {
+        // TODO H5.3
         long transactionNumber = generateTransactionNumber();
         int senderIndex;
         Bank receiverBank;
@@ -410,6 +413,7 @@ public class Bank {
      * @return the open transactions
      */
     public Transaction[] checkOpenTransactions() throws TransactionException {
+        // TODO H5.4
         LocalDate today = LocalDate.now();
         int transactionsOlderThanFourWeeks = 0;
         int length = 0;
