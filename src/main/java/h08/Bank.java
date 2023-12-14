@@ -321,7 +321,7 @@ public class Bank {
      *
      * @param iban   the IBAN of the account
      * @param amount the amount to withdraw
-     * @throws IllegalArgumentException if the amount is zero or negative or if the new balance would be negative
+     * @throws IllegalArgumentException if the amount is zero or negative, or if the new balance would be negative
      * @throws NoSuchElementException   if the account with the specified IBAN does not exist
      */
     public void withdraw(long iban, double amount) {
@@ -434,7 +434,7 @@ public class Bank {
         Transaction[] openTransactions = new Transaction[length];
         Transaction[] olderThanFourWeeksTransactions = new Transaction[transactionsOlderThanFourWeeks];
 
-        // Index counter for next free index in result array
+        // Index counter for next free index in a result array
         int index = 0;
         int indexOlderThanFourWeeks = 0;
         for (int i = 0; i < size; i++) {
