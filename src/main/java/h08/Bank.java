@@ -249,7 +249,8 @@ public class Bank {
         assert iban >= 0;
         int index = getAccountIndex(iban);
         Account removedAccount = accounts[index];
-        System.arraycopy(accounts, index, accounts, index, size - 1);
+        System.arraycopy(accounts, index + 1, accounts, index, size - index - 1);
+        accounts[size - 1] = null;
         size--;
         return removedAccount;
     }
