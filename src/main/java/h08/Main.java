@@ -24,8 +24,16 @@ public class Main {
     public static void main(String[] args) {
         // TODO H6
         // 1
-        Customer linus = new Customer("Linus ", "Torvalds", "548 Market St, San Francisco, CA 94104, United States", LocalDate.of(1969, Month.DECEMBER, 28));
-        Customer bill = new Customer("Bill", "Gates", "One Microsoft Way, Redmond, WA 98052, United States", LocalDate.of(1955, Month.OCTOBER, 28));
+        Customer linus = new Customer(
+            "Linus ", "Torvalds",
+            "548 Market St, San Francisco, CA 94104, United States",
+            LocalDate.of(1969, Month.DECEMBER, 28)
+        );
+        Customer bill = new Customer(
+            "Bill", "Gates",
+            "One Microsoft Way, Redmond, WA 98052, United States",
+            LocalDate.of(1955, Month.OCTOBER, 28)
+        );
         // 2
         Bank linusBank = new Bank("Goldman Sachs", 42);
         Bank billsBank = new Bank("JPMorgan Chase & Co.", 123);

@@ -478,8 +478,12 @@ public class Bank {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Bank bank = (Bank) o;
         return getBic() == bank.getBic()
             && capacity() == bank.capacity()
@@ -495,12 +499,12 @@ public class Bank {
 
     @Override
     public String toString() {
-        return "Bank{" +
-            "name='" + name + '\'' +
-            ", bic=" + bic +
-            ", capacity=" + capacity +
-            ", size=" + size +
-            '}';
+        return "Bank{"
+            + "name='" + name + '\''
+            + ", bic=" + bic
+            + ", capacity=" + capacity
+            + ", size=" + size
+            + '}';
     }
 
 }
