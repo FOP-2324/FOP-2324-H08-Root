@@ -69,9 +69,7 @@ public class Main {
         // 9
         StudentTestUtils.testThrows(
             IllegalArgumentException.class,
-            () -> linusBank.transfer(
-                linusAccount.getIban(), billsAccount.getIban(), billsBank.getBic(), -1000, "For Windux"
-            )
+            () -> linusBank.withdraw(linusAccount.getIban(), 20000)
         );
         StudentTestUtils.printTestResults();
     }

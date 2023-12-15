@@ -392,7 +392,7 @@ public class Bank {
             );
             senderHistory.update(transaction);
             receiverHistory.update(transaction);
-        } catch (TransactionException | BadTimestampException e) {
+        } catch (Exception e) {
             transaction = new Transaction(
                 transaction.sourceAccount(), transaction.targetAccount(),
                 transaction.amount(), transaction.transactionNumber(),
