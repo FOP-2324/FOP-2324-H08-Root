@@ -1,0 +1,239 @@
+[
+  {
+    "transactions": [
+      {
+        "sourceAccount": {
+          "customer": {
+            "firstName": "Person",
+            "lastName": "A",
+            "address": "StreetA",
+            "age": 20
+          },
+          "iban": 1,
+          "balance": 10,
+          "bank": {
+            "name": "FOPBank",
+            "capacity": 5
+          },
+          "history": []
+        },
+        "targetAccount": {
+          "customer": {
+            "firstName": "Person",
+            "lastName": "B",
+            "address": "StreetB",
+            "age": 21
+          },
+          "iban": 2,
+          "balance": 20,
+          "bank": {
+            "name": "FOPBank",
+            "capacity": 5
+          },
+          "history": []
+        },
+        "amount": 2.0,
+        "transactionNumber": 1,
+        "description": "transaction1",
+        "date": 1,
+        "status": "OPEN"
+      },
+      {
+        "sourceAccount": {
+          "customer": {
+            "firstName": "Person",
+            "lastName": "A",
+            "address": "StreetA",
+            "age": 20
+          },
+          "iban": 1,
+          "balance": 10,
+          "bank": {
+            "name": "FOPBank",
+            "capacity": 5
+          },
+          "history": []
+        },
+        "targetAccount": {
+          "customer": {
+            "firstName": "Person",
+            "lastName": "C",
+            "address": "StreetC",
+            "age": 22
+          },
+          "iban": 3,
+          "balance": 30,
+          "bank": {
+            "name": "FOPBank",
+            "capacity": 5
+          },
+          "history": []
+        },
+        "amount": 3.0,
+        "transactionNumber": 2,
+        "description": "transaction2",
+        "date": 2,
+        "status": "CLOSED"
+      },
+      {
+        "sourceAccount": {
+          "customer": {
+            "firstName": "Person",
+            "lastName": "C",
+            "address": "StreetC",
+            "age": 22
+          },
+          "iban": 3,
+          "balance": 30,
+          "bank": {
+            "name": "FOPBank",
+            "capacity": 5
+          },
+          "history": []
+        },
+        "targetAccount": {
+          "customer": {
+            "firstName": "Person",
+            "lastName": "B",
+            "address": "StreetB",
+            "age": 21
+          },
+          "iban": 2,
+          "balance": 20,
+          "bank": {
+            "name": "FOPBank",
+            "capacity": 5
+          },
+          "history": []
+        },
+        "amount": 4.0,
+        "transactionNumber": 3,
+        "description": "transaction3",
+        "date": 3,
+        "status": "CANCELLED"
+      }
+    ]
+  },
+  {
+    "transactions": [
+      {
+        "sourceAccount": {
+          "customer": {
+            "firstName": "Person",
+            "lastName": "A",
+            "address": "StreetA",
+            "age": 20
+          },
+          "iban": 1,
+          "balance": 10,
+          "bank": {
+            "name": "FOPBank",
+            "capacity": 5
+          },
+          "history": []
+        },
+        "targetAccount": {
+          "customer": {
+            "firstName": "Person",
+            "lastName": "B",
+            "address": "StreetB",
+            "age": 21
+          },
+          "iban": 2,
+          "balance": 20,
+          "bank": {
+            "name": "FOPBank",
+            "capacity": 5
+          },
+          "history": []
+        },
+        "amount": 2.0,
+        "transactionNumber": 1,
+        "description": "transaction1",
+        "date": 1,
+        "status": "OPEN"
+      },
+      {
+        "sourceAccount": {
+          "customer": {
+            "firstName": "Person",
+            "lastName": "A",
+            "address": "StreetA",
+            "age": 20
+          },
+          "iban": 1,
+          "balance": 10,
+          "bank": {
+            "name": "FOPBank",
+            "capacity": 5
+          },
+          "history": []
+        },
+        "targetAccount": {
+          "customer": {
+            "firstName": "Person",
+            "lastName": "C",
+            "address": "StreetC",
+            "age": 21
+          },
+          "iban": 3,
+          "balance": 30,
+          "bank": {
+            "name": "FOPBank",
+            "capacity": 5
+          },
+          "history": []
+        },
+        "amount": 3.0,
+        "transactionNumber": 2,
+        "description": "transaction2",
+        "date": 2,
+        "status": "CLOSED"
+      }
+    ]
+  },
+  {
+    "transactions": [
+      {
+        "sourceAccount": {
+          "customer": {
+            "firstName": "Person",
+            "lastName": "A",
+            "address": "StreetA",
+            "age": 20
+          },
+          "iban": 1,
+          "balance": 10,
+          "bank": {
+            "name": "FOPBank",
+            "capacity": 5
+          },
+          "history": []
+        },
+        "targetAccount": {
+          "customer": {
+            "firstName": "Person",
+            "lastName": "B",
+            "address": "StreetB",
+            "age": 21
+          },
+          "iban": 2,
+          "balance": 20,
+          "bank": {
+            "name": "FOPBank",
+            "capacity": 5
+          },
+          "history": []
+        },
+        "amount": 2.0,
+        "transactionNumber": 1,
+        "description": "transaction1",
+        "date": 1,
+        "status": "OPEN"
+      }
+    ]
+  },
+  {
+    "transactions": []
+  }
+]
