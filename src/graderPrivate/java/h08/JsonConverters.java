@@ -48,9 +48,13 @@ public class JsonConverters extends org.tudalgo.algoutils.tutor.general.json.Jso
             node.get("amount").asDouble(),
             node.get("transactionNumber").asLong(),
             node.get("description").asText(),
-            LocalDate.now().minusYears(node.get("date").asInt()).minusDays(1),
+            toDate(node.get("date")),
             toStatus(node.get("status"))
             );
+    }
+
+    public static LocalDate toDate(JsonNode node) {
+        return LocalDate.now().minusYears(node.asInt()).minusDays(1);
     }
 
     public static Status toStatus(JsonNode node) {

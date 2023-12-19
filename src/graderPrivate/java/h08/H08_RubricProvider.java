@@ -120,9 +120,20 @@ public class H08_RubricProvider implements RubricProvider {
     public static final Criterion H3 = createParentCriterion("3.1", "Eigene Fehlermeldungen",
         H3_1, H3_2, H3_3, H3_4);
 
+    public static final Criterion H4_1 = createCriterion("Der Konstruktor der Klasse [[[Account]]] behandelt ungültige Eingaben korrekt.",
+        () -> H4_1_Test.class.getDeclaredMethod("testAgeRestriction", JsonParameterSet.class),
+        () -> H4_1_Test.class.getDeclaredMethod("testAsserts"));
+
+    public static final Criterion H4_2 = createCriterion("Der Konstruktor der Klasse [[[Transaction]]] behandelt ungültige Eingaben korrekt.",
+        () -> H4_2_Test.class.getDeclaredMethod("testDateRestriction", JsonParameterSet.class),
+        () -> H4_2_Test.class.getDeclaredMethod("testAsserts"));
+
+    public static final Criterion H4 = createParentCriterion("4", "Validierung von Daten",
+        H4_1, H4_2);
+
     public static final Rubric RUBRIC = Rubric.builder()
         .title("H08")
-        .addChildCriteria(H1, H2, H3)
+        .addChildCriteria(H1, H2, H3, H4)
         .build();
 
     @Override

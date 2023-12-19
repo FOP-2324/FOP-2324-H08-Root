@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
+import static h08.StudentLinks.BAD_TIME_STAMP_EXCEPTION_CONSTRUCTOR_LINK;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 
 @SkipAfterFirstFailedTest(TestConstants.SKIP_AFTER_FIRST_FAILED_TEST)
@@ -24,12 +25,25 @@ public abstract class H08_TestBase {
         Map.entry("unusedIbans", n -> JsonConverters.toList(n, JsonNode::asLong)),
         Map.entry("ibansToRemove", n -> JsonConverters.toList(n, JsonNode::asLong)),
         Map.entry("customerToAdd", JsonConverters::toCustomer),
-        Map.entry("transactions", n -> JsonConverters.toList(n, JsonConverters::toTransaction))
+        Map.entry("transactions", n -> JsonConverters.toList(n, JsonConverters::toTransaction)),
+        Map.entry("customer", JsonConverters::toCustomer),
+        Map.entry("date", JsonConverters::toDate),
+        Map.entry("status", JsonConverters::toStatus),
+        Map.entry("description", JsonNode::asText)
     ));
 
     @BeforeEach
     public void resetConverters() {
         JsonConverters.reset();
+    }
+
+    public static String getExpectedBadTimeStepMessage(String message) {
+
+        try {
+            return ((Exception) BAD_TIME_STAMP_EXCEPTION_CONSTRUCTOR_LINK.get().invoke(message)).getMessage();
+        } catch (Throwable e) {
+            return "Bad timestamp: " + message;
+        }
     }
 
     public static void checkBankSizeAndAccountsUnchanged(Bank bank, List<Account> accounts, Context context) throws ReflectiveOperationException {

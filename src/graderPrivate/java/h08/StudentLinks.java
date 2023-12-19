@@ -26,6 +26,11 @@ public class StudentLinks {
         return createConstructorLink(tl, BasicReflectionMatchers.sameTypes(args));
     }
 
+    public static Class<?> getClassOfTypeLink(TypeLink tl) throws ClassNotFoundException {
+        return Class.forName(PACKAGE_LINK.name() + "." + tl.identifier());
+    }
+
+
     public static final PackageLink PACKAGE_LINK = BasicPackageLink.of("h08");
 
     public static final Supplier<TypeLink> BAD_TIME_STAMP_EXCEPTION_LINK = createTypeLink("BadTimestampException");

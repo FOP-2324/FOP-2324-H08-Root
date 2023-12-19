@@ -1,0 +1,100 @@
+[
+  {
+    "customer": {
+      "firstName": "Person",
+      "lastName": "A",
+      "address": "StreetA",
+      "age": 17
+    },
+    "iban": 1,
+    "balance": 10,
+    "bank": {
+      "name": "FOPBank",
+      "capacity": 5
+    }
+  },
+  {
+    "customer": {
+      "firstName": "Person",
+      "lastName": "A",
+      "address": "StreetA",
+      "age": 16
+    },
+    "iban": 1,
+    "balance": 10,
+    "bank": {
+      "name": "FOPBank",
+      "capacity": 5
+    }
+  },
+  {
+    "customer": {
+      "firstName": "Person",
+      "lastName": "A",
+      "address": "StreetA",
+      "age": 18
+    },
+    "iban": 1,
+    "balance": 10,
+    "bank": {
+      "name": "FOPBank",
+      "capacity": 5
+    }
+  },
+  {
+    "customer": {
+      "firstName": "Person",
+      "lastName": "A",
+      "address": "StreetA",
+      "age": 20
+    },
+    "iban": 1,
+    "balance": 10,
+    "bank": {
+      "name": "FOPBank",
+      "capacity": 5
+    }
+  },
+  {
+    "customer": {
+      "firstName": "Person",
+      "lastName": "A",
+      "address": "StreetA",
+      "age": 999
+    },
+    "iban": 1,
+    "balance": 10,
+    "bank": {
+      "name": "FOPBank",
+      "capacity": 5
+    }
+  },
+  {
+    "customer": {
+      "firstName": "Person",
+      "lastName": "A",
+      "address": "StreetA",
+      "age": 1
+    },
+    "iban": 1,
+    "balance": 10,
+    "bank": {
+      "name": "FOPBank",
+      "capacity": 5
+    }
+  },
+  {
+    "customer": {
+      "firstName": "Person",
+      "lastName": "A",
+      "address": "StreetA",
+      "age": 0
+    },
+    "iban": 1,
+    "balance": 10,
+    "bank": {
+      "name": "FOPBank",
+      "capacity": 5
+    }
+  }
+]
