@@ -460,8 +460,8 @@ public class Bank {
                         olderThanFourWeeksTransactions[indexOlderThanFourWeeks++] = cancelledTransaction;
                     }
                 }
-                // If the transaction is older than 2 weeks, notify the user.
-                if (olderThanTwoWeeks) {
+                // If the transaction is older than 2 weeks but not older than four weeks, notify the user.
+                if (olderThanTwoWeeks && !olderThanFourWeeks) {
                     transfer(
                         sourceAccount.getIban(),
                         targetAccount.getIban(),
