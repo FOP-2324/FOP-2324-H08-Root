@@ -389,7 +389,7 @@ public class Bank {
             transaction = new Transaction(
                 senderAccount, receiverAccount,
                 amount, transactionNumber,
-                description, LocalDate.now(), Status.CLOSED
+                description, transaction.date(), Status.CLOSED
             );
             senderHistory.update(transaction);
             receiverHistory.update(transaction);
