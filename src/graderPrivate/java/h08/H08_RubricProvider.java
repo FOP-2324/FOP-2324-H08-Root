@@ -131,9 +131,36 @@ public class H08_RubricProvider implements RubricProvider {
     public static final Criterion H4 = createParentCriterion("4", "Validierung von Daten",
         H4_1, H4_2);
 
+    public static final Criterion H5_1_1 = createCriterion("Die Methode [[[TransactionHistory#add(Transaction)]]] funktioniert korrekt wenn die Transaktionsnummer bereits in der Historie vorhanden ist.",
+        () -> H5_1_Test.class.getDeclaredMethod("testException", JsonParameterSet.class));
+
+    public static final Criterion H5_1_2 = createCriterion("Die Methode [[[TransactionHistory#add(Transaction)]]] erhöht korrekt die size der Historie.",
+        () -> H5_1_Test.class.getDeclaredMethod("testSize", JsonParameterSet.class));
+
+    public static final Criterion H5_1_3 = createCriterion("Die Methode [[[TransactionHistory#add(Transaction)]]] funktioniert für einfache Fälle vollständig korrekt",
+        () -> H5_1_Test.class.getDeclaredMethod("testSimple", JsonParameterSet.class));
+
+    public static final Criterion H5_1_4 = createCriterion("Die Methode [[[TransactionHistory#add(Transaction)]]] funktioniert für komplexe Fälle vollständig korrekt",
+        () -> H5_1_Test.class.getDeclaredMethod("testComplex", JsonParameterSet.class));
+
+    public static final Criterion H5_1 = createParentCriterion("5.1", "Transaktionen in die Historie aufnehmen",
+        H5_1_1, H5_1_2, H5_1_3, H5_1_4);
+
+    public static final Criterion H5_2_1 = createCriterion("Die Methode [[[TransactionHistory#update(Transaction)]]] funktioniert korrekt wenn die Transaktionsnummer in der Historie vorhanden ist.",
+        () -> H5_2_Test.class.getDeclaredMethod("testNormal", JsonParameterSet.class));
+
+    public static final Criterion H5_2_2 = createCriterion("Die Methode [[[TransactionHistory#update(Transaction)]]] funktioniert korrekt wenn die Transaktionsnummer nicht in der Historie vorhanden ist.",
+        () -> H5_2_Test.class.getDeclaredMethod("testException", JsonParameterSet.class));
+
+    public static final Criterion H5_2 = createParentCriterion("5.2", "Transkation aktualisieren",
+        H5_2_1, H5_2_2);
+
+    public static final Criterion H5 = createParentCriterion("5", "Überweisungen",
+        H5_1, H5_2);
+
     public static final Rubric RUBRIC = Rubric.builder()
         .title("H08")
-        .addChildCriteria(H1, H2, H3, H4)
+        .addChildCriteria(H1, H2, H3, H4, H5)
         .build();
 
     @Override

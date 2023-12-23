@@ -1,0 +1,48 @@
+[
+  {
+    "capacity": 5,
+    "transactions": [
+      "transaction1"
+    ],
+    "doubledTransaction": {
+      "id": "transaction2",
+      "transactionNumber": 1
+    }
+  },
+  {
+    "capacity": 5,
+    "transactions": [
+      "transaction1",
+      "transaction2",
+      "transaction3"
+    ],
+    "doubledTransaction": {
+      "id": "transaction4",
+      "transactionNumber": 1
+    }
+  },
+  {
+    "capacity": 5,
+    "transactions": [
+      "transaction1",
+      "transaction2",
+      "transaction3"
+    ],
+    "doubledTransaction": {
+      "id": "transaction4",
+      "transactionNumber": 2
+    }
+  },
+  {
+    "capacity": 5,
+    "transactions": [
+      "transaction1",
+      "transaction2",
+      "transaction3"
+    ],
+    "doubledTransaction": {
+      "id": "transaction4",
+      "transactionNumber": 3
+    }
+  }
+]

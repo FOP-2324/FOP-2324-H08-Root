@@ -28,7 +28,9 @@ public abstract class H08_TestBase {
         Map.entry("customer", JsonConverters::toCustomer),
         Map.entry("date", JsonConverters::toDate),
         Map.entry("status", JsonConverters::toStatus),
-        Map.entry("description", JsonNode::asText)
+        Map.entry("description", JsonNode::asText),
+        Map.entry("doubledTransaction", JsonConverters::toTransaction),
+        Map.entry("transactionToUpdate", JsonConverters::toTransaction)
     ));
 
     public static String getExpectedBadTimeStepMessage(String message) {
@@ -114,6 +116,36 @@ public abstract class H08_TestBase {
         Field ibanField = Account.class.getDeclaredField("iban");
         ibanField.setAccessible(true);
         ibanField.set(account, iban);
+    }
+
+    public static void setHistorySize(TransactionHistory history, int size) throws ReflectiveOperationException {
+        Field sizeField = TransactionHistory.class.getDeclaredField("size");
+        sizeField.setAccessible(true);
+        sizeField.set(history, size);
+    }
+
+    public static void setHistoryNextIndex(TransactionHistory history, int nextIndex) throws ReflectiveOperationException {
+        Field nextIndexField = TransactionHistory.class.getDeclaredField("nextIndex");
+        nextIndexField.setAccessible(true);
+        nextIndexField.set(history, nextIndex);
+    }
+
+    public static void setHistoryTransactions(TransactionHistory history, Transaction[] transactions) throws ReflectiveOperationException {
+        Field transactionsField = TransactionHistory.class.getDeclaredField("transactions");
+        transactionsField.setAccessible(true);
+        transactionsField.set(history, transactions);
+    }
+
+    public static int getHistoryNextIndex(TransactionHistory history) throws ReflectiveOperationException {
+        Field nextIndexField = TransactionHistory.class.getDeclaredField("nextIndex");
+        nextIndexField.setAccessible(true);
+        return (int) nextIndexField.get(history);
+    }
+
+    public static Transaction[] getHistoryTransactions(TransactionHistory history) throws ReflectiveOperationException {
+        Field transactionsField = TransactionHistory.class.getDeclaredField("transactions");
+        transactionsField.setAccessible(true);
+        return (Transaction[]) transactionsField.get(history);
     }
 
     private static class DefaultConvertersMap extends HashMap<String, Function<JsonNode, ?>> {

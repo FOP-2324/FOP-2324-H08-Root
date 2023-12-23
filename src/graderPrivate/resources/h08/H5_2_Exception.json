@@ -1,0 +1,10 @@
+[
+  {
+    "capacity": 3,
+    "transactions": [
+      "transaction1",
+      "transaction2"
+    ],
+    "transactionToUpdate": "transaction3"
+  }
+]

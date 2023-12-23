@@ -109,7 +109,8 @@ public class ParameterResolver {
         1,
         "transaction 1",
         LocalDate.of(2020, 1, 1),
-        Status.OPEN);
+        Status.OPEN
+    );
 
     public static final Supplier<Transaction> TRANSACTION_2 = () -> new Transaction(
         ACCOUNT_A.get(),
@@ -118,7 +119,8 @@ public class ParameterResolver {
         2,
         "transaction 2",
         LocalDate.of(2020, 1, 2),
-        Status.CLOSED);
+        Status.CLOSED
+    );
 
     public static final Supplier<Transaction> TRANSACTION_3 = () -> new Transaction(
         ACCOUNT_C.get(),
@@ -127,12 +129,35 @@ public class ParameterResolver {
         3,
         "transaction 3",
         LocalDate.of(2020, 1, 3),
-        Status.CANCELLED);
+        Status.CANCELLED
+    );
+
+    public static final Supplier<Transaction> TRANSACTION_4 = () -> new Transaction(
+        ACCOUNT_D.get(),
+        ACCOUNT_B.get(),
+        5,
+        4,
+        "transaction 4",
+        LocalDate.of(2020, 1, 4),
+        Status.OPEN
+    );
+
+    public static final Supplier<Transaction> TRANSACTION_5 = () -> new Transaction(
+        ACCOUNT_D.get(),
+        ACCOUNT_B.get(),
+        6,
+        5,
+        "transaction 5",
+        LocalDate.of(2020, 1, 5),
+        Status.CLOSED
+    );
 
     public static final Map<String, Supplier<Transaction>> idToTransaction = Map.of(
         "transaction1", TRANSACTION_1,
         "transaction2", TRANSACTION_2,
-        "transaction3", TRANSACTION_3
+        "transaction3", TRANSACTION_3,
+        "transaction4", TRANSACTION_4,
+        "transaction5", TRANSACTION_5
     );
 
     public static Transaction getTransaction(String id) {
@@ -155,7 +180,7 @@ public class ParameterResolver {
     }
 
     public static List<Transaction> getAllTransactions() {
-        return List.of(TRANSACTION_1.get(), TRANSACTION_2.get(), TRANSACTION_3.get());
+        return List.of(TRANSACTION_1.get(), TRANSACTION_2.get(), TRANSACTION_3.get(), TRANSACTION_4.get(), TRANSACTION_5.get());
     }
 
     private static <T> T getOrDefault(JsonNode node,
