@@ -1,7 +1,6 @@
 package h08;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.junit.jupiter.api.BeforeEach;
 import org.tudalgo.algoutils.tutor.general.annotation.SkipAfterFirstFailedTest;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
 import org.tudalgo.algoutils.tutor.general.callable.Callable;
@@ -25,17 +24,12 @@ public abstract class H08_TestBase {
         Map.entry("unusedIbans", n -> JsonConverters.toList(n, JsonNode::asLong)),
         Map.entry("ibansToRemove", n -> JsonConverters.toList(n, JsonNode::asLong)),
         Map.entry("customerToAdd", JsonConverters::toCustomer),
-        Map.entry("transactions", n -> JsonConverters.toList(n, JsonConverters::toTransaction)),
+        Map.entry("transactions", JsonConverters::toTransactionList),
         Map.entry("customer", JsonConverters::toCustomer),
         Map.entry("date", JsonConverters::toDate),
         Map.entry("status", JsonConverters::toStatus),
         Map.entry("description", JsonNode::asText)
     ));
-
-    @BeforeEach
-    public void resetConverters() {
-        JsonConverters.reset();
-    }
 
     public static String getExpectedBadTimeStepMessage(String message) {
 

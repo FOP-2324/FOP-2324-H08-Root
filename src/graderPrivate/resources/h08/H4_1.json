@@ -1,100 +1,79 @@
 [
   {
     "customer": {
-      "firstName": "Person",
-      "lastName": "A",
-      "address": "StreetA",
-      "age": 17
+      "id": "customerA",
+      "dateOfBirth": {
+        "year": -16
+      }
     },
     "iban": 1,
     "balance": 10,
-    "bank": {
-      "name": "FOPBank",
-      "capacity": 5
-    }
+    "bank": "FOPBank"
   },
   {
     "customer": {
-      "firstName": "Person",
-      "lastName": "A",
-      "address": "StreetA",
-      "age": 16
+      "id": "customerA",
+      "dateOfBirth": {
+        "year": -17,
+        "month": -11
+      }
     },
     "iban": 1,
     "balance": 10,
-    "bank": {
-      "name": "FOPBank",
-      "capacity": 5
-    }
+    "bank": "FOPBank"
   },
   {
     "customer": {
-      "firstName": "Person",
-      "lastName": "A",
-      "address": "StreetA",
-      "age": 18
+      "id": "customerA",
+      "dateOfBirth": {
+        "year": -18,
+        "month": -1
+      }
     },
     "iban": 1,
     "balance": 10,
-    "bank": {
-      "name": "FOPBank",
-      "capacity": 5
-    }
+    "bank": "FOPBank"
   },
   {
     "customer": {
-      "firstName": "Person",
-      "lastName": "A",
-      "address": "StreetA",
-      "age": 20
+      "id": "customerA",
+      "dateOfBirth": {
+        "year": -20
+      }
     },
     "iban": 1,
     "balance": 10,
-    "bank": {
-      "name": "FOPBank",
-      "capacity": 5
-    }
+    "bank": "FOPBank"
   },
   {
     "customer": {
-      "firstName": "Person",
-      "lastName": "A",
-      "address": "StreetA",
-      "age": 999
+      "id": "customerA",
+      "dateOfBirth": {
+        "year": -999
+      }
     },
     "iban": 1,
     "balance": 10,
-    "bank": {
-      "name": "FOPBank",
-      "capacity": 5
-    }
+    "bank": "FOPBank"
   },
   {
     "customer": {
-      "firstName": "Person",
-      "lastName": "A",
-      "address": "StreetA",
-      "age": 1
+      "id": "customerA",
+      "dateOfBirth": {
+        "year": -1
+      }
     },
     "iban": 1,
     "balance": 10,
-    "bank": {
-      "name": "FOPBank",
-      "capacity": 5
-    }
+    "bank": "FOPBank"
   },
   {
     "customer": {
-      "firstName": "Person",
-      "lastName": "A",
-      "address": "StreetA",
-      "age": 0
+      "id": "customerA",
+      "dateOfBirth": {}
     },
     "iban": 1,
     "balance": 10,
-    "bank": {
-      "name": "FOPBank",
-      "capacity": 5
-    }
+    "bank": "FOPBank"
   }
 ]

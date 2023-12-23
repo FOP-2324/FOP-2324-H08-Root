@@ -1,62 +1,8 @@
 [
   {
-    "bank": {
-      "name": "FOPBank",
-      "capacity": 5
-    },
-    "accounts": [
-      {
-        "customer": {
-          "firstName": "Person",
-          "lastName": "A",
-          "address": "StreetA",
-          "age": 20
-        },
-        "iban": 1,
-        "balance": 10,
-        "bank": {
-          "name": "FOPBank",
-          "capacity": 5
-        },
-        "history": []
-      },
-      {
-        "customer": {
-          "firstName": "Person",
-          "lastName": "B",
-          "address": "StreetB",
-          "age": 21
-        },
-        "iban": 2,
-        "balance": 20,
-        "bank": {
-          "name": "FOPBank",
-          "capacity": 5
-        },
-        "history": []
-      },
-      {
-        "customer": {
-          "firstName": "Person",
-          "lastName": "C",
-          "address": "StreetC",
-          "age": 22
-        },
-        "iban": 0,
-        "balance": 30,
-        "bank": {
-          "name": "FOPBank",
-          "capacity": 5
-        },
-        "history": []
-      }
-    ],
-    "customerToAdd": {
-      "firstName": "Person",
-      "lastName": "D",
-      "address": "StreetD",
-      "age": 23
-    },
+    "bank": "FOPBank",
+    "accounts": "all",
+    "customerToAdd": "customerD",
     "ibanToGenerate": 10,
     "systemNanoTime": 100,
     "transactionHistoryCapacity": 30
