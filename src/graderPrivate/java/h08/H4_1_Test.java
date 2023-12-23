@@ -8,6 +8,7 @@ import org.tudalgo.algoutils.tutor.general.json.JsonParameterSet;
 import org.tudalgo.algoutils.tutor.general.json.JsonParameterSetTest;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 import static h08.StudentLinks.*;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.call;
@@ -25,7 +26,7 @@ public class H4_1_Test extends H08_TestBase {
         int balance = params.get("balance", Integer.class);
         Bank bank = params.get("bank", Bank.class);
 
-        int customerAge = LocalDate.now().getYear() - customer.dateOfBirth().getYear();
+        int customerAge = Period.between(customer.dateOfBirth(), LocalDate.now()).getYears();
 
         Context context = contextBuilder()
             .subject("Account#Account()")
@@ -37,8 +38,7 @@ public class H4_1_Test extends H08_TestBase {
             .add("transactionHistory", "[]")
             .build();
 
-        if (customer.dateOfBirth().isAfter(LocalDate.now().minusYears(18))) {
-
+        if (customerAge < 18) {
             checkExceptionThrown(() -> new Account(customer, iban, balance, bank, new TransactionHistory()),
                 context, getClassOfTypeLink(BAD_TIME_STAMP_EXCEPTION_LINK.get()), getExpectedBadTimeStepMessage(customer.dateOfBirth().toString()));
         } else {
