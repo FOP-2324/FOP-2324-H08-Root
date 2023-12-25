@@ -1,0 +1,14 @@
+[
+  {
+    "sender": "accountA",
+    "receiver": {
+      "id": "accountB",
+      "bank": "FOPBank2"
+    },
+    "amount": 5.0,
+    "description": "description1",
+    "invalidSenderIban": 2,
+    "invalidReceiverIban": 1,
+    "invalidReceiverBic": 3
+  }
+]
