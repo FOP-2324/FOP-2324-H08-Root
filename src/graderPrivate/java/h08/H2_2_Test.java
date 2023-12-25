@@ -116,7 +116,7 @@ public class H2_2_Test extends H08_TestBase {
         int systemNanoTime = params.get("systemNanoTime", int.class);
         int transactionHistoryCapacity = params.get("transactionHistoryCapacity", int.class);
 
-        TestBank testBank = new TestBank(bank.getName(), bank.getBic(), bank.capacity());
+        TestBank testBank = new TestBank(bank);
 
         for (Account account : accounts) {
             setBank(account, testBank);
@@ -205,7 +205,7 @@ public class H2_2_Test extends H08_TestBase {
         int systemNanoTime = params.get("systemNanoTime", int.class);
         int transactionHistoryCapacity = params.get("transactionHistoryCapacity", int.class);
 
-        TestBank testBank = new TestBank(bank.getName(), bank.getBic(), bank.capacity());
+        TestBank testBank = new TestBank(bank);
 
         for (Account account : accounts) {
             setBank(account, testBank);
@@ -237,26 +237,6 @@ public class H2_2_Test extends H08_TestBase {
     @SuppressWarnings("unused") // will be called instead of System.nanoTime() inside of the Bank class
     public static long nanoTime() {
         return systemNanoTime;
-    }
-
-    private static class TestBank extends Bank {
-
-        public long ibanToGenerate = 0L;
-        public long lastSeed = -1L;
-        public Customer lastCustomer = null;
-        public int generateIbanCallCount = 0;
-
-        public TestBank(String name, int bic, int capacity) {
-            super(name, bic, capacity);
-        }
-
-        @Override
-        protected long generateIban(Customer customer, long seed) {
-            generateIbanCallCount++;
-            lastSeed = seed;
-            lastCustomer = customer;
-            return ibanToGenerate;
-        }
     }
 
 }

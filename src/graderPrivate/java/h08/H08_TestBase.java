@@ -30,7 +30,9 @@ public abstract class H08_TestBase {
         Map.entry("status", JsonConverters::toStatus),
         Map.entry("description", JsonNode::asText),
         Map.entry("doubledTransaction", JsonConverters::toTransaction),
-        Map.entry("transactionToUpdate", JsonConverters::toTransaction)
+        Map.entry("transactionToUpdate", JsonConverters::toTransaction),
+        Map.entry("sender", JsonConverters::toAccount),
+        Map.entry("receiver", JsonConverters::toAccount)
     ));
 
     public static String getExpectedBadTimeStepMessage(String message) {
@@ -146,6 +148,12 @@ public abstract class H08_TestBase {
         Field transactionsField = TransactionHistory.class.getDeclaredField("transactions");
         transactionsField.setAccessible(true);
         return (Transaction[]) transactionsField.get(history);
+    }
+
+    public static void setTransferableBanks(Bank bank, Bank[] transferableBanks) throws ReflectiveOperationException {
+        Field transferableBanksField = Bank.class.getDeclaredField("transferableBanks");
+        transferableBanksField.setAccessible(true);
+        transferableBanksField.set(bank, transferableBanks);
     }
 
     private static class DefaultConvertersMap extends HashMap<String, Function<JsonNode, ?>> {

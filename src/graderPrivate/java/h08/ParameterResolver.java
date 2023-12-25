@@ -10,10 +10,13 @@ import java.util.function.Supplier;
 
 public class ParameterResolver {
 
-    public static final Supplier<Bank> FOP_BANK = () -> new Bank("FOP Bank", 1, 5);
+    public static final Supplier<Bank> FOP_BANK = () -> new TestBank("FOP Bank", 1, 5);
+
+    public static final Supplier<Bank> FOP_BANK_2 = () -> new TestBank("FOP Bank 2", 2, 10);
 
     public static final Map<String, Supplier<Bank>> idToBank = Map.of(
-        "FOPBank", FOP_BANK
+        "FOPBank", FOP_BANK,
+        "FOPBank2", FOP_BANK_2
     );
 
     public static Bank getBank(String id) {
@@ -66,13 +69,13 @@ public class ParameterResolver {
         );
     }
 
-    public static final Supplier<Account> ACCOUNT_A = () -> new Account(CUSTOMER_A.get(), 1, 10, FOP_BANK.get(), new TransactionHistory());
+    public static final Supplier<Account> ACCOUNT_A = () -> new Account(CUSTOMER_A.get(), 1, 10, FOP_BANK.get(), new TestTransactionHistory());
 
-    public static final Supplier<Account> ACCOUNT_B = () -> new Account(CUSTOMER_B.get(), 2, 20, FOP_BANK.get(), new TransactionHistory());
+    public static final Supplier<Account> ACCOUNT_B = () -> new Account(CUSTOMER_B.get(), 2, 20, FOP_BANK.get(), new TestTransactionHistory());
 
-    public static final Supplier<Account> ACCOUNT_C = () -> new Account(CUSTOMER_C.get(), 0, 30, FOP_BANK.get(), new TransactionHistory());
+    public static final Supplier<Account> ACCOUNT_C = () -> new Account(CUSTOMER_C.get(), 0, 30, FOP_BANK.get(), new TestTransactionHistory());
 
-    public static final Supplier<Account> ACCOUNT_D = () -> new Account(CUSTOMER_D.get(), 10000, 40, FOP_BANK.get(), new TransactionHistory());
+    public static final Supplier<Account> ACCOUNT_D = () -> new Account(CUSTOMER_D.get(), 10000, 40, FOP_BANK.get(), new TestTransactionHistory());
 
     public static final Map<String, Supplier<Account>> idToAccount = Map.of(
         "accountA", ACCOUNT_A,
