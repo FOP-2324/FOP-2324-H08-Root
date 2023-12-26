@@ -389,7 +389,7 @@ public class Bank {
             transaction = new Transaction(
                 senderAccount, receiverAccount,
                 amount, transactionNumber,
-                description, LocalDate.now(), Status.CLOSED
+                description, transaction.date(), Status.CLOSED
             );
             senderHistory.update(transaction);
             receiverHistory.update(transaction);
@@ -427,7 +427,7 @@ public class Bank {
 
             // Compute possible exception to transactions older than 4 weeks.
             for (Transaction transaction : currentTransactions) {
-                if (transaction.date().plusWeeks(4).isAfter(today)) {
+                if (transaction.date().plusWeeks(4).isBefore(today)) {
                     transactionsOlderThanFourWeeks++;
                 }
             }
@@ -444,8 +444,8 @@ public class Bank {
             for (Transaction transaction : transactions) {
                 Account sourceAccount = transaction.sourceAccount();
                 Account targetAccount = transaction.targetAccount();
-                boolean olderThanTwoWeeks = transaction.date().plusWeeks(2).isAfter(today);
-                boolean olderThanFourWeeks = transaction.date().plusWeeks(4).isAfter(today);
+                boolean olderThanTwoWeeks = transaction.date().plusWeeks(2).isBefore(today);
+                boolean olderThanFourWeeks = transaction.date().plusWeeks(4).isBefore(today);
 
                 // Cancel the transaction if it is older than 2 or 4 weeks.
                 if (olderThanTwoWeeks || olderThanFourWeeks) {
@@ -456,10 +456,12 @@ public class Bank {
                     );
                     sourceAccount.getHistory().update(cancelledTransaction);
                     targetAccount.getHistory().update(cancelledTransaction);
-                    olderThanFourWeeksTransactions[indexOlderThanFourWeeks++] = cancelledTransaction;
+                    if (olderThanFourWeeks) {
+                        olderThanFourWeeksTransactions[indexOlderThanFourWeeks++] = cancelledTransaction;
+                    }
                 }
-                // If the transaction is older than 2 weeks, notify the user.
-                if (olderThanTwoWeeks) {
+                // If the transaction is older than 2 weeks but not older than four weeks, notify the user.
+                if (olderThanTwoWeeks && !olderThanFourWeeks) {
                     transfer(
                         sourceAccount.getIban(),
                         targetAccount.getIban(),
