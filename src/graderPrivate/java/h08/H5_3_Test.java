@@ -16,12 +16,12 @@ public class H5_3_Test extends H08_TestBase {
 
     public static final long TRANSACTION_NUMBER = 100L;
 
-    private TestBank setup(JsonParameterSet params) throws ReflectiveOperationException {
+    private void setup(JsonParameterSet params) throws ReflectiveOperationException {
 
         Account sender = params.get("sender", Account.class);
         Account receiver = params.get("receiver", Account.class);
 
-        TestBank senderBank = new TestBank(sender.getBank());
+        TestBank senderBank = (TestBank) sender.getBank();
 
         senderBank.transactionNumberToGenerate = TRANSACTION_NUMBER;
 
@@ -29,13 +29,11 @@ public class H5_3_Test extends H08_TestBase {
         senderBank.add(receiver.getBank());
         setBank(sender, senderBank);
 
-        TestBank receiverBank = new TestBank(receiver.getBank());
+        TestBank receiverBank = (TestBank) receiver.getBank();
         setBankAccounts(receiverBank, List.of(receiver));
         setBank(receiver, receiverBank);
 
         setTransferableBanks(senderBank, new Bank[]{receiverBank});
-
-        return senderBank;
     }
 
     @ParameterizedTest
@@ -47,7 +45,8 @@ public class H5_3_Test extends H08_TestBase {
         String description = params.get("description", String.class);
         long senderIban = params.get("invalidSenderIban", Long.class);
 
-        TestBank senderBank = setup(params);
+        setup(params);
+        TestBank senderBank = (TestBank) sender.getBank();
 
         Context context = contextBuilder()
             .subject("Bank#transfer")
@@ -70,7 +69,9 @@ public class H5_3_Test extends H08_TestBase {
         String description = params.get("description", String.class);
         int receiverBic = params.get("invalidReceiverBic", Integer.class);
 
-        TestBank senderBank = setup(params);
+        setup(params);
+
+        TestBank senderBank = (TestBank) sender.getBank();
 
         Context context = contextBuilder()
             .subject("Bank#transfer")
@@ -93,7 +94,9 @@ public class H5_3_Test extends H08_TestBase {
         String description = params.get("description", String.class);
         long receiverIban = params.get("invalidReceiverIban", Long.class);
 
-        TestBank senderBank = setup(params);
+        setup(params);
+
+        TestBank senderBank = (TestBank) sender.getBank();
 
         Context context = contextBuilder()
             .subject("Bank#transfer")
@@ -160,7 +163,9 @@ public class H5_3_Test extends H08_TestBase {
         double amount = params.get("amount", Integer.class);
         String description = params.get("description", String.class);
 
-        TestBank senderBank = setup(params);
+        setup(params);
+
+        TestBank senderBank = (TestBank) sender.getBank();
         TestBank receiverBank = (TestBank) receiver.getBank();
 
         String methodName = withdraw ? "withdraw" : "deposit";
@@ -233,8 +238,11 @@ public class H5_3_Test extends H08_TestBase {
         double amount = params.get("amount", Integer.class);
         String description = params.get("description", String.class);
 
-        TestBank senderBank = setup(params);
+        setup(params);
+
+        TestBank senderBank = (TestBank) sender.getBank();
         TestBank receiverBank = (TestBank) receiver.getBank();
+
         senderBank.withdrawCallsActual = false;
         receiverBank.depositCallsActual = false;
 

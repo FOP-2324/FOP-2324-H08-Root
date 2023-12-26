@@ -10,24 +10,24 @@ import java.util.function.Supplier;
 
 public class ParameterResolver {
 
-    public static final Supplier<Bank> FOP_BANK = () -> new TestBank("FOP Bank", 1, 5);
+    public static final Supplier<TestBank> FOP_BANK = () -> new TestBank("FOP Bank", 1, 5);
 
-    public static final Supplier<Bank> FOP_BANK_2 = () -> new TestBank("FOP Bank 2", 2, 10);
+    public static final Supplier<TestBank> FOP_BANK_2 = () -> new TestBank("FOP Bank 2", 2, 10);
 
-    public static final Map<String, Supplier<Bank>> idToBank = Map.of(
+    public static final Map<String, Supplier<TestBank>> idToBank = Map.of(
         "FOPBank", FOP_BANK,
         "FOPBank2", FOP_BANK_2
     );
 
-    public static Bank getBank(String id) {
+    public static TestBank getBank(String id) {
         return idToBank.get(id).get();
     }
 
-    public static Bank getBank(String id, JsonNode overrides) {
+    public static TestBank getBank(String id, JsonNode overrides) {
 
-        Bank defaultBank = idToBank.get(id).get();
+        TestBank defaultBank = idToBank.get(id).get();
 
-        return new Bank(
+        return new TestBank(
             getOrDefault(overrides, "name", JsonNode::textValue, defaultBank.getName()),
             getOrDefault(overrides, "bic", JsonNode::intValue, defaultBank.getBic()),
             getOrDefault(overrides, "capacity", JsonNode::intValue, defaultBank.capacity())
@@ -89,16 +89,16 @@ public class ParameterResolver {
     }
 
     public static Account getAccount(String id, JsonNode overrides) {
-        Object[] args = new Object[5];
 
         Account defaultAccount = idToAccount.get(id).get();
-        args[0] = getOrDefault(overrides, "customer", JsonConverters::toCustomer, defaultAccount.getCustomer());
-        args[1] = getOrDefault(overrides, "iban", JsonNode::longValue, defaultAccount.getIban());
-        args[2] = getOrDefault(overrides, "balance", JsonNode::doubleValue, defaultAccount.getBalance());
-        args[3] = getOrDefault(overrides, "bank", JsonConverters::toBank, defaultAccount.getBank());
-        args[4] = getOrDefault(overrides, "history", JsonConverters::toHistory, defaultAccount.getHistory());
 
-        return new Account((Customer) args[0], (long) args[1], (double) args[2], (Bank) args[3], (TransactionHistory) args[4]);
+        return new Account(
+            getOrDefault(overrides, "customer", JsonConverters::toCustomer, defaultAccount.getCustomer()),
+            getOrDefault(overrides, "iban", JsonNode::longValue, defaultAccount.getIban()),
+            getOrDefault(overrides, "balance", JsonNode::doubleValue, defaultAccount.getBalance()),
+            getOrDefault(overrides, "bank", JsonConverters::toBank, defaultAccount.getBank()),
+            getOrDefault(overrides, "history", JsonConverters::toHistory, defaultAccount.getHistory())
+        );
     }
 
     public static List<Account> getAllAccounts() {

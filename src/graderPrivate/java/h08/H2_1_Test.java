@@ -17,7 +17,7 @@ public class H2_1_Test extends H08_TestBase {
     @JsonParameterSetTest(value = "H2_1.json", customConverters = "customConverters")
     public void testContains(JsonParameterSet params) throws ReflectiveOperationException {
 
-        Bank bank = params.get("bank", Bank.class);
+        TestBank bank = params.get("bank", TestBank.class);
         List<Account> accounts = params.get("accounts", List.class);
 
         setBankAccounts(bank, accounts);
@@ -38,7 +38,7 @@ public class H2_1_Test extends H08_TestBase {
     @JsonParameterSetTest(value = "H2_1.json", customConverters = "customConverters")
     public void testContainsNot(JsonParameterSet params) throws ReflectiveOperationException {
 
-        Bank bank = params.get("bank", Bank.class);
+        TestBank bank = params.get("bank", TestBank.class);
         List<Account> accounts = params.get("accounts", List.class);
         List<Long>  unusedIbans = params.get("unusedIbans", List.class);
 

@@ -1,11 +1,14 @@
 package h08;
 
-class TestBank extends Bank {
+public class TestBank extends Bank {
 
     public long ibanToGenerate = 0L;
-    public long lastSeed = -1L;
-    public Customer lastCustomer = null;
     public int generateIbanCallCount = 0;
+    public boolean generateIbanCallsActual = true;
+
+    public long generateIbanlastSeed = -1L;
+    public Customer generateIbanLastCustomer = null;
+
     public long transactionNumberToGenerate = 0L;
 
     public boolean withdrawThrowsException = false;
@@ -23,6 +26,14 @@ class TestBank extends Bank {
     public double withdrawAmount = 0;
     public double depositAmount = 0;
 
+    public boolean transferCallsActual = true;
+    public int transferCallCount = 0;
+    public long transferSenderIBAN = 0;
+    public long transferReceiverIBAN = 0;
+    public int transferReceiverBIC = 0;
+    public double transferAmount = 0;
+    public String transferDescription = null;
+
     public TestBank(Bank bank) {
         super(bank.getName(), bank.getBic(), bank.capacity());
     }
@@ -34,8 +45,12 @@ class TestBank extends Bank {
     @Override
     protected long generateIban(Customer customer, long seed) {
         generateIbanCallCount++;
-        lastSeed = seed;
-        lastCustomer = customer;
+        generateIbanlastSeed = seed;
+        generateIbanLastCustomer = customer;
+
+        if (generateIbanCallsActual) {
+            return super.generateIban(customer, seed);
+        }
         return ibanToGenerate;
     }
 
@@ -80,5 +95,21 @@ class TestBank extends Bank {
             double newBalance = account.getBalance() - amount;
             account.setBalance(newBalance);
         }
+    }
+
+    @Override
+    public Status transfer(long senderIBAN, long receiverIBAN, int receiverBIC, double amount, String description) {
+        transferCallCount++;
+        transferSenderIBAN = senderIBAN;
+        transferReceiverIBAN = receiverIBAN;
+        transferReceiverBIC = receiverBIC;
+        transferAmount = amount;
+        transferDescription = description;
+
+        if (!transferCallsActual) {
+            return Status.OPEN;
+        }
+
+        return super.transfer(senderIBAN, receiverIBAN, receiverBIC, amount, description);
     }
 }

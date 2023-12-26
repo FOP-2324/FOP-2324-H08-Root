@@ -21,7 +21,7 @@ public class H2_4_Test extends H08_TestBase {
     @JsonParameterSetTest(value = "H2_4_Deposit.json", customConverters = "customConverters")
     public void testDepositNormal(JsonParameterSet params) throws ReflectiveOperationException {
 
-        Bank bank = params.get("bank", Bank.class);
+        TestBank bank = params.get("bank", TestBank.class);
         List<Account> accounts = params.get("accounts", List.class);
         int amountToDeposit = params.get("amountToDeposit", int.class);
 
@@ -63,7 +63,7 @@ public class H2_4_Test extends H08_TestBase {
     @JsonParameterSetTest(value = "H2_4_Deposit_Exception.json", customConverters = "customConverters")
     public void testDepositException(JsonParameterSet params) throws ReflectiveOperationException {
 
-        Bank bank = params.get("bank", Bank.class);
+        TestBank bank = params.get("bank", TestBank.class);
         List<Account> accounts = params.get("accounts", List.class);
         List<Long> unusedIbans = params.get("unusedIbans", List.class);
         int amountToDeposit = params.get("amountToDeposit", int.class);
@@ -95,7 +95,7 @@ public class H2_4_Test extends H08_TestBase {
     @JsonParameterSetTest(value = "H2_4_Withdraw.json", customConverters = "customConverters")
     public void testWithdrawNormal(JsonParameterSet params) throws ReflectiveOperationException {
 
-        Bank bank = params.get("bank", Bank.class);
+        TestBank bank = params.get("bank", TestBank.class);
         List<Account> accounts = params.get("accounts", List.class);
         int amountToWithdraw = params.get("amountToWithdraw", int.class);
 
@@ -138,7 +138,7 @@ public class H2_4_Test extends H08_TestBase {
     @JsonParameterSetTest(value = "H2_4_Withdraw_Exception.json", customConverters = "customConverters")
     public void testWithdrawException(JsonParameterSet params) throws ReflectiveOperationException {
 
-        Bank bank = params.get("bank", Bank.class);
+        TestBank bank = params.get("bank", TestBank.class);
         List<Account> accounts = params.get("accounts", List.class);
         List<Long> unusedIbans = params.get("unusedIbans", List.class);
         int negativeBalanceIban = params.get("negativeBalanceIban", int.class);

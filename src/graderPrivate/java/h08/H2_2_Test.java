@@ -24,7 +24,7 @@ public class H2_2_Test extends H08_TestBase {
     @JsonParameterSetTest(value = "H2_2.json", customConverters = "customConverters")
     public void testGenerateIbanUnusedIban(JsonParameterSet params) throws ReflectiveOperationException {
 
-        Bank bank = params.get("bank", Bank.class);
+        TestBank bank = params.get("bank", TestBank.class);
         List<Account> accounts = params.get("accounts", List.class);
         Customer customer = params.get("customerToAdd", Customer.class);
 
@@ -65,7 +65,7 @@ public class H2_2_Test extends H08_TestBase {
     @JsonParameterSetTest(value = "H2_2.json", customConverters = "customConverters")
     public void testGenerateIbanUsedIban(JsonParameterSet params) throws ReflectiveOperationException {
 
-        Bank bank = params.get("bank", Bank.class);
+        TestBank bank = params.get("bank", TestBank.class);
         List<Account> accounts = params.get("accounts", List.class);
         Customer customer = params.get("customerToAdd", Customer.class);
 
@@ -109,32 +109,27 @@ public class H2_2_Test extends H08_TestBase {
     @JsonParameterSetTest(value = "H2_2.json", customConverters = "customConverters")
     public void testAccountCreation(JsonParameterSet params) throws ReflectiveOperationException {
 
-        Bank bank = params.get("bank", Bank.class);
+        TestBank bank = params.get("bank", TestBank.class);
         List<Account> accounts = params.get("accounts", List.class);
         Customer customer = params.get("customerToAdd", Customer.class);
         int ibanToGenerate = params.get("ibanToGenerate", int.class);
         int systemNanoTime = params.get("systemNanoTime", int.class);
         int transactionHistoryCapacity = params.get("transactionHistoryCapacity", int.class);
 
-        TestBank testBank = new TestBank(bank);
+        setBankAccounts(bank, accounts);
 
-        for (Account account : accounts) {
-            setBank(account, testBank);
-        }
-
-        setBankAccounts(testBank, accounts);
-
-        testBank.setTransactionHistoryCapacity(transactionHistoryCapacity);
+        bank.setTransactionHistoryCapacity(transactionHistoryCapacity);
 
         H2_2_Test.systemNanoTime = systemNanoTime;
-        testBank.ibanToGenerate = ibanToGenerate;
+        bank.ibanToGenerate = ibanToGenerate;
+        bank.generateIbanCallsActual = false;
 
         List<Account> createdAccounts = new ArrayList<>();
         List<Account> createdMocks = new ArrayList<>();
 
         Context context = contextBuilder()
             .subject("Bank#add()")
-            .add("bank", testBank)
+            .add("bank", bank)
             .add("customer", customer)
             .add("accounts", accounts)
             .add("System.nanoTime()", systemNanoTime)
@@ -155,18 +150,18 @@ public class H2_2_Test extends H08_TestBase {
             }
         )) {
 
-            call(() -> testBank.add(customer), context, TR -> "Bank#add() threw and unexpected exception.");
+            call(() -> bank.add(customer), context, TR -> "Bank#add() threw and unexpected exception.");
 
         }
 
         assertEquals(1, createdAccounts.size(), context, TR -> "Wrong number of accounts created.");
 
         Account createdAccount = createdAccounts.get(0);
-        Account[] actualAccounts = getBankAccounts(testBank);
+        Account[] actualAccounts = getBankAccounts(bank);
 
         context = contextBuilder()
             .subject("Bank#add()")
-            .add("bank", testBank)
+            .add("bank", bank)
             .add("customer", customer)
             .add("accounts", accounts)
             .add("System.nanoTime()", systemNanoTime)
@@ -177,14 +172,14 @@ public class H2_2_Test extends H08_TestBase {
             .build();
 
         assertEquals(customer, createdAccount.getCustomer(), context, TR -> "Customer of the created account is not the given customer.");
-        assertEquals(1, testBank.generateIbanCallCount, context, TR -> "generateIban(...) was not called exactly once.");
-        assertEquals((long) systemNanoTime, testBank.lastSeed, context, TR -> "Wrong seed passed to generateIban(...).");
-        assertEquals(customer, testBank.lastCustomer, context, TR -> "Customer passed to generateIban(...) is not the given customer.");
+        assertEquals(1, bank.generateIbanCallCount, context, TR -> "generateIban(...) was not called exactly once.");
+        assertEquals((long) systemNanoTime, bank.generateIbanlastSeed, context, TR -> "Wrong seed passed to generateIban(...).");
+        assertEquals(customer, bank.generateIbanLastCustomer, context, TR -> "Customer passed to generateIban(...) is not the given customer.");
         assertEquals((long) ibanToGenerate, createdAccount.getIban(), context, TR -> "The created account does not have the correct iban.");
         assertEquals(0.0, createdAccount.getBalance(), context, TR -> "The created account does not have a balance of 0.0.");
-        assertEquals(testBank, createdAccount.getBank(), context, TR -> "The created account does not have the correct bank.");
+        assertEquals(bank, createdAccount.getBank(), context, TR -> "The created account does not have the correct bank.");
         assertEquals(transactionHistoryCapacity, createdAccount.getHistory().capacity(), context, TR -> "The TransactionHistory of created account does not have the correct capacity.");
-        assertEquals(accounts.size() + 1, getBankSize(testBank), context, TR -> "The bank size was not increased by 1.");
+        assertEquals(accounts.size() + 1, getBankSize(bank), context, TR -> "The bank size was not increased by 1.");
         assertEquals(createdMocks.get(0), actualAccounts[accounts.size()], context, TR -> "The created account was not added to the bank at account[size]. Expected: " + createdAccount + ", Actual: " + actualAccounts[accounts.size()]);
 
         for (int i = 0; i < accounts.size(); i++) {
@@ -198,29 +193,24 @@ public class H2_2_Test extends H08_TestBase {
     @JsonParameterSetTest(value = "H2_2_Exception.json", customConverters = "customConverters")
     public void testException(JsonParameterSet params) throws ReflectiveOperationException {
 
-        Bank bank = params.get("bank", Bank.class);
+        TestBank bank = params.get("bank", TestBank.class);
         List<Account> accounts = params.get("accounts", List.class);
         Customer customer = params.get("customerToAdd", Customer.class);
         int ibanToGenerate = params.get("ibanToGenerate", int.class);
         int systemNanoTime = params.get("systemNanoTime", int.class);
         int transactionHistoryCapacity = params.get("transactionHistoryCapacity", int.class);
 
-        TestBank testBank = new TestBank(bank);
+        setBankAccounts(bank, accounts);
 
-        for (Account account : accounts) {
-            setBank(account, testBank);
-        }
-
-        setBankAccounts(testBank, accounts);
-
-        testBank.setTransactionHistoryCapacity(transactionHistoryCapacity);
+        bank.setTransactionHistoryCapacity(transactionHistoryCapacity);
 
         H2_2_Test.systemNanoTime = systemNanoTime;
-        testBank.ibanToGenerate = ibanToGenerate;
+        bank.ibanToGenerate = ibanToGenerate;
+        bank.generateIbanCallsActual = false;
 
         Context context = contextBuilder()
             .subject("Bank#add()")
-            .add("bank", testBank)
+            .add("bank", bank)
             .add("customer", customer)
             .add("accounts", accounts)
             .add("System.nanoTime()", systemNanoTime)
@@ -228,8 +218,8 @@ public class H2_2_Test extends H08_TestBase {
             .add("transactionHistoryCapacity", transactionHistoryCapacity)
             .build();
 
-        checkExceptionThrown(() -> testBank.add(customer), context, IllegalStateException.class, "Bank is full!");
-        checkBankSizeAndAccountsUnchanged(testBank, accounts, context);
+        checkExceptionThrown(() -> bank.add(customer), context, IllegalStateException.class, "Bank is full!");
+        checkBankSizeAndAccountsUnchanged(bank, accounts, context);
     }
 
     private static long systemNanoTime = 0L;

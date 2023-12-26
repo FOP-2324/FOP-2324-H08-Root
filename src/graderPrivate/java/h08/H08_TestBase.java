@@ -88,6 +88,10 @@ public abstract class H08_TestBase {
         Field accountsField = Bank.class.getDeclaredField("accounts");
         accountsField.setAccessible(true);
         accountsField.set(bank, accounts.toArray(i -> new Account[bank.capacity()]));
+
+        for (Account account : accounts) {
+            setBank(account, bank);
+        }
     }
 
     public static void setBankSize(Bank bank, int size) throws ReflectiveOperationException {

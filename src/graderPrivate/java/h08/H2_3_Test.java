@@ -18,7 +18,7 @@ public class H2_3_Test extends H08_TestBase {
     @ParameterizedTest
     @JsonParameterSetTest(value = "H2_3.json", customConverters = "customConverters")
     public void testNormal(JsonParameterSet params) throws ReflectiveOperationException {
-        Bank bank = params.get("bank", Bank.class);
+        TestBank bank = params.get("bank", TestBank.class);
         List<Account> accounts = new ArrayList<Account>(params.get("accounts", List.class));
         List<Long> ibansToRemove = params.get("ibansToRemove", List.class);
 
@@ -71,7 +71,7 @@ public class H2_3_Test extends H08_TestBase {
     @ParameterizedTest
     @JsonParameterSetTest(value = "H2_3_Exception.json", customConverters = "customConverters")
     public void testException(JsonParameterSet params) throws ReflectiveOperationException {
-        Bank bank = params.get("bank", Bank.class);
+        TestBank bank = params.get("bank", TestBank.class);
         List<Account> accounts = params.get("accounts", List.class);
         List<Long> unusedIbans = params.get("unusedIbans", List.class);
 
