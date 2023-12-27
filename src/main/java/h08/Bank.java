@@ -345,7 +345,7 @@ public class Bank {
      * @return the generated transaction number
      */
     protected long generateTransactionNumber() {
-        return System.currentTimeMillis();
+        return System.nanoTime();
     }
 
     /**

@@ -155,7 +155,7 @@ public class TransactionHistory {
      * @return the latest transaction in this history
      */
     public Transaction getLatestTransaction() {
-        if (nextIndex == 0) {
+        if (nextIndex == 0 && size != capacity) {
             throw new IllegalStateException("No transactions yet!");
         }
         return transactions[nextIndex - 1];
