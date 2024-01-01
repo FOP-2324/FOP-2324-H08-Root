@@ -20,6 +20,13 @@ jagr {
         val graderPrivate by creating {
             graderName.set("H08-Private")
             rubricProviderName.set("h08.H08_RubricProvider")
+            config.set(
+                org.sourcegrade.jagr.launcher.env.Config(
+                    executor = org.sourcegrade.jagr.launcher.env.Executor(
+                        jvmArgs = listOf("-ea"),
+                    )
+                )
+            )
             configureDependencies {
                 implementation(libs.algoutils.tutor)
             }
