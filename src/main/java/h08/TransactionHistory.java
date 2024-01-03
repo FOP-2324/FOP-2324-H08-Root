@@ -175,7 +175,7 @@ public class TransactionHistory {
     }
 
     /**
-     * Returns the available transactions in this history with the specified status. The order of the transactions is
+     * Returns the available transactions in this history with the specified status.
      *
      * @param status the status of the transactions to return
      * @return the available transactions in this history with the specified status
