@@ -69,13 +69,13 @@ public class ParameterResolver {
         );
     }
 
-    public static final Supplier<Account> ACCOUNT_A = () -> new Account(CUSTOMER_A.get(), 1, 10, FOP_BANK.get(), new TestTransactionHistory());
+    public static final Supplier<Account> ACCOUNT_A = () -> new Account(CUSTOMER_A.get(), 1, 10, FOP_BANK.get(), TestTransactionHistory.newInstance());
 
-    public static final Supplier<Account> ACCOUNT_B = () -> new Account(CUSTOMER_B.get(), 2, 20, FOP_BANK.get(), new TestTransactionHistory());
+    public static final Supplier<Account> ACCOUNT_B = () -> new Account(CUSTOMER_B.get(), 2, 20, FOP_BANK.get(), TestTransactionHistory.newInstance());
 
-    public static final Supplier<Account> ACCOUNT_C = () -> new Account(CUSTOMER_C.get(), 0, 30, FOP_BANK.get(), new TestTransactionHistory());
+    public static final Supplier<Account> ACCOUNT_C = () -> new Account(CUSTOMER_C.get(), 0, 30, FOP_BANK.get(), TestTransactionHistory.newInstance());
 
-    public static final Supplier<Account> ACCOUNT_D = () -> new Account(CUSTOMER_D.get(), 10000, 40, FOP_BANK.get(), new TestTransactionHistory());
+    public static final Supplier<Account> ACCOUNT_D = () -> new Account(CUSTOMER_D.get(), 10000, 40, FOP_BANK.get(), TestTransactionHistory.newInstance());
 
     public static final Map<String, Supplier<Account>> idToAccount = Map.of(
         "accountA", ACCOUNT_A,

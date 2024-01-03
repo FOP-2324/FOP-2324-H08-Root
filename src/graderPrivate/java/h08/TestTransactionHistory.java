@@ -6,11 +6,36 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
 public class TestTransactionHistory extends TransactionHistory {
 
     List<Transaction> transactions = new ArrayList<>();
 
     int addCalls;
+
+    private TestTransactionHistory() {
+
+    }
+
+    public static TestTransactionHistory newInstance() {
+        // We can't override the update method, because it throws a TransactionException, which is added by the students.
+        // If a student misspells the TransactionException, the test would not compile.
+
+        TestTransactionHistory instance = spy(new TestTransactionHistory());
+
+        try {
+            doAnswer(invocation -> {
+                Transaction transaction = invocation.getArgument(0);
+                instance.update0(transaction);
+                return null;
+            }).when(instance).update(any(Transaction.class));
+        } catch (Exception e) {
+            throw new RuntimeException("failed to mock update", e);
+        }
+        return instance;
+    }
 
     @Override
     public void add(Transaction transaction) {
@@ -20,8 +45,7 @@ public class TestTransactionHistory extends TransactionHistory {
         addCalls++;
     }
 
-    @Override
-    public void update(Transaction transaction) throws TransactionException {
+    private void update0(Transaction transaction) throws Throwable {
         Optional<Transaction> t = transactions.stream()
             .filter(tr -> tr.transactionNumber() == transaction.transactionNumber())
             .findFirst();
@@ -29,7 +53,8 @@ public class TestTransactionHistory extends TransactionHistory {
         if (t.isPresent()) {
             transactions.set(transactions.indexOf(t.get()), transaction);
         } else {
-            throw new TransactionException("Transaction does not exist!", transaction.transactionNumber());
+            throw (Throwable) StudentLinks.TRANSACTION_EXCEPTION_TRANSACTION_CONSTRUCTOR_LINK.get().invoke(
+                "Transaction does not exist!", transaction.transactionNumber());
         }
     }
 

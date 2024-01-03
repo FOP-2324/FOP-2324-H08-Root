@@ -46,7 +46,7 @@ public class H3_Test extends H08_TestBase {
             .add("localDate", localDate)
             .build();
 
-        BadTimestampException exception = callObject(() -> constructorLink.invoke(localDate), context, TR ->
+        Exception exception = callObject(() -> constructorLink.invoke(localDate), context, TR ->
             "Constructor of BadTimestampException threw an exception");
 
         assertEquals("Bad timestamp: " + localDate, exception.getMessage(), context, TR ->
@@ -78,7 +78,7 @@ public class H3_Test extends H08_TestBase {
             .add("message", message)
             .build();
 
-        BankException exception = callObject(() -> constructorLink.invoke(message), context, TR ->
+        Exception exception = callObject(() -> constructorLink.invoke(message), context, TR ->
             "Constructor of BankException threw an exception");
 
         assertEquals(message, exception.getMessage(), context, TR ->
@@ -97,7 +97,7 @@ public class H3_Test extends H08_TestBase {
             .add("bic", bic)
             .build();
 
-        BankException exception = callObject(() -> constructorLink.invoke(bic), context, TR ->
+        Exception exception = callObject(() -> constructorLink.invoke(bic), context, TR ->
             "Constructor of BankException threw an exception");
 
         assertEquals("Cannot find Bank with BIC: " + bic, exception.getMessage(), context, TR ->
@@ -140,7 +140,7 @@ public class H3_Test extends H08_TestBase {
             .add("transactionNumber", transactionNumber)
             .build();
 
-        TransactionException exception = callObject(() -> constructorLink.invoke(message, transactionNumber), context, TR ->
+        Exception exception = callObject(() -> constructorLink.invoke(message, transactionNumber), context, TR ->
             "Constructor of TransactionException threw an exception");
 
         assertEquals(message + " " + transactionNumber, exception.getMessage(), context, TR ->
@@ -161,7 +161,7 @@ public class H3_Test extends H08_TestBase {
             .add("transactions", transactions)
             .build();
 
-        TransactionException exception = callObject(
+        Exception exception = callObject(
             () -> constructorLink.invoke(new Object[]{transactions.toArray(Transaction[]::new)}),
             context, TR -> "Constructor of TransactionException threw an exception");
 
