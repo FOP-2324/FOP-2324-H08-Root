@@ -161,12 +161,6 @@ public class TransactionHistory {
         return transactions[Math.floorMod(nextIndex - 1, capacity)];
     }
 
-    public static void main(String[] args) {
-        int nextIndex = 0;
-        int capacity = 10;
-        System.out.println(Math.floorMod(nextIndex - 1, capacity));
-    }
-
     /**
      * Returns the available transactions in this history. The order of the transactions is from oldest to newest.
      *
