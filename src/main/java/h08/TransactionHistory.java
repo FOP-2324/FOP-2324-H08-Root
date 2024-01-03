@@ -75,10 +75,10 @@ public class TransactionHistory {
                 throw new IllegalArgumentException("This transaction already exists!");
             }
         }
+        transactions[nextIndex++] = transaction;
         if (nextIndex == capacity) {
             nextIndex = 0;
         }
-        transactions[nextIndex++] = transaction;
         size = Math.min(size + 1, capacity);
     }
 
@@ -158,7 +158,13 @@ public class TransactionHistory {
         if (nextIndex == 0 && size != capacity) {
             throw new IllegalStateException("No transactions yet!");
         }
-        return transactions[nextIndex - 1];
+        return transactions[Math.floorMod(nextIndex - 1, capacity)];
+    }
+
+    public static void main(String[] args) {
+        int nextIndex = 0;
+        int capacity = 10;
+        System.out.println(Math.floorMod(nextIndex - 1, capacity));
     }
 
     /**
