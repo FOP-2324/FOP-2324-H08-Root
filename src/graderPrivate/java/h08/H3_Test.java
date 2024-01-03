@@ -25,7 +25,7 @@ public class H3_Test extends H08_TestBase {
     @Test
     public void testBadTimestampExceptionDeclaration() {
 
-        TypeLink badTimeStampExceptionLink = BAD_TIME_STAMP_EXCEPTION_LINK.get();
+        TypeLink badTimeStampExceptionLink = createTypeLink("BadTimestampException", true).get();
 
         assertCorrectModifiers(badTimeStampExceptionLink, Modifier.CLASS, Modifier.NON_ABSTRACT);
         assertCorrectSuperType(badTimeStampExceptionLink, Matcher.of(type -> type.identifier().equals(RuntimeException.class.getSimpleName())));
@@ -57,7 +57,7 @@ public class H3_Test extends H08_TestBase {
     @Test
     public void testBankExceptionDeclaration() {
 
-        TypeLink bankExceptionLink = BANK_EXCEPTION_LINK.get();
+        TypeLink bankExceptionLink = createTypeLink("BankException", true).get();
 
         assertCorrectModifiers(bankExceptionLink, Modifier.CLASS, Modifier.NON_ABSTRACT);
         assertCorrectSuperType(bankExceptionLink, Matcher.of(type -> type.identifier().equals(Exception.class.getSimpleName())));
@@ -107,7 +107,7 @@ public class H3_Test extends H08_TestBase {
     @Test
     public void testTransactionExceptionStringConstructorDeclaration() {
 
-        TypeLink transactionExceptionLink = TRANSACTION_EXCEPTION_LINK.get();
+        TypeLink transactionExceptionLink = createTypeLink("TransactionException", true).get();
 
         assertCorrectModifiers(transactionExceptionLink, Modifier.CLASS, Modifier.NON_ABSTRACT);
         assertCorrectSuperType(transactionExceptionLink, Matcher.of(type -> type.identifier().equals(Exception.class.getSimpleName())));
@@ -118,7 +118,7 @@ public class H3_Test extends H08_TestBase {
     @Test
     public void testTransactionExceptionTransactionConstructorDeclaration() {
 
-        TypeLink transactionExceptionLink = TRANSACTION_EXCEPTION_LINK.get();
+        TypeLink transactionExceptionLink = TRANSACTION_EXCEPTION_LINK.get(); // don't check exact match again
 
         assertCorrectModifiers(transactionExceptionLink, Modifier.CLASS, Modifier.NON_ABSTRACT);
         assertCorrectSuperType(transactionExceptionLink, Matcher.of(type -> type.identifier().equals(Exception.class.getSimpleName())));
