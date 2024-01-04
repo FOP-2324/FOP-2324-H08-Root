@@ -67,7 +67,7 @@ public class H5_4_Test extends H08_TestBase {
         setBankAccounts(targetBank, targetBankAccounts);
     }
 
-    private void makeAllOneWeekOld(List<Account> accounts) throws TransactionException {
+    private void makeAllOneWeekOld(List<Account> accounts) throws Exception {
         for (Account account : accounts) {
             for (Transaction transaction : account.getHistory().getTransactions()) {
                 account.getHistory().update(new Transaction(
