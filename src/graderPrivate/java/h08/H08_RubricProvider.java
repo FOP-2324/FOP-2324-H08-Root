@@ -155,30 +155,48 @@ public class H08_RubricProvider implements RubricProvider {
     public static final Criterion H5_2 = createParentCriterion("5.2", "Transkation aktualisieren",
         H5_2_1, H5_2_2);
 
-    public static final Criterion H5_3_1 = createCriterion("Die Methode [[[transfer]]] funktioniert korrekt wenn der Sender oder Empfänger nicht gefunden werden kann.",
+    public static final Criterion H5_3_1 = createCriterion("Die Methode [[[Bank#transfer]]] funktioniert korrekt wenn der Sender oder Empfänger nicht gefunden werden kann.",
         () -> H5_3_Test.class.getDeclaredMethod("testInvalidSender", JsonParameterSet.class),
         () -> H5_3_Test.class.getDeclaredMethod("testInvalidReceiver", JsonParameterSet.class),
         () -> H5_3_Test.class.getDeclaredMethod("testInvalidBic", JsonParameterSet.class));
 
-    public static final Criterion H5_3_2 = createCriterion("Die Methode [[[transfer]]] gibt als Status CANCELLED zurück, wenn bei [[[withdraw]]] oder [[[deposit]]] eine Exception geworfen wird.",
+    public static final Criterion H5_3_2 = createCriterion("Die Methode [[[Bank#transfer]]] gibt als Status CANCELLED zurück, wenn bei [[[withdraw]]] oder [[[deposit]]] eine Exception geworfen wird.",
         () -> H5_3_Test.class.getDeclaredMethod("testWithdrawExceptionReturnStatus", JsonParameterSet.class),
         () -> H5_3_Test.class.getDeclaredMethod("testDepositExceptionReturnStatus", JsonParameterSet.class));
 
-    public static final Criterion H5_3_3 = createCriterion("Die Methode [[[transfer]]] aktualisiert die Transaktion in der Historie korrekt, wenn bei [[[withdraw]]] oder [[[deposit]]] eine Exception geworfen wird.",
+    public static final Criterion H5_3_3 = createCriterion("Die Methode [[[Bank#transfer]]] aktualisiert die Transaktion in der Historie korrekt, wenn bei [[[withdraw]]] oder [[[deposit]]] eine Exception geworfen wird.",
         () -> H5_3_Test.class.getDeclaredMethod("testWithdrawExceptionHistory", JsonParameterSet.class),
         () -> H5_3_Test.class.getDeclaredMethod("testDepositExceptionHistory", JsonParameterSet.class));
 
-    public static final Criterion H5_3_4 = createCriterion("Die Methode [[[transfer]]] gibt als Status CLOSED zurück, wenn bei [[[withdraw]]] und [[[deposit]]] keine Exception geworfen wird.",
+    public static final Criterion H5_3_4 = createCriterion("Die Methode [[[Bank#transfer]]] gibt als Status CLOSED zurück, wenn bei [[[withdraw]]] und [[[deposit]]] keine Exception geworfen wird.",
         () -> H5_3_Test.class.getDeclaredMethod("testSuccessReturnStatus", JsonParameterSet.class));
 
-    public static final Criterion H5_3_5 = createCriterion("Die Methode [[[transfer]]] aktualisiert die Transaktion in der Historie korrekt, wenn bei [[[withdraw]]] und [[[deposit]]] keine Exception geworfen wird.",
+    public static final Criterion H5_3_5 = createCriterion("Die Methode [[[Bank#transfer]]] aktualisiert die Transaktion in der Historie korrekt, wenn bei [[[withdraw]]] und [[[deposit]]] keine Exception geworfen wird.",
         () -> H5_3_Test.class.getDeclaredMethod("testSuccessHistory", JsonParameterSet.class));
 
     public static final Criterion H5_3 = createParentCriterion("5.3", "Überweisung tätigen",
         H5_3_1, H5_3_2, H5_3_3, H5_3_4, H5_3_5);
 
+    public static final Criterion H5_4_1 = createCriterion("Die Methode [[[Bank#checkOpenTransactions]]] gibt die korrekte Anzahl an Transaktionen zurück.",
+        () -> H5_4_Test.class.getDeclaredMethod("testReturnArraySize", JsonParameterSet.class));
+
+    public static final Criterion H5_4_2 = createCriterion("Die Methode [[[Bank#checkOpenTransactions]]] setzt den Status von offenen Transaktionen, die älter als 2 Wochen sind auf cancelled.",
+        () -> H5_4_Test.class.getDeclaredMethod("testOldTransactionsCancelled", JsonParameterSet.class));
+
+    public static final Criterion H5_4_3 = createCriterion("Die Methode [[[Bank#checkOpenTransactions]]] führt offene Transaktionen, die zwischen 2 und 4 Wochen alt sind, erneut durch.",
+        () -> H5_4_Test.class.getDeclaredMethod("testOldTransactionsTransferredAgain", JsonParameterSet.class));
+
+    public static final Criterion H5_4_4 = createCriterion("Die Methode [[[Bank#checkOpenTransactions]]] gibt die korrekten Transaktionen zurück.",
+        () -> H5_4_Test.class.getDeclaredMethod("testReturnArrayContent", JsonParameterSet.class));
+
+    public static final Criterion H5_4_5 = createCriterion("Die Methode [[[Bank#checkOpenTransactions]]] wirft eine Exception, wenn es offene Transaktionen gibt, die älter als 4 Wochen sind.",
+        () -> H5_4_Test.class.getDeclaredMethod("testOldTransactionsExceptionThrown", JsonParameterSet.class));
+
+    public static final Criterion H5_4 = createParentCriterion("5.4", "Offene Überweisungen",
+        H5_4_1, H5_4_2, H5_4_3, H5_4_4, H5_4_5);
+
     public static final Criterion H5 = createParentCriterion("5", "Überweisungen",
-        H5_1, H5_2, H5_3);
+        H5_1, H5_2, H5_3, H5_4);
 
     public static final Rubric RUBRIC = Rubric.builder()
         .title("H08")

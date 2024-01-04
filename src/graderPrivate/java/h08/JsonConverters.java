@@ -63,13 +63,17 @@ public class JsonConverters extends org.tudalgo.algoutils.tutor.general.json.Jso
             throw new IllegalArgumentException();
         }
 
-        LocalDate date = LocalDate.of(2023, 12, 24); //TODO override LocalDate.now() globally
+        //LocalDate date = LocalDate.of(2023, 12, 24);
+        LocalDate date = LocalDate.now(); //TODO
 
         if (node.has("year")) {
             date = date.plusYears(node.get("year").asLong());
         }
         if (node.has("month")) {
             date = date.plusMonths(node.get("month").asLong());
+        }
+        if (node.has("week")) {
+            date = date.plusWeeks(node.get("week").asLong());
         }
         if (node.has("day")) {
             date = date.plusDays(node.get("day").asLong());

@@ -107,7 +107,7 @@ public class ParameterResolver {
 
     public static final Supplier<Transaction> TRANSACTION_1 = () -> new Transaction(
         ACCOUNT_A.get(),
-        ACCOUNT_B.get(),
+        ACCOUNT_C.get(),
         2,
         1,
         "transaction 1",
@@ -136,8 +136,8 @@ public class ParameterResolver {
     );
 
     public static final Supplier<Transaction> TRANSACTION_4 = () -> new Transaction(
-        ACCOUNT_D.get(),
-        ACCOUNT_B.get(),
+        ACCOUNT_A.get(),
+        ACCOUNT_C.get(),
         5,
         4,
         "transaction 4",

@@ -38,7 +38,9 @@ public abstract class H08_TestBase {
         Map.entry("doubledTransaction", JsonConverters::toTransaction),
         Map.entry("transactionToUpdate", JsonConverters::toTransaction),
         Map.entry("sender", JsonConverters::toAccount),
-        Map.entry("receiver", JsonConverters::toAccount)
+        Map.entry("receiver", JsonConverters::toAccount),
+        Map.entry("sourceBank", JsonConverters::toBank),
+        Map.entry("targetBank", JsonConverters::toBank)
     ));
 
     private static MockedStatic<LocalDate> mockedLocalDate;

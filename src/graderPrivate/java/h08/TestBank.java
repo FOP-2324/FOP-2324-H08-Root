@@ -1,5 +1,7 @@
 package h08;
 
+import java.util.ArrayList;
+
 public class TestBank extends Bank {
 
     public long ibanToGenerate = 0L;
@@ -27,12 +29,7 @@ public class TestBank extends Bank {
     public double depositAmount = 0;
 
     public boolean transferCallsActual = true;
-    public int transferCallCount = 0;
-    public long transferSenderIBAN = 0;
-    public long transferReceiverIBAN = 0;
-    public int transferReceiverBIC = 0;
-    public double transferAmount = 0;
-    public String transferDescription = null;
+    ArrayList<TransferCall> transferCalls = new ArrayList<>();
 
     public TestBank(Bank bank) {
         super(bank.getName(), bank.getBic(), bank.capacity());
@@ -99,17 +96,15 @@ public class TestBank extends Bank {
 
     @Override
     public Status transfer(long senderIBAN, long receiverIBAN, int receiverBIC, double amount, String description) {
-        transferCallCount++;
-        transferSenderIBAN = senderIBAN;
-        transferReceiverIBAN = receiverIBAN;
-        transferReceiverBIC = receiverBIC;
-        transferAmount = amount;
-        transferDescription = description;
+        transferCalls.add(new TransferCall(senderIBAN, receiverIBAN, receiverBIC, amount, description));
 
         if (!transferCallsActual) {
-            return Status.OPEN;
+            return Status.CLOSED;
         }
 
         return super.transfer(senderIBAN, receiverIBAN, receiverBIC, amount, description);
     }
+}
+
+record TransferCall(long senderIBAN, long receiverIBAN, int receiverBIC, double amount, String description) {
 }
