@@ -1,6 +1,9 @@
-package h08;
+package h08.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import h08.*;
+import h08.implementations.TestBank;
+import h08.implementations.TestTransactionHistory;
 
 import java.time.LocalDate;
 import java.util.List;

@@ -1,5 +1,10 @@
-package h08;
+package h08.implementations;
 
+
+import h08.Status;
+import h08.Transaction;
+import h08.TransactionHistory;
+import h08.util.StudentLinks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +16,9 @@ import static org.mockito.Mockito.*;
 
 public class TestTransactionHistory extends TransactionHistory {
 
-    List<Transaction> transactions;
+    public List<Transaction> transactions;
 
-    int addCalls;
+    public int addCalls;
 
     private TestTransactionHistory(List<Transaction> transactions) {
         this.transactions = new ArrayList<>(transactions);

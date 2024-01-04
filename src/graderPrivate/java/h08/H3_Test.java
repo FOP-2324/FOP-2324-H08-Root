@@ -14,7 +14,7 @@ import org.tudalgo.algoutils.tutor.general.reflections.TypeLink;
 import java.time.LocalDate;
 import java.util.List;
 
-import static h08.StudentLinks.*;
+import static h08.util.StudentLinks.*;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions3.assertCorrectModifiers;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions3.assertCorrectSuperType;

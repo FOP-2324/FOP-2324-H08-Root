@@ -1,8 +1,9 @@
 package h08;
 
+import h08.implementations.TestBank;
+import h08.util.StudentLinks;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.MockedConstruction;
-import org.mockito.MockedStatic;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
 import org.tudalgo.algoutils.tutor.general.json.JsonParameterSet;
@@ -223,7 +224,7 @@ public class H5_4_Test extends H08_TestBase {
 
         for (Transaction transaction : transactionsToTransfer) {
 
-            TransferCall expectedTransferCall = new TransferCall(
+            TestBank.TransferCall expectedTransferCall = new TestBank.TransferCall(
                 transaction.sourceAccount().getIban(),
                 transaction.targetAccount().getIban(),
                 transaction.targetAccount().getBank().getBic(),

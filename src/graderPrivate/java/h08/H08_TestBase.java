@@ -1,6 +1,7 @@
 package h08;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import h08.util.JsonConverters;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.mockito.MockedStatic;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static h08.StudentLinks.BAD_TIME_STAMP_EXCEPTION_CONSTRUCTOR_LINK;
+import static h08.util.StudentLinks.BAD_TIME_STAMP_EXCEPTION_CONSTRUCTOR_LINK;
 import static org.mockito.Answers.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mockStatic;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;

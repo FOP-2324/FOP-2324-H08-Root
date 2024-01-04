@@ -1,4 +1,9 @@
-package h08;
+package h08.implementations;
+
+import h08.Account;
+import h08.Bank;
+import h08.Customer;
+import h08.Status;
 
 import java.util.ArrayList;
 
@@ -29,7 +34,7 @@ public class TestBank extends Bank {
     public double depositAmount = 0;
 
     public boolean transferCallsActual = true;
-    ArrayList<TransferCall> transferCalls = new ArrayList<>();
+    public ArrayList<TransferCall> transferCalls = new ArrayList<>();
 
     public TestBank(Bank bank) {
         super(bank.getName(), bank.getBic(), bank.capacity());
@@ -40,7 +45,7 @@ public class TestBank extends Bank {
     }
 
     @Override
-    protected long generateIban(Customer customer, long seed) {
+    public long generateIban(Customer customer, long seed) {
         generateIbanCallCount++;
         generateIbanlastSeed = seed;
         generateIbanLastCustomer = customer;
@@ -52,7 +57,7 @@ public class TestBank extends Bank {
     }
 
     @Override
-    protected long generateTransactionNumber() {
+    public long generateTransactionNumber() {
         return transactionNumberToGenerate++;
     }
 
@@ -104,7 +109,9 @@ public class TestBank extends Bank {
 
         return super.transfer(senderIBAN, receiverIBAN, receiverBIC, amount, description);
     }
+
+    public record TransferCall(long senderIBAN, long receiverIBAN, int receiverBIC, double amount, String description) {
+    }
 }
 
-record TransferCall(long senderIBAN, long receiverIBAN, int receiverBIC, double amount, String description) {
-}
+
