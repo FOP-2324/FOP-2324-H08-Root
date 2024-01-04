@@ -1,5 +1,6 @@
 package h08;
 
+import h08.util.comment.TransactionCommentFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
@@ -158,7 +159,7 @@ public class H3_Test extends H08_TestBase {
 
         Context context = contextBuilder()
             .subject("TransactionException#TransactionException(Transaction[])")
-            .add("transactions", transactions)
+            .add("transactions", new TransactionCommentFactory().transactionNumber().build(transactions))
             .build();
 
         Exception exception = callObject(

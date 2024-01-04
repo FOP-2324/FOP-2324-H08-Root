@@ -1,5 +1,6 @@
 package h08;
 
+import h08.util.comment.AccountCommentFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
@@ -37,8 +38,8 @@ public class H4_2_Test extends H08_TestBase {
 
         Context context = contextBuilder()
             .subject("Transaction#Transaction()")
-            .add("sourceAccount", sourceAccount)
-            .add("targetAccount", targetAccount)
+            .add("sourceAccount", AccountCommentFactory.NAME_ONLY.build(sourceAccount))
+            .add("targetAccount", AccountCommentFactory.NAME_ONLY.build(targetAccount))
             .add("amount", amount)
             .add("transactionNumber", transactionNumber)
             .add("description", description)
@@ -83,7 +84,7 @@ public class H4_2_Test extends H08_TestBase {
             contextBuilder()
                 .subject("Transaction#Transaction()")
                 .add("sourceAccount", null)
-                .add("targetAccount", targetAccount)
+                .add("targetAccount", AccountCommentFactory.NAME_ONLY.build(targetAccount))
                 .add("amount", amount)
                 .add("transactionNumber", transactionNumber)
                 .add("description", description)
@@ -96,7 +97,7 @@ public class H4_2_Test extends H08_TestBase {
         checkExceptionThrown(() -> new Transaction(sourceAccount, null, amount, transactionNumber, description, date, status),
             contextBuilder()
                 .subject("Transaction#Transaction()")
-                .add("sourceAccount", sourceAccount)
+                .add("sourceAccount", AccountCommentFactory.NAME_ONLY.build(sourceAccount))
                 .add("targetAccount", null)
                 .add("amount", amount)
                 .add("transactionNumber", transactionNumber)
@@ -110,8 +111,8 @@ public class H4_2_Test extends H08_TestBase {
         checkExceptionThrown(() -> new Transaction(sourceAccount, targetAccount, amount, transactionNumber, null, date, status),
             contextBuilder()
                 .subject("Transaction#Transaction()")
-                .add("sourceAccount", sourceAccount)
-                .add("targetAccount", targetAccount)
+                .add("sourceAccount", AccountCommentFactory.NAME_ONLY.build(sourceAccount))
+                .add("targetAccount", AccountCommentFactory.NAME_ONLY.build(targetAccount))
                 .add("amount", amount)
                 .add("transactionNumber", transactionNumber)
                 .add("description", null)
@@ -124,8 +125,8 @@ public class H4_2_Test extends H08_TestBase {
         checkExceptionThrown(() -> new Transaction(sourceAccount, targetAccount, amount, transactionNumber, description, null, status),
             contextBuilder()
                 .subject("Transaction#Transaction()")
-                .add("sourceAccount", sourceAccount)
-                .add("targetAccount", targetAccount)
+                .add("sourceAccount", AccountCommentFactory.NAME_ONLY.build(sourceAccount))
+                .add("targetAccount", AccountCommentFactory.NAME_ONLY.build(targetAccount))
                 .add("amount", amount)
                 .add("transactionNumber", transactionNumber)
                 .add("description", description)
@@ -138,8 +139,8 @@ public class H4_2_Test extends H08_TestBase {
         checkExceptionThrown(() -> new Transaction(sourceAccount, targetAccount, amount, transactionNumber, description, date, null),
             contextBuilder()
                 .subject("Transaction#Transaction()")
-                .add("sourceAccount", sourceAccount)
-                .add("targetAccount", targetAccount)
+                .add("sourceAccount", AccountCommentFactory.NAME_ONLY.build(sourceAccount))
+                .add("targetAccount", AccountCommentFactory.NAME_ONLY.build(targetAccount))
                 .add("amount", amount)
                 .add("transactionNumber", transactionNumber)
                 .add("description", description)

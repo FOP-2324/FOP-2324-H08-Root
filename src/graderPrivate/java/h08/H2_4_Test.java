@@ -1,6 +1,7 @@
 package h08;
 
 import h08.implementations.TestBank;
+import h08.util.comment.AccountCommentFactory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
@@ -37,10 +38,10 @@ public class H2_4_Test extends H08_TestBase {
             Context context = contextBuilder()
                 .subject("Bank#deposit()")
                 .add("iban", account.getIban())
-                .add("accounts", accounts)
+                .add("accounts", new AccountCommentFactory().iban().balance().build(accounts))
                 .add("previousBalance", account.getBalance())
                 .add("amountToDeposit", amountToDeposit)
-                .add("resultingBalance", resultingBalance)
+                .add("expected Balance", resultingBalance)
                 .build();
 
             call(() -> bank.deposit(account.getIban(), amountToDeposit), context, TR -> "bank#deposit() threw an unexpected exception.");
@@ -76,7 +77,7 @@ public class H2_4_Test extends H08_TestBase {
             Context context = contextBuilder()
                 .subject("Bank#deposit()")
                 .add("iban", unusedIban)
-                .add("accounts", accounts)
+                .add("accounts", new AccountCommentFactory().iban().balance().build(accounts))
                 .add("amountToDeposit", amountToDeposit)
                 .build();
 
@@ -86,7 +87,7 @@ public class H2_4_Test extends H08_TestBase {
         checkExceptionThrown(() -> bank.deposit(accounts.get(0).getIban(), -1), contextBuilder()
             .subject("Bank#deposit()")
             .add("iban", accounts.get(0).getIban())
-            .add("accounts", accounts)
+            .add("accounts", new AccountCommentFactory().iban().balance().build(accounts))
             .add("amountToDeposit", -1)
             .build(), IllegalArgumentException.class, "-1.0");
     }
@@ -111,10 +112,10 @@ public class H2_4_Test extends H08_TestBase {
             Context context = contextBuilder()
                 .subject("Bank#withdraw()")
                 .add("iban", account.getIban())
-                .add("accounts", accounts)
+                .add("accounts", new AccountCommentFactory().iban().balance().build(accounts))
                 .add("previousBalance", account.getBalance())
                 .add("amountToWithdraw", amountToWithdraw)
-                .add("resultingBalance", resultingBalance)
+                .add("expected Balance", resultingBalance)
                 .build();
 
             call(() -> bank.withdraw(account.getIban(), amountToWithdraw), context, TR -> "bank#withdraw() threw an unexpected exception.");
@@ -152,7 +153,7 @@ public class H2_4_Test extends H08_TestBase {
             Context context = contextBuilder()
                 .subject("Bank#withdraw()")
                 .add("iban", unusedIban)
-                .add("accounts", accounts)
+                .add("accounts", new AccountCommentFactory().iban().balance().build(accounts))
                 .add("amountToWithdraw", amountToWithdraw)
                 .build();
 
@@ -168,7 +169,7 @@ public class H2_4_Test extends H08_TestBase {
         Context context = contextBuilder()
             .subject("Bank#withdraw()")
             .add("iban", negativeBalanceIban)
-            .add("accounts", accounts)
+            .add("accounts", new AccountCommentFactory().iban().balance().build(accounts))
             .add("amountToWithdraw", amountToWithdraw)
             .add("resultingBalance", resultingNegativeBalance)
             .build();
@@ -178,7 +179,7 @@ public class H2_4_Test extends H08_TestBase {
         checkExceptionThrown(() -> bank.withdraw(accounts.get(0).getIban(), -1), contextBuilder()
             .subject("Bank#withdraw()")
             .add("iban", accounts.get(0).getIban())
-            .add("accounts", accounts)
+            .add("accounts", new AccountCommentFactory().iban().balance().build(accounts))
             .add("amountToWithdraw", -1)
             .build(), IllegalArgumentException.class, "-1.0");
     }

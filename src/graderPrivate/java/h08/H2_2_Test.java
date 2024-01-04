@@ -1,6 +1,8 @@
 package h08;
 
 import h08.implementations.TestBank;
+import h08.util.comment.AccountCommentFactory;
+import h08.util.comment.BankCommentFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.MockedConstruction;
@@ -39,9 +41,8 @@ public class H2_2_Test extends H08_TestBase {
 
         Context context = contextBuilder()
             .subject("Bank#generateIban(Customer, long)")
-            .add("bank", bank)
-            .add("accounts", accounts)
-            .add("customer", customer)
+            .add("accounts", AccountCommentFactory.IBAN_ONLY.build(accounts))
+            .add("customer.hashcode()", customer.hashCode())
             .add("seed", seed)
             .add("expectedIban", expectedIban)
             .build();
@@ -50,9 +51,8 @@ public class H2_2_Test extends H08_TestBase {
 
         context = contextBuilder()
             .subject("Bank#generateIban(Customer, long)")
-            .add("bank", bank)
-            .add("accounts", accounts)
-            .add("customer", customer)
+            .add("accounts", AccountCommentFactory.IBAN_ONLY.build(accounts))
+            .add("customer.hashcode()", customer.hashCode())
             .add("seed", -seed)
             .add("expectedIban", expectedIban)
             .build();
@@ -86,9 +86,8 @@ public class H2_2_Test extends H08_TestBase {
 
         Context context = contextBuilder()
             .subject("Bank#generateIban(Customer, long)")
-            .add("bank", bank)
-            .add("accounts", accounts)
-            .add("customer", customer)
+            .add("accounts", AccountCommentFactory.IBAN_ONLY.build(accounts))
+            .add("customer.hashcode()", customer.hashCode())
             .add("seed", seed)
             .add("expectedIban", expectedIban)
             .build();
@@ -130,9 +129,8 @@ public class H2_2_Test extends H08_TestBase {
 
         Context context = contextBuilder()
             .subject("Bank#add()")
-            .add("bank", bank)
-            .add("customer", customer)
-            .add("accounts", accounts)
+            .add("customerToAdd", customer)
+            .add("bank", new BankCommentFactory().size().capacity().build(bank))
             .add("System.nanoTime()", systemNanoTime)
             .add("generateIban(...)", ibanToGenerate)
             .add("transactionHistoryCapacity", transactionHistoryCapacity)
@@ -162,14 +160,14 @@ public class H2_2_Test extends H08_TestBase {
 
         context = contextBuilder()
             .subject("Bank#add()")
-            .add("bank", bank)
+            .add("bank", new BankCommentFactory().size().capacity().build(bank))
             .add("customer", customer)
-            .add("accounts", accounts)
+            .add("previous accounts", AccountCommentFactory.NAME_ONLY.build(accounts))
             .add("System.nanoTime()", systemNanoTime)
             .add("generateIban(...) return value", ibanToGenerate)
             .add("transactionHistoryCapacity", transactionHistoryCapacity)
             .add("created account", createdAccount)
-            .add("actual accounts", actualAccounts)
+            .add("actual accounts", AccountCommentFactory.NAME_ONLY.build(actualAccounts))
             .build();
 
         assertEquals(customer, createdAccount.getCustomer(), context, TR -> "Customer of the created account is not the given customer.");
@@ -211,9 +209,8 @@ public class H2_2_Test extends H08_TestBase {
 
         Context context = contextBuilder()
             .subject("Bank#add()")
-            .add("bank", bank)
+            .add("bank", new BankCommentFactory().size().capacity().build(bank))
             .add("customer", customer)
-            .add("accounts", accounts)
             .add("System.nanoTime()", systemNanoTime)
             .add("generateIban(...)", ibanToGenerate)
             .add("transactionHistoryCapacity", transactionHistoryCapacity)

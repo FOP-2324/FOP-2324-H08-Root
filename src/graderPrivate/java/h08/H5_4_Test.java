@@ -2,6 +2,9 @@ package h08;
 
 import h08.implementations.TestBank;
 import h08.util.StudentLinks;
+import h08.util.comment.AccountCommentFactory;
+import h08.util.comment.BankCommentFactory;
+import h08.util.comment.TransactionCommentFactory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.MockedConstruction;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
@@ -84,6 +87,16 @@ public class H5_4_Test extends H08_TestBase {
         }
     }
 
+    private static final AccountCommentFactory acf = new AccountCommentFactory()
+        .iban()
+        .bank(new BankCommentFactory().name())
+        .transaction(new TransactionCommentFactory()
+            .targetAccount(AccountCommentFactory.IBAN_ONLY)
+            .sourceAccount(AccountCommentFactory.IBAN_ONLY)
+            .transactionNumber()
+            .status()
+        );
+
     @SuppressWarnings("unchecked")
     @ParameterizedTest
     @JsonParameterSetTest(value = "H5_4.json", customConverters = "customConverters")
@@ -101,9 +114,8 @@ public class H5_4_Test extends H08_TestBase {
 
         Context context = contextBuilder()
             .subject("Bank#checkOpenTransactions")
-            .add("sourceBank", sourceBank)
-            .add("targetBank", targetBank)
-            .add("accounts", accounts)
+            .add("bank", new BankCommentFactory().name().build(sourceBank))
+            .add("accounts", acf.build(accounts))
             .build();
 
         List<Transaction> expectedOpenTransactions = getOpenTransactions(sourceBank);
@@ -131,9 +143,8 @@ public class H5_4_Test extends H08_TestBase {
 
         Context context = contextBuilder()
             .subject("Bank#checkOpenTransactions")
-            .add("sourceBank", sourceBank)
-            .add("targetBank", targetBank)
-            .add("accounts", accounts)
+            .add("bank", new BankCommentFactory().name().build(sourceBank))
+            .add("accounts", acf.build(accounts))
             .build();
 
         Map<Account, List<Transaction>> originalTransactions = getOriginalTransactions(accounts);
@@ -202,8 +213,8 @@ public class H5_4_Test extends H08_TestBase {
         Context context = contextBuilder()
             .subject("Bank#checkOpenTransactions")
             .add("sourceBank", sourceBank)
-            .add("targetBank", targetBank)
-            .add("accounts", accounts)
+            .add("bank", new BankCommentFactory().name().build(sourceBank))
+            .add("accounts", acf.build(accounts))
             .build();
 
         List<Transaction> transactionsToTransfer = getOpenTransactions(sourceBank).stream()
@@ -254,9 +265,8 @@ public class H5_4_Test extends H08_TestBase {
 
         Context context = contextBuilder()
             .subject("Bank#checkOpenTransactions")
-            .add("sourceBank", sourceBank)
-            .add("targetBank", targetBank)
-            .add("accounts", accounts)
+            .add("bank", new BankCommentFactory().name().build(sourceBank))
+            .add("accounts", acf.build(accounts))
             .build();
 
         List<Transaction> expectedOpenTransactions = getOpenTransactions(sourceBank);
@@ -292,9 +302,8 @@ public class H5_4_Test extends H08_TestBase {
 
         Context context = contextBuilder()
             .subject("Bank#checkOpenTransactions")
-            .add("sourceBank", sourceBank)
-            .add("targetBank", targetBank)
-            .add("accounts", accounts)
+            .add("bank", new BankCommentFactory().name().build(sourceBank))
+            .add("accounts", acf.build(accounts))
             .build();
 
         List<Transaction> olderThanFourWeeks = getOpenTransactions(sourceBank).stream()

@@ -1,5 +1,6 @@
 package h08;
 
+import h08.util.comment.TransactionCommentFactory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
@@ -31,11 +32,11 @@ public class H5_1_Test extends H08_TestBase {
 
         Context context = contextBuilder()
             .subject("TransactionHistory#add")
-            .add("transactions", transactions)
+            .add("transactions", TransactionCommentFactory.NUMBER_ONLY.build(transactions))
             .add("size", transactions.size())
             .add("nextIndex", transactions.size())
             .add("capacity", capacity)
-            .add("transactionToAdd", doubledTransaction)
+            .add("transactionToAdd", TransactionCommentFactory.NUMBER_ONLY.build(doubledTransaction))
             .build();
 
         checkExceptionThrown(() -> history.add(doubledTransaction),
@@ -59,11 +60,11 @@ public class H5_1_Test extends H08_TestBase {
 
             Context context = contextBuilder()
                 .subject("TransactionHistory#add")
-                .add("transactions", history.getTransactions())
+                .add("transactions", TransactionCommentFactory.NUMBER_ONLY.build(history.getTransactions()))
                 .add("size", history.size())
                 .add("nextIndex", getHistoryNextIndex(history))
                 .add("capacity", history.capacity())
-                .add("transactionToAdd", transaction)
+                .add("transactionToAdd", TransactionCommentFactory.NUMBER_ONLY.build(transaction))
                 .build();
 
             call(() -> history.add(transaction), context,
@@ -107,12 +108,12 @@ public class H5_1_Test extends H08_TestBase {
 
             Context context = contextBuilder()
                 .subject("TransactionHistory#add")
-                .add("transactions", history.getTransactions())
+                .add("transactions", TransactionCommentFactory.NUMBER_ONLY.build(history.getTransactions()))
                 .add("size", history.size())
                 .add("nextIndex", getHistoryNextIndex(history))
                 .add("capacity", history.capacity())
-                .add("transactionToAdd", transaction)
-                .add("expectedTransactions", Arrays.toString(expectedTransactions))
+                .add("transactionToAdd", TransactionCommentFactory.NUMBER_ONLY.build(transaction))
+                .add("expectedTransactions", TransactionCommentFactory.NUMBER_ONLY.build(expectedTransactions))
                 .build();
 
             call(() -> history.add(transaction), context,

@@ -1,6 +1,8 @@
 package h08;
 
 import h08.implementations.TestBank;
+import h08.util.comment.AccountCommentFactory;
+import h08.util.comment.BankCommentFactory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
@@ -27,6 +29,8 @@ public class H2_3_Test extends H08_TestBase {
 
         for (long ibanToRemove : ibansToRemove) {
 
+            List<Account> originalAccounts = new ArrayList<>(accounts);
+
             Account expectedRemoved = accounts.stream()
                 .filter(account -> account.getIban() == ibanToRemove)
                 .findFirst()
@@ -35,9 +39,11 @@ public class H2_3_Test extends H08_TestBase {
 
             Account actualRemoved = callObject(() -> bank.remove(ibanToRemove), contextBuilder()
                 .subject("Bank#remove()")
+                .add("bank", new BankCommentFactory().size().capacity().build(bank))
                 .add("ibanToRemove", ibanToRemove)
-                .add("expectedAccounts", accounts)
-                .add("expectedRemoved", expectedRemoved)
+                .add("previous accounts", AccountCommentFactory.IBAN_ONLY.build(originalAccounts))
+                .add("expectedAccounts", AccountCommentFactory.IBAN_ONLY.build(accounts))
+                .add("expectedRemoved", AccountCommentFactory.IBAN_ONLY.build(expectedRemoved))
                 .build(),
                 TR -> "bank.remove() threw an unexpected exception.");
 
@@ -45,11 +51,13 @@ public class H2_3_Test extends H08_TestBase {
 
             Context context = contextBuilder()
                 .subject("Bank#remove()")
+                .add("bank", new BankCommentFactory().size().capacity().build(bank))
                 .add("ibanToRemove", ibanToRemove)
-                .add("expectedAccounts", accounts)
-                .add("actualAccounts", actualAccounts)
-                .add("expectedRemoved", expectedRemoved)
-                .add("actualRemoved", actualRemoved)
+                .add("previous accounts", AccountCommentFactory.IBAN_ONLY.build(originalAccounts))
+                .add("expectedAccounts", AccountCommentFactory.IBAN_ONLY.build(accounts))
+                .add("expectedRemoved", AccountCommentFactory.IBAN_ONLY.build(expectedRemoved))
+                .add("actualAccounts", AccountCommentFactory.IBAN_ONLY.build(actualAccounts))
+                .add("actualRemoved", AccountCommentFactory.IBAN_ONLY.build(actualRemoved))
                 .build();
 
             assertEquals(expectedRemoved, actualRemoved, context, TR -> "bank.remove() did not return the correct Account.");
@@ -83,7 +91,7 @@ public class H2_3_Test extends H08_TestBase {
             Context context = contextBuilder()
                 .subject("Bank#remove()")
                 .add("ibanToRemove", unusedIban)
-                .add("accounts", accounts)
+                .add("accounts", AccountCommentFactory.IBAN_ONLY.build(accounts))
                 .build();
 
             if (unusedIban >= 0) {

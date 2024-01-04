@@ -1,6 +1,7 @@
 package h08;
 
 import h08.util.StudentLinks;
+import h08.util.comment.TransactionCommentFactory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
@@ -32,10 +33,10 @@ public class H5_2_Test extends H08_TestBase {
 
         Context context = contextBuilder()
             .subject("TransactionHistory#add")
-            .add("transactions", transactions)
+            .add("transactions", TransactionCommentFactory.NUMBER_ONLY.build(transactions))
             .add("size", transactions.size())
             .add("capacity", capacity)
-            .add("transactionToUpdate", missingTransaction)
+            .add("transactionToUpdate", TransactionCommentFactory.NUMBER_ONLY.build(missingTransaction))
             .build();
 
         checkExceptionThrown(() -> history.update(missingTransaction),
@@ -70,10 +71,10 @@ public class H5_2_Test extends H08_TestBase {
 
         Context context = contextBuilder()
             .subject("TransactionHistory#add")
-            .add("transactions", transactions)
+            .add("transactions", TransactionCommentFactory.NUMBER_ONLY.build(transactions))
             .add("size", transactions.size())
             .add("capacity", capacity)
-            .add("transactionToUpdate", transactionToUpdate)
+            .add("transactionToUpdate", TransactionCommentFactory.NUMBER_ONLY.build(transactionToUpdate))
             .build();
 
         call(() -> history.update(transactionToUpdate), context,

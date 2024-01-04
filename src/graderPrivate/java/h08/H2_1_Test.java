@@ -1,6 +1,7 @@
 package h08;
 
 import h08.implementations.TestBank;
+import h08.util.comment.AccountCommentFactory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.json.JsonParameterSet;
@@ -28,7 +29,7 @@ public class H2_1_Test extends H08_TestBase {
             assertCallTrue(() -> bank.isIbanAlreadyUsed(account.getIban()), contextBuilder()
                 .subject("Bank#isIbanAlreadyUsed()")
                 .add("iban", account.getIban())
-                .add("accounts", accounts)
+                .add("accounts", AccountCommentFactory.IBAN_ONLY.build(accounts))
                 .build(),
                 TR -> "bank.isIbanAlreadyUsed() returned false for an iban that belongs to an account in the accounts array.");
         }
@@ -50,7 +51,7 @@ public class H2_1_Test extends H08_TestBase {
             assertCallFalse(() -> bank.isIbanAlreadyUsed(unusedIban), contextBuilder()
                     .subject("Bank#isIbanAlreadyUsed()")
                     .add("iban", unusedIban)
-                    .add("accounts", accounts)
+                    .add("accounts", AccountCommentFactory.IBAN_ONLY.build(accounts))
                     .build(),
                 TR -> "bank.isIbanAlreadyUsed() returned true for an iban that does not belong to an account in the accounts array.");
         }
