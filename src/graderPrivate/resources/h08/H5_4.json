@@ -1,0 +1,39 @@
+[
+  {
+    "bank": "FOPBank",
+    "accounts": [
+      {
+        "id": "accountA",
+        "history": [
+          {
+            "id": "transaction1",
+            "transactionNumber": 1,
+            "status": "OPEN"
+          },
+          {
+            "id": "transaction1",
+            "transactionNumber": 2,
+            "status": "CLOSED"
+          },
+          {
+            "id": "transaction2",
+            "transactionNumber": 3,
+            "status": "OPEN"
+          }
+        ]
+      },
+      {
+        "id": "accountB",
+        "history": [
+          {
+            "id": "transaction3",
+            "transactionNumber": 4,
+            "status": "OPEN"
+          }
+        ]
+      },
+      "accountC",
+      "accountD"
+    ]
+  }
+]

@@ -54,7 +54,7 @@ public class JsonConverters extends org.tudalgo.algoutils.tutor.general.json.Jso
     }
 
     public static TransactionHistory toHistory(JsonNode node) {
-        throw new UnsupportedOperationException();
+        return TestTransactionHistory.newInstance(toTransactionList(node));
     }
 
     public static LocalDate toDate(JsonNode node) {
@@ -63,7 +63,7 @@ public class JsonConverters extends org.tudalgo.algoutils.tutor.general.json.Jso
             throw new IllegalArgumentException();
         }
 
-        LocalDate date = LocalDate.now();
+        LocalDate date = LocalDate.of(2023, 12, 24); //TODO override LocalDate.now() globally
 
         if (node.has("year")) {
             date = date.plusYears(node.get("year").asLong());

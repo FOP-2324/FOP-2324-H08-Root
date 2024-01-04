@@ -11,19 +11,19 @@ import static org.mockito.Mockito.*;
 
 public class TestTransactionHistory extends TransactionHistory {
 
-    List<Transaction> transactions = new ArrayList<>();
+    List<Transaction> transactions;
 
     int addCalls;
 
-    private TestTransactionHistory() {
-
+    private TestTransactionHistory(List<Transaction> transactions) {
+        this.transactions = new ArrayList<>(transactions);
     }
 
-    public static TestTransactionHistory newInstance() {
+    public static TestTransactionHistory newInstance(List<Transaction> transactions) {
         // We can't override the update method, because it throws a TransactionException, which is added by the students.
         // If a student misspells the TransactionException, the test would not compile.
 
-        TestTransactionHistory instance = spy(new TestTransactionHistory());
+        TestTransactionHistory instance = spy(new TestTransactionHistory(transactions));
 
         try {
             doAnswer(invocation -> {
@@ -35,6 +35,10 @@ public class TestTransactionHistory extends TransactionHistory {
             throw new RuntimeException("failed to mock update", e);
         }
         return instance;
+    }
+
+    public static TestTransactionHistory newInstance() {
+        return newInstance(new ArrayList<>());
     }
 
     @Override
