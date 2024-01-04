@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.mockito.MockedStatic;
+import org.tudalgo.algoutils.student.CrashException;
 import org.tudalgo.algoutils.tutor.general.annotation.SkipAfterFirstFailedTest;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
 import org.tudalgo.algoutils.tutor.general.callable.Callable;
@@ -98,6 +99,11 @@ public abstract class H08_TestBase {
         }
 
         assertNotNull(exception, context, TR -> "No exception was thrown. Expected exception of type " + expectedExceptionClass.getName() + ".");
+
+        if (exception instanceof CrashException crashException) {
+            throw crashException;
+        }
+
         assertEquals(expectedExceptionClass, exception.getClass(), context, TR -> "The thrown exception is not of the expected type.");
         if (expectedExceptionMessage !=  null) {
             assertEquals(expectedExceptionMessage, exception.getMessage(), context, TR -> "The thrown exception has the wrong message.");
