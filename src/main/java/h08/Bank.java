@@ -452,7 +452,7 @@ public class Bank {
                     Transaction cancelledTransaction = new Transaction(
                         sourceAccount, targetAccount,
                         transaction.amount(), transaction.transactionNumber(),
-                        transaction.description(), LocalDate.now(), Status.CANCELLED
+                        transaction.description(), transaction.date(), Status.CANCELLED
                     );
                     sourceAccount.getHistory().update(cancelledTransaction);
                     targetAccount.getHistory().update(cancelledTransaction);
