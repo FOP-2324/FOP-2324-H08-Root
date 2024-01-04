@@ -1,17 +1,23 @@
 package h08;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.mockito.MockedStatic;
 import org.tudalgo.algoutils.tutor.general.annotation.SkipAfterFirstFailedTest;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
 import org.tudalgo.algoutils.tutor.general.callable.Callable;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 import static h08.StudentLinks.BAD_TIME_STAMP_EXCEPTION_CONSTRUCTOR_LINK;
+import static org.mockito.Answers.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.mockStatic;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 
 @SkipAfterFirstFailedTest(TestConstants.SKIP_AFTER_FIRST_FAILED_TEST)
@@ -34,6 +40,25 @@ public abstract class H08_TestBase {
         Map.entry("sender", JsonConverters::toAccount),
         Map.entry("receiver", JsonConverters::toAccount)
     ));
+
+    private static MockedStatic<LocalDate> mockedLocalDate;
+
+    @BeforeAll
+    public static void setupLocalDate() {
+        if (mockedLocalDate == null) {
+            LocalDate christmas = LocalDate.of(2023, 12, 24);
+            mockedLocalDate = mockStatic(LocalDate.class, CALLS_REAL_METHODS);
+            mockedLocalDate.when(LocalDate::now).thenReturn(christmas);
+        }
+    }
+
+    @AfterAll
+    public static void tearDownLocalDate() {
+        if (mockedLocalDate != null) {
+            mockedLocalDate.close();
+            mockedLocalDate = null;
+        }
+    }
 
     public static String getExpectedBadTimeStepMessage(String message) {
 
