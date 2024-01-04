@@ -75,10 +75,10 @@ public class TransactionHistory {
                 throw new IllegalArgumentException("This transaction already exists!");
             }
         }
+        transactions[nextIndex++] = transaction;
         if (nextIndex == capacity) {
             nextIndex = 0;
         }
-        transactions[nextIndex++] = transaction;
         size = Math.min(size + 1, capacity);
     }
 
@@ -155,10 +155,10 @@ public class TransactionHistory {
      * @return the latest transaction in this history
      */
     public Transaction getLatestTransaction() {
-        if (nextIndex == 0) {
+        if (nextIndex == 0 && size != capacity) {
             throw new IllegalStateException("No transactions yet!");
         }
-        return transactions[nextIndex - 1];
+        return transactions[Math.floorMod(nextIndex - 1, capacity)];
     }
 
     /**
@@ -169,13 +169,14 @@ public class TransactionHistory {
     public Transaction[] getTransactions() {
         Transaction[] availableTransactions = new Transaction[size];
         for (int i = availableTransactions.length - 1; i >= 0; i--) {
-            availableTransactions[i] = transactions[Math.floorMod(nextIndex - i - 1, capacity)];
+            availableTransactions[availableTransactions.length - 1 - i] =
+                transactions[Math.floorMod(nextIndex - i - 1, capacity)];
         }
         return availableTransactions;
     }
 
     /**
-     * Returns the available transactions in this history with the specified status. The order of the transactions is
+     * Returns the available transactions in this history with the specified status.
      *
      * @param status the status of the transactions to return
      * @return the available transactions in this history with the specified status

@@ -53,8 +53,22 @@ public class Main {
         // 7
         StudentTestUtils.testWithinRange(19000 - EPSILON, 19000 + EPSILON, linusAccount.getBalance());
         StudentTestUtils.testWithinRange(21000 - EPSILON, 21000 + EPSILON, billsAccount.getBalance());
-        StudentTestUtils.testEquals(1, linusAccount.getHistory().size());
-        StudentTestUtils.testEquals(1, billsAccount.getHistory().size());
+        TransactionHistory linusHistory = linusAccount.getHistory();
+        TransactionHistory billsHistory = billsAccount.getHistory();
+        StudentTestUtils.testEquals(1, linusHistory.size());
+        StudentTestUtils.testEquals(1, billsHistory.size());
+        Transaction linusTransaction = linusAccount.getHistory().getTransactions()[0];
+        Transaction billsTransaction = billsAccount.getHistory().getTransactions()[0];
+        StudentTestUtils.testEquals(linusAccount, linusTransaction.sourceAccount());
+        StudentTestUtils.testEquals(linusAccount, billsTransaction.sourceAccount());
+        StudentTestUtils.testEquals(billsAccount, linusTransaction.targetAccount());
+        StudentTestUtils.testEquals(billsAccount, billsTransaction.targetAccount());
+        StudentTestUtils.testWithinRange(1000 - EPSILON, 1000 + EPSILON, linusTransaction.amount());
+        StudentTestUtils.testWithinRange(1000 - EPSILON, 1000 + EPSILON, billsTransaction.amount());
+        StudentTestUtils.testEquals("For Windux", linusTransaction.description());
+        StudentTestUtils.testEquals("For Windux", billsTransaction.description());
+        StudentTestUtils.testEquals(Status.CLOSED, linusTransaction.status());
+        StudentTestUtils.testEquals(Status.CLOSED, billsTransaction.status());
         // 8
         StudentTestUtils.testEquals(
             Status.CANCELLED,
