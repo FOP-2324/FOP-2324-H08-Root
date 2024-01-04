@@ -117,16 +117,22 @@ public class H08_RubricProvider implements RubricProvider {
         () -> H3_Test.class.getDeclaredMethod("testTransactionExceptionTransactionConstructorDeclaration"),
         () -> H3_Test.class.getDeclaredMethod("testTransactionExceptionTransactionConstructor", JsonParameterSet.class));
 
-    public static final Criterion H3 = createParentCriterion("3.1", "Eigene Fehlermeldungen",
+    public static final Criterion H3 = createParentCriterion("3", "Eigene Fehlermeldungen",
         H3_1, H3_2, H3_3, H3_4);
 
-    public static final Criterion H4_1 = createCriterion("Der Konstruktor der Klasse [[[Account]]] behandelt ungültige Eingaben korrekt.",
+    public static final Criterion H4_1_1 = createCriterion("Der Konstruktor der Klasse [[[Account]]] behandelt ungültige Eingaben korrekt.",
         () -> H4_1_Test.class.getDeclaredMethod("testAgeRestriction", JsonParameterSet.class),
         () -> H4_1_Test.class.getDeclaredMethod("testAsserts"));
 
-    public static final Criterion H4_2 = createCriterion("Der Konstruktor der Klasse [[[Transaction]]] behandelt ungültige Eingaben korrekt.",
+    public static final Criterion H4_1 = createParentCriterion("4.1", "Kundenvalidierung",
+        H4_1_1);
+
+    public static final Criterion H4_2_1 = createCriterion("Der Konstruktor der Klasse [[[Transaction]]] behandelt ungültige Eingaben korrekt.",
         () -> H4_2_Test.class.getDeclaredMethod("testDateRestriction", JsonParameterSet.class),
         () -> H4_2_Test.class.getDeclaredMethod("testAsserts"));
+
+    public static final Criterion H4_2 = createParentCriterion("4.1", "Transaktionsvalidierung",
+        H4_2_1);
 
     public static final Criterion H4 = createParentCriterion("4", "Validierung von Daten",
         H4_1, H4_2);
