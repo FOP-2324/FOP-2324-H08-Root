@@ -43,6 +43,10 @@ public class StudentLinks {
         return createConstructorLink(tl, BasicReflectionMatchers.sameTypes(args));
     }
 
+    public static MethodLink createMethodLink(TypeLink tl, String name) {
+        return Assertions3.assertMethodExists(tl, Matcher.of(type -> type.identifier().equals(name), name));
+    }
+
     public static Class<?> getClassOfTypeLink(TypeLink tl) throws ClassNotFoundException {
         return Class.forName(PACKAGE_LINK.name() + "." + tl.identifier());
     }

@@ -2,13 +2,19 @@ package h08;
 
 import h08.implementations.TestBank;
 import h08.implementations.TestTransactionHistory;
+import h08.util.StudentLinks;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
 import org.tudalgo.algoutils.tutor.general.json.JsonParameterSet;
 import org.tudalgo.algoutils.tutor.general.json.JsonParameterSetTest;
+import org.tudalgo.algoutils.tutor.general.reflections.MethodLink;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
@@ -278,6 +284,20 @@ public class H5_3_Test extends H08_TestBase {
                 TR -> "The transaction added to the sender is not correct when withdraw and deposit is successful");
             assertEquals(expected, receiver.getHistory().get(0), context,
                 TR -> "The transaction added to the receiver is not correct when withdraw and deposit is successful");
+        }
+    }
+
+    @Test
+    public void testThrowsClause() {
+
+        MethodLink transferLink = StudentLinks.createMethodLink(StudentLinks.createTypeLink("Bank").get(), "transfer");
+
+        List<Class<?>> unexpectedExceptions = Arrays.stream(transferLink.reflection().getExceptionTypes())
+            .filter(cls -> !RuntimeException.class.isAssignableFrom(cls))
+            .toList();
+
+        if (!unexpectedExceptions.isEmpty()) {
+            Assertions.fail("The throws clause of Bank#transfer should not declare any non-runtime, but declares %s".formatted(unexpectedExceptions));
         }
     }
 

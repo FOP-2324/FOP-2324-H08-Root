@@ -13,11 +13,15 @@ public class H08_RubricProvider implements RubricProvider {
 
     @SafeVarargs
     private static Criterion createCriterion(String shortDescription, Callable<Method>... methodReferences) {
-
-        return createCriterion(shortDescription, 1, Arrays.stream(methodReferences).map(JUnitTestRef::ofMethod).toArray(JUnitTestRef[]::new));
+        return createCriterion(shortDescription, 0, 1, methodReferences);
     }
 
-    private static Criterion createCriterion(String shortDescription, int maxPoints, JUnitTestRef... testReferences) {
+    @SafeVarargs
+    private static Criterion createCriterion(String shortDescription, int minPoints, int maxPoints, Callable<Method>... methodReferences) {
+        return createCriterion(shortDescription, minPoints, maxPoints, Arrays.stream(methodReferences).map(JUnitTestRef::ofMethod).toArray(JUnitTestRef[]::new));
+    }
+
+    private static Criterion createCriterion(String shortDescription, int minPoints, int maxPoints, JUnitTestRef... testReferences) {
 
         if (testReferences.length == 0) {
             return Criterion.builder()
@@ -34,7 +38,7 @@ public class H08_RubricProvider implements RubricProvider {
 
         return Criterion.builder()
             .shortDescription(shortDescription)
-            .minPoints(0)
+            .minPoints(minPoints)
             .grader(graderBuilder
                 .pointsFailedMin()
                 .pointsPassedMax()
@@ -46,6 +50,7 @@ public class H08_RubricProvider implements RubricProvider {
     private static Criterion createParentCriterion(String task, String shortDescription, Criterion... children) {
         return Criterion.builder()
             .shortDescription("H" + task + " | " + shortDescription)
+            .minPoints(0)
             .addChildCriteria(children)
             .build();
     }
@@ -180,8 +185,11 @@ public class H08_RubricProvider implements RubricProvider {
     public static final Criterion H5_3_5 = createCriterion("Die Methode [[[Bank#transfer]]] aktualisiert die Transaktion in der Historie korrekt, wenn bei [[[withdraw]]] und [[[deposit]]] keine Exception geworfen wird.",
         () -> H5_3_Test.class.getDeclaredMethod("testSuccessHistory", JsonParameterSet.class));
 
+    public static final Criterion H5_3_6 = createCriterion("Die throws Klausel der Methode [[[Bank#transfer]]] ist leer (außer optionale RuntimeExceptions).", -1, 0,
+        () -> H5_3_Test.class.getDeclaredMethod("testThrowsClause"));
+
     public static final Criterion H5_3 = createParentCriterion("5.3", "Überweisung tätigen",
-        H5_3_1, H5_3_2, H5_3_3, H5_3_4, H5_3_5);
+        H5_3_1, H5_3_2, H5_3_3, H5_3_4, H5_3_5, H5_3_6);
 
     public static final Criterion H5_4_1 = createCriterion("Die Methode [[[Bank#checkOpenTransactions]]] gibt die korrekte Anzahl an Transaktionen zurück.",
         () -> H5_4_Test.class.getDeclaredMethod("testReturnArraySize", JsonParameterSet.class));
