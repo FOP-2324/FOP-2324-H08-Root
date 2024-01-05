@@ -1,9 +1,8 @@
 package h08.implementations;
 
-import h08.Account;
-import h08.Bank;
-import h08.Customer;
-import h08.Status;
+import h08.*;
+import org.tudalgo.algoutils.tutor.general.callable.Callable;
+import org.tudalgo.algoutils.tutor.general.callable.ObjectCallable;
 
 import java.util.ArrayList;
 
@@ -51,7 +50,7 @@ public class TestBank extends Bank {
         generateIbanLastCustomer = customer;
 
         if (generateIbanCallsActual) {
-            return super.generateIban(customer, seed);
+            return callAndRethrow(() -> super.generateIban(customer, seed));
         }
         return ibanToGenerate;
     }
@@ -71,7 +70,7 @@ public class TestBank extends Bank {
         if (depositThrowsException) {
             throw new IllegalArgumentException();
         } else if (depositCallsActual) {
-            super.deposit(iban, amount);
+           callAndRethrow(() -> super.deposit(iban, amount));
         } else {
             int index = getAccountIndex(iban);
             Account account = getAccounts()[index];
@@ -90,7 +89,7 @@ public class TestBank extends Bank {
         if (withdrawThrowsException) {
             throw new IllegalArgumentException();
         } else if (withdrawCallsActual) {
-            super.withdraw(iban, amount);
+            callAndRethrow(() -> super.withdraw(iban, amount));
         } else {
             int index = getAccountIndex(iban);
             Account account = getAccounts()[index];
@@ -107,7 +106,29 @@ public class TestBank extends Bank {
             return Status.CLOSED;
         }
 
-        return super.transfer(senderIBAN, receiverIBAN, receiverBIC, amount, description);
+        return callAndRethrow(() ->super.transfer(senderIBAN, receiverIBAN, receiverBIC, amount, description));
+    }
+
+    private <T> T callAndRethrow(ObjectCallable<T> callable) {
+        try {
+            return callable.call();
+        } catch (Throwable e) {
+            if (e instanceof RuntimeException re) {
+                throw re;
+            }
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void callAndRethrow(Callable callable) {
+        try {
+            callable.call();
+        } catch (Throwable e) {
+            if (e instanceof RuntimeException re) {
+                throw re;
+            }
+            throw new RuntimeException(e);
+        }
     }
 
     public record TransferCall(long senderIBAN, long receiverIBAN, int receiverBIC, double amount, String description) {
