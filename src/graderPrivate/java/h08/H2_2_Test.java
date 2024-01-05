@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.Mockito.mockConstruction;
+import static org.mockito.Mockito.when;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 
 @SuppressWarnings("DuplicatedCode")
@@ -104,7 +105,6 @@ public class H2_2_Test extends H08_TestBase {
     }
 
     @SuppressWarnings("unchecked")
-    @ExtendWith(JagrExecutionCondition.class)
     @ParameterizedTest
     @JsonParameterSetTest(value = "H2_2.json", customConverters = "customConverters")
     public void testAccountCreation(JsonParameterSet params) throws ReflectiveOperationException {
@@ -138,14 +138,21 @@ public class H2_2_Test extends H08_TestBase {
 
         try (MockedConstruction<Account> mockedConstruction = mockConstruction(Account.class,
             (mock, mockContext) -> {
-                createdAccounts.add(new Account(
+                Account account = new Account(
                     (Customer) mockContext.arguments().get(0),
                     (long) mockContext.arguments().get(1),
                     (double) mockContext.arguments().get(2),
                     (Bank) mockContext.arguments().get(3),
-                    (TransactionHistory) mockContext.arguments().get(4)));
+                    (TransactionHistory) mockContext.arguments().get(4));
 
+                createdAccounts.add(account);
                 createdMocks.add(mock);
+
+                when(mock.getCustomer()).thenReturn(account.getCustomer());
+                when(mock.getIban()).thenReturn(account.getIban());
+                when(mock.getBalance()).thenReturn(account.getBalance());
+                when(mock.getBank()).thenReturn(account.getBank());
+                when(mock.getHistory()).thenReturn(account.getHistory());
             }
         )) {
 
