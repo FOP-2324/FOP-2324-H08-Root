@@ -223,7 +223,7 @@ public class H2_2_Test extends H08_TestBase {
             .add("transactionHistoryCapacity", transactionHistoryCapacity)
             .build();
 
-        checkExceptionThrown(() -> bank.add(customer), context, IllegalStateException.class, "Bank is full!");
+        checkExceptionThrown(() -> bank.add(customer), context, IllegalStateException.class, "Bank is full");
         checkBankSizeAndAccountsUnchanged(bank, accounts, context);
     }
 
