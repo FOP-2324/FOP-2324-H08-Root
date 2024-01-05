@@ -76,7 +76,7 @@ public class ParameterResolver {
 
     public static final Supplier<Account> ACCOUNT_B = () -> new Account(CUSTOMER_B.get(), 2, 20, FOP_BANK.get(), TestTransactionHistory.newInstance());
 
-    public static final Supplier<Account> ACCOUNT_C = () -> new Account(CUSTOMER_C.get(), 0, 30, FOP_BANK.get(), TestTransactionHistory.newInstance());
+    public static final Supplier<Account> ACCOUNT_C = () -> new Account(CUSTOMER_C.get(), 4, 30, FOP_BANK.get(), TestTransactionHistory.newInstance());
 
     public static final Supplier<Account> ACCOUNT_D = () -> new Account(CUSTOMER_D.get(), 10000, 40, FOP_BANK.get(), TestTransactionHistory.newInstance());
 
