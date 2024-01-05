@@ -74,7 +74,7 @@ public class H08_RubricProvider implements RubricProvider {
         () -> H2_2_Test.class.getDeclaredMethod("testGenerateIbanUnusedIban", JsonParameterSet.class),
         () -> H2_2_Test.class.getDeclaredMethod("testGenerateIbanUsedIban", JsonParameterSet.class));
 
-    public static final Criterion H2_2_2 = createCriterion("Die Methode [[[add(Customer)]]] der Klasse [[[Bank]]] fügt erstellt korrekt einen neuen Account und fügt diesen korrekt der Bank hinzu.",
+    public static final Criterion H2_2_2 = createCriterion("Die Methode [[[add(Customer)]]] der Klasse [[[Bank]]] erstellt korrekt einen neuen Account und fügt diesen korrekt der Bank hinzu.",
         () -> H2_2_Test.class.getDeclaredMethod("testAccountCreation", JsonParameterSet.class));
 
     public static final Criterion H2_2_3 = createCriterion("Die Methode [[[add(Customer)]]] der Klasse [[[Bank]]] funktioniert korrekt, wenn die Bank bereits voll ist.",
