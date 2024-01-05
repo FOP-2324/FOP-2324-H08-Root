@@ -106,6 +106,7 @@ public class H2_2_Test extends H08_TestBase {
 
     @SuppressWarnings("unchecked")
     @ParameterizedTest
+    @ExtendWith(JagrExecutionCondition.class)
     @JsonParameterSetTest(value = "H2_2.json", customConverters = "customConverters")
     public void testAccountCreation(JsonParameterSet params) throws ReflectiveOperationException {
 
