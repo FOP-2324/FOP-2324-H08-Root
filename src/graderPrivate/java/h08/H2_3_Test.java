@@ -47,7 +47,7 @@ public class H2_3_Test extends H08_TestBase {
                 .build(),
                 TR -> "bank.remove() threw an unexpected exception.");
 
-            List<Account> actualAccounts = Arrays.asList(getBankAccounts(bank));
+            List<Account> actualAccounts = Arrays.asList(bank.getAccounts());
 
             Context context = contextBuilder()
                 .subject("Bank#remove()")
