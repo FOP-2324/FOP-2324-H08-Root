@@ -148,10 +148,10 @@ public class H08_RubricProvider implements RubricProvider {
     public static final Criterion H5_1_2 = createCriterion("Die Methode [[[TransactionHistory#add(Transaction)]]] erhöht korrekt die size der Historie.",
         () -> H5_1_Test.class.getDeclaredMethod("testSize", JsonParameterSet.class));
 
-    public static final Criterion H5_1_3 = createCriterion("Die Methode [[[TransactionHistory#add(Transaction)]]] funktioniert für einfache Fälle vollständig korrekt",
+    public static final Criterion H5_1_3 = createCriterion("Die Methode [[[TransactionHistory#add(Transaction)]]] funktioniert für einfache Fälle vollständig korrekt.",
         () -> H5_1_Test.class.getDeclaredMethod("testSimple", JsonParameterSet.class));
 
-    public static final Criterion H5_1_4 = createCriterion("Die Methode [[[TransactionHistory#add(Transaction)]]] funktioniert für komplexe Fälle vollständig korrekt",
+    public static final Criterion H5_1_4 = createCriterion("Die Methode [[[TransactionHistory#add(Transaction)]]] funktioniert für komplexe Fälle vollständig korrekt.",
         () -> H5_1_Test.class.getDeclaredMethod("testComplex", JsonParameterSet.class));
 
     public static final Criterion H5_1 = createParentCriterion("5.1", "Transaktionen in die Historie aufnehmen",
@@ -163,7 +163,7 @@ public class H08_RubricProvider implements RubricProvider {
     public static final Criterion H5_2_2 = createCriterion("Die Methode [[[TransactionHistory#update(Transaction)]]] funktioniert korrekt wenn die Transaktionsnummer nicht in der Historie vorhanden ist.",
         () -> H5_2_Test.class.getDeclaredMethod("testException", JsonParameterSet.class));
 
-    public static final Criterion H5_2 = createParentCriterion("5.2", "Transkation aktualisieren",
+    public static final Criterion H5_2 = createParentCriterion("5.2", "Transaktion aktualisieren",
         H5_2_1, H5_2_2);
 
     public static final Criterion H5_3_1 = createCriterion("Die Methode [[[Bank#transfer]]] funktioniert korrekt wenn der Sender oder Empfänger nicht gefunden werden kann.",
@@ -191,19 +191,19 @@ public class H08_RubricProvider implements RubricProvider {
     public static final Criterion H5_3 = createParentCriterion("5.3", "Überweisung tätigen",
         H5_3_1, H5_3_2, H5_3_3, H5_3_4, H5_3_5, H5_3_6);
 
-    public static final Criterion H5_4_1 = createCriterion("Die Methode [[[Bank#checkOpenTransactions]]] gibt die korrekte Anzahl an Transaktionen zurück.",
+    public static final Criterion H5_4_1 = createCriterion("Die Methode [[[Bank#checkOpenTransactions()]]] gibt die korrekte Anzahl an Transaktionen zurück.",
         () -> H5_4_Test.class.getDeclaredMethod("testReturnArraySize", JsonParameterSet.class));
 
-    public static final Criterion H5_4_2 = createCriterion("Die Methode [[[Bank#checkOpenTransactions]]] setzt den Status von offenen Transaktionen, die älter als 2 Wochen sind auf cancelled.",
+    public static final Criterion H5_4_2 = createCriterion("Die Methode [[[Bank#checkOpenTransactions()]]] setzt den Status von offenen Transaktionen, die älter als 2 Wochen sind auf cancelled.",
         () -> H5_4_Test.class.getDeclaredMethod("testOldTransactionsCancelled", JsonParameterSet.class));
 
-    public static final Criterion H5_4_3 = createCriterion("Die Methode [[[Bank#checkOpenTransactions]]] führt offene Transaktionen, die zwischen 2 und 4 Wochen alt sind, erneut durch.",
+    public static final Criterion H5_4_3 = createCriterion("Die Methode [[[Bank#checkOpenTransactions()]]] führt offene Transaktionen, die zwischen 2 und 4 Wochen alt sind, erneut durch.",
         () -> H5_4_Test.class.getDeclaredMethod("testOldTransactionsTransferredAgain", JsonParameterSet.class));
 
-    public static final Criterion H5_4_4 = createCriterion("Die Methode [[[Bank#checkOpenTransactions]]] gibt die korrekten Transaktionen zurück.",
+    public static final Criterion H5_4_4 = createCriterion("Die Methode [[[Bank#checkOpenTransactions()]]] gibt die korrekten Transaktionen zurück.",
         () -> H5_4_Test.class.getDeclaredMethod("testReturnArrayContent", JsonParameterSet.class));
 
-    public static final Criterion H5_4_5 = createCriterion("Die Methode [[[Bank#checkOpenTransactions]]] wirft eine Exception, wenn es offene Transaktionen gibt, die älter als 4 Wochen sind.",
+    public static final Criterion H5_4_5 = createCriterion("Die Methode [[[Bank#checkOpenTransactions()]]] wirft eine Exception, wenn es offene Transaktionen gibt, die älter als 4 Wochen sind.",
         () -> H5_4_Test.class.getDeclaredMethod("testOldTransactionsExceptionThrown", JsonParameterSet.class));
 
     public static final Criterion H5_4 = createParentCriterion("5.4", "Offene Überweisungen",
