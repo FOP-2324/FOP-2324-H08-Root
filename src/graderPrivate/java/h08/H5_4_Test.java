@@ -87,15 +87,31 @@ public class H5_4_Test extends H08_TestBase {
         }
     }
 
-    private static final AccountCommentFactory acf = new AccountCommentFactory()
-        .iban()
-        .bank(new BankCommentFactory().name())
-        .transaction(new TransactionCommentFactory()
-            .targetAccount(AccountCommentFactory.IBAN_ONLY)
-            .sourceAccount(AccountCommentFactory.IBAN_ONLY)
-            .transactionNumber()
-            .status()
-        );
+    private static Context createContext(Bank sourceBank, Bank targetBank, List<Account> accounts) {
+
+        AccountCommentFactory acf = new AccountCommentFactory()
+            .iban()
+            .transaction(new TransactionCommentFactory()
+                .targetAccount(AccountCommentFactory.IBAN_ONLY)
+                .sourceAccount(AccountCommentFactory.IBAN_ONLY)
+                .transactionNumber()
+                .status()
+            );
+
+        BankCommentFactory bcf = new BankCommentFactory()
+            .bic()
+            .size()
+            .capacity();
+
+        return contextBuilder()
+            .subject("Bank#checkOpenTransactions")
+            .add("sourceBank", bcf.build(sourceBank))
+            .add("targetBank", bcf.build(targetBank))
+            .add("sourceBank accounts", AccountCommentFactory.IBAN_ONLY.build(Arrays.asList(sourceBank.getAccounts())))
+            .add("targetBank accounts", AccountCommentFactory.IBAN_ONLY.build(Arrays.asList(targetBank.getAccounts())))
+            .add("all accounts", acf.build(accounts))
+            .build();
+    }
 
     @SuppressWarnings("unchecked")
     @ParameterizedTest
@@ -112,11 +128,7 @@ public class H5_4_Test extends H08_TestBase {
 
         sourceBank.transferCallsActual = false;
 
-        Context context = contextBuilder()
-            .subject("Bank#checkOpenTransactions")
-            .add("bank", new BankCommentFactory().name().build(sourceBank))
-            .add("accounts", acf.build(accounts))
-            .build();
+        Context context = createContext(sourceBank, targetBank, accounts);
 
         List<Transaction> expectedOpenTransactions = getOpenTransactions(sourceBank);
 
@@ -141,11 +153,7 @@ public class H5_4_Test extends H08_TestBase {
 
         sourceBank.transferCallsActual = false;
 
-        Context context = contextBuilder()
-            .subject("Bank#checkOpenTransactions")
-            .add("bank", new BankCommentFactory().name().build(sourceBank))
-            .add("accounts", acf.build(accounts))
-            .build();
+        Context context = createContext(sourceBank, targetBank, accounts);
 
         Map<Account, List<Transaction>> originalTransactions = getOriginalTransactions(accounts);
 
@@ -210,12 +218,7 @@ public class H5_4_Test extends H08_TestBase {
 
         sourceBank.transferCallsActual = false;
 
-        Context context = contextBuilder()
-            .subject("Bank#checkOpenTransactions")
-            .add("sourceBank", sourceBank)
-            .add("bank", new BankCommentFactory().name().build(sourceBank))
-            .add("accounts", acf.build(accounts))
-            .build();
+        Context context = createContext(sourceBank, targetBank, accounts);
 
         List<Transaction> transactionsToTransfer = getOpenTransactions(sourceBank).stream()
             .filter(transaction -> transaction.date().plusWeeks(2).isBefore(LocalDate.now()))
@@ -263,11 +266,7 @@ public class H5_4_Test extends H08_TestBase {
 
         sourceBank.transferCallsActual = false;
 
-        Context context = contextBuilder()
-            .subject("Bank#checkOpenTransactions")
-            .add("bank", new BankCommentFactory().name().build(sourceBank))
-            .add("accounts", acf.build(accounts))
-            .build();
+        Context context = createContext(sourceBank, targetBank, accounts);
 
         List<Transaction> expectedOpenTransactions = getOpenTransactions(sourceBank);
 
@@ -300,11 +299,7 @@ public class H5_4_Test extends H08_TestBase {
 
         sourceBank.transferCallsActual = false;
 
-        Context context = contextBuilder()
-            .subject("Bank#checkOpenTransactions")
-            .add("bank", new BankCommentFactory().name().build(sourceBank))
-            .add("accounts", acf.build(accounts))
-            .build();
+        Context context = createContext(sourceBank, targetBank, accounts);
 
         List<Transaction> olderThanFourWeeks = getOpenTransactions(sourceBank).stream()
             .filter(transaction -> transaction.date().plusWeeks(4).isBefore(LocalDate.now()))

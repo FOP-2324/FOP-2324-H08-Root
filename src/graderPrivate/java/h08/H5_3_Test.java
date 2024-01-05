@@ -219,6 +219,11 @@ public class H5_3_Test extends H08_TestBase {
             assertEquals(Status.CANCELLED, actual, context,
                 TR -> "Bank#transfer did not return the correct status when %s throws an exception.".formatted(methodName));
         } else {
+            assertEquals(Status.CANCELLED, sender.getHistory().get(0).status(), context,
+                TR -> "The status of the transaction added to the sender is not correct when %s throws an exception".formatted(methodName));
+            assertEquals(Status.CANCELLED, receiver.getHistory().get(0).status(), context,
+                TR -> "The status of the transaction added to the receiver is not correct when %s throws an exception".formatted(methodName));
+
             Transaction expected = new Transaction(sender, receiver, amount, TRANSACTION_NUMBER, description, LocalDate.now(), Status.CANCELLED);
 
             assertEquals(expected, sender.getHistory().get(0), context,
@@ -279,7 +284,13 @@ public class H5_3_Test extends H08_TestBase {
         if (checkReturnStatus) {
             assertEquals(Status.CLOSED, actual, context, TR -> "Bank#transfer did not return the correct status when withdraw and deposit is successful.");
         } else {
+            assertEquals(Status.CLOSED, sender.getHistory().get(0).status(), context,
+                TR -> "The status of the transaction added to the sender is not correct when withdraw and deposit is successful");
+            assertEquals(Status.CLOSED, receiver.getHistory().get(0).status(), context,
+                TR -> "The status of the transaction added to the receiver is not correct when withdraw and deposit is successful");
+
             Transaction expected = new Transaction(sender, receiver, amount, TRANSACTION_NUMBER, description, LocalDate.now(), Status.CLOSED);
+
             assertEquals(expected, sender.getHistory().get(0), context,
                 TR -> "The transaction added to the sender is not correct when withdraw and deposit is successful");
             assertEquals(expected, receiver.getHistory().get(0), context,

@@ -48,7 +48,10 @@ public class H2_2_Test extends H08_TestBase {
             .add("expectedIban", expectedIban)
             .build();
 
-        assertEquals(expectedIban, bank.generateIban(customer, seed), context, TR -> "Wrong iban generated when the first generated iban is not used.");
+        long actualIban = callObject(() -> bank.generateIban(customer, seed), context,
+            TR -> "Bank#generateIban(Customer, long) threw an unexpected exception.");
+
+        assertEquals(expectedIban, actualIban, context, TR -> "Wrong iban generated when the first generated iban is not used.");
 
         context = contextBuilder()
             .subject("Bank#generateIban(Customer, long)")
@@ -58,7 +61,10 @@ public class H2_2_Test extends H08_TestBase {
             .add("expectedIban", expectedIban)
             .build();
 
-        assertEquals(expectedIban, bank.generateIban(customer, -seed), context, TR -> "Wrong iban generated when the first generated iban is not used.");
+        actualIban = callObject(() -> bank.generateIban(customer, -seed), context,
+            TR -> "Bank#generateIban(Customer, long) threw an unexpected exception.");
+
+        assertEquals(expectedIban, actualIban, context, TR -> "Wrong iban generated when the first generated iban is not used.");
 
     }
 
@@ -93,7 +99,10 @@ public class H2_2_Test extends H08_TestBase {
             .add("expectedIban", expectedIban)
             .build();
 
-        assertEquals(expectedIban, bank.generateIban(customer, seed), context, TR -> "Wrong iban generated when the iban has to be created multiple times.");
+        long actualIban = callObject(() -> bank.generateIban(customer, seed), context,
+            TR -> "Bank#generateIban(Customer, long) threw an unexpected exception.");
+
+        assertEquals(expectedIban, actualIban, context, TR -> "Wrong iban generated when the iban has to be created multiple times.");
     }
 
     private long generateExpectedIban(Customer customer, long seed, List<Long> usedIbans) {
