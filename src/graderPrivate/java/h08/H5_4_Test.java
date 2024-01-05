@@ -8,6 +8,7 @@ import h08.util.comment.TransactionCommentFactory;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.MockedConstruction;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
+import org.tudalgo.algoutils.student.CrashException;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
 import org.tudalgo.algoutils.tutor.general.json.JsonParameterSet;
 import org.tudalgo.algoutils.tutor.general.json.JsonParameterSetTest;
@@ -159,6 +160,8 @@ public class H5_4_Test extends H08_TestBase {
 
         try {
             sourceBank.checkOpenTransactions();
+        } catch (CrashException e) {
+            throw e;
         } catch (Exception e) {
             if (!e.getClass().equals(StudentLinks.TRANSACTION_EXCEPTION_LINK.get().reflection())) {
                 fail(context, TR -> "The method bank#checkOpenTransactions threw an unexpected exception of type " + e.getClass().getName() + ".");
@@ -227,6 +230,8 @@ public class H5_4_Test extends H08_TestBase {
 
         try {
             sourceBank.checkOpenTransactions();
+        } catch (CrashException e) {
+            throw e;
         } catch (Exception e) {
             if (!e.getClass().equals(StudentLinks.TRANSACTION_EXCEPTION_LINK.get().reflection())) {
                 fail(context, TR -> "The method bank#checkOpenTransactions threw an unexpected exception of type " + e.getClass().getName() + ".");
@@ -319,6 +324,8 @@ public class H5_4_Test extends H08_TestBase {
                 if (!olderThanFourWeeks.isEmpty()) {
                     fail(context, TR -> "The method bank#checkOpenTransactions did not throw an exception when transactions that are older than 4 weeks exist.");
                 }
+            } catch (CrashException e) {
+                throw e;
             } catch (Exception e) {
                 if (e.getClass().equals(StudentLinks.TRANSACTION_EXCEPTION_LINK.get().reflection())) {
 
