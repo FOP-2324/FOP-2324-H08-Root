@@ -10,7 +10,8 @@ import org.tudalgo.algoutils.tutor.general.json.JsonParameterSetTest;
 import java.time.LocalDate;
 import java.time.Period;
 
-import static h08.util.StudentLinks.*;
+import static h08.util.StudentLinks.BAD_TIME_STAMP_EXCEPTION_LINK;
+import static h08.util.StudentLinks.getClassOfTypeLink;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.call;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.contextBuilder;
 

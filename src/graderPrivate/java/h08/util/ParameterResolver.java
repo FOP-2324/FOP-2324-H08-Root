@@ -1,7 +1,10 @@
 package h08.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import h08.*;
+import h08.Account;
+import h08.Customer;
+import h08.Status;
+import h08.Transaction;
 import h08.implementations.TestBank;
 import h08.implementations.TestTransactionHistory;
 

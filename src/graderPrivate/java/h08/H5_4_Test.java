@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mockConstruction;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 
 @TestForSubmission

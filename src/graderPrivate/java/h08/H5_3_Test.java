@@ -13,7 +13,6 @@ import org.tudalgo.algoutils.tutor.general.json.JsonParameterSetTest;
 import org.tudalgo.algoutils.tutor.general.reflections.MethodLink;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

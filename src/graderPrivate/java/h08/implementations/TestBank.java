@@ -1,6 +1,9 @@
 package h08.implementations;
 
-import h08.*;
+import h08.Account;
+import h08.Bank;
+import h08.Customer;
+import h08.Status;
 import org.tudalgo.algoutils.tutor.general.callable.Callable;
 import org.tudalgo.algoutils.tutor.general.callable.ObjectCallable;
 

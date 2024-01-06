@@ -20,7 +20,8 @@ import java.util.function.Function;
 import static h08.util.StudentLinks.BAD_TIME_STAMP_EXCEPTION_CONSTRUCTOR_LINK;
 import static org.mockito.Answers.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mockStatic;
-import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
+import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.assertEquals;
+import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.assertNotNull;
 
 @SkipAfterFirstFailedTest(TestConstants.SKIP_AFTER_FIRST_FAILED_TEST)
 public abstract class H08_TestBase {
