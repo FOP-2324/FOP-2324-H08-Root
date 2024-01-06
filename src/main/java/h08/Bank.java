@@ -197,7 +197,7 @@ public class Bank {
     public void add(Customer customer) {
         // TODO H2.2
         if (size == capacity) {
-            throw new IllegalStateException("Bank is full!");
+            throw new IllegalStateException("Bank is full");
         }
         accounts[size] = new Account(customer, generateIban(customer, System.nanoTime()), 0, this,
             new TransactionHistory(transactionHistoryCapacity));
