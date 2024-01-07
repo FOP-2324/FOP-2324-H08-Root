@@ -326,7 +326,7 @@ public class H5_3_Test extends H08_TestBase {
     @Test
     public void testThrowsClause() {
 
-        MethodLink transferLink = StudentLinks.createMethodLink(StudentLinks.createTypeLink("Bank").get(), "transfer");
+        MethodLink transferLink = StudentLinks.createMethodLink(StudentLinks.createTypeLink("Bank"), "transfer");
 
         List<Class<?>> unexpectedExceptions = Arrays.stream(transferLink.reflection().getExceptionTypes())
             .filter(cls -> !RuntimeException.class.isAssignableFrom(cls))
