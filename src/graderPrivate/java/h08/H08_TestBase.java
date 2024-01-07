@@ -95,6 +95,8 @@ public abstract class H08_TestBase {
 
         try {
             callable.call();
+        } catch (CrashException crashException) {
+            call(() -> {throw crashException;});
         } catch (Throwable t) {
             exception = t;
         }

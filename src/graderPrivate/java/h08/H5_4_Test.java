@@ -189,7 +189,7 @@ public class H5_4_Test extends H08_TestBase {
         try {
             sourceBank.checkOpenTransactions();
         } catch (CrashException e) {
-            throw e;
+            call(() -> {throw e;});
         } catch (Exception e) {
             if (!e.getClass().equals(StudentLinks.TRANSACTION_EXCEPTION_LINK.get().reflection())) {
                 fail(context, TR -> "The method bank#checkOpenTransactions threw an unexpected exception of type " + e.getClass().getName() + ".");
@@ -259,7 +259,7 @@ public class H5_4_Test extends H08_TestBase {
         try {
             sourceBank.checkOpenTransactions();
         } catch (CrashException e) {
-            throw e;
+            call(() -> {throw e;});
         } catch (Exception e) {
             if (!e.getClass().equals(StudentLinks.TRANSACTION_EXCEPTION_LINK.get().reflection())) {
                 fail(context, TR -> "The method bank#checkOpenTransactions threw an unexpected exception of type " + e.getClass().getName() + ".");
@@ -354,7 +354,7 @@ public class H5_4_Test extends H08_TestBase {
                     fail(context, TR -> "The method bank#checkOpenTransactions did not throw an exception when transactions that are older than 4 weeks exist.");
                 }
             } catch (CrashException e) {
-                throw e;
+                call(() -> {throw e;});
             } catch (Exception e) {
                 if (e.getClass().equals(StudentLinks.TRANSACTION_EXCEPTION_LINK.get().reflection())) {
 
