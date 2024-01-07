@@ -1,18 +1,20 @@
 package h08.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import h08.Account;
-import h08.Customer;
-import h08.Status;
-import h08.Transaction;
+import com.google.common.util.concurrent.AtomicDouble;
+import h08.*;
 import h08.implementations.TestBank;
 import h08.implementations.TestTransactionHistory;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.function.Supplier;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 public class ParameterResolver {
 
@@ -40,17 +42,32 @@ public class ParameterResolver {
         );
     }
 
-    public static final Supplier<Customer> CUSTOMER_A = () -> new Customer("Person", "A", "Street A",
+    public static final Supplier<Customer> CUSTOMER_A = () -> createCustomer("Person", "A", "Street A",
         LocalDate.of(2000, 1, 1));
 
-    public static final Supplier<Customer> CUSTOMER_B = () -> new Customer("Person", "B", "Street B",
+    public static final Supplier<Customer> CUSTOMER_B = () -> createCustomer("Person", "B", "Street B",
         LocalDate.of(1999, 1, 1));
 
-    public static final Supplier<Customer> CUSTOMER_C = () -> new Customer("Person", "C", "Street C",
+    public static final Supplier<Customer> CUSTOMER_C = () -> createCustomer("Person", "C", "Street C",
         LocalDate.of(1998, 1, 1));
 
-    public static final Supplier<Customer> CUSTOMER_D = () -> new Customer("Person", "D", "Street D",
+    public static final Supplier<Customer> CUSTOMER_D = () -> createCustomer("Person", "D", "Street D",
         LocalDate.of(1997, 1, 1));
+
+    public static Customer createCustomer(String firstName, String lastName, String address, LocalDate dateOfBirth) {
+        try {
+            return new Customer(firstName, lastName, address, dateOfBirth);
+        } catch (Throwable e) {
+            Customer customer = mock(Customer.class);
+            when(customer.firstName()).thenReturn(firstName);
+            when(customer.lastName()).thenReturn(lastName);
+            when(customer.address()).thenReturn(address);
+            when(customer.dateOfBirth()).thenReturn(dateOfBirth);
+
+            return customer;
+        }
+
+    }
 
     public static final Map<String, Supplier<Customer>> idToCustomer = Map.of(
         "customerA", CUSTOMER_A,
@@ -67,7 +84,7 @@ public class ParameterResolver {
 
         Customer defaultCustomer = idToCustomer.get(id).get();
 
-        return new Customer(
+        return createCustomer(
             getOrDefault(overrides, "firstName", JsonNode::textValue, defaultCustomer.firstName()),
             getOrDefault(overrides, "lastName", JsonNode::textValue, defaultCustomer.lastName()),
             getOrDefault(overrides, "address", JsonNode::textValue, defaultCustomer.address()),
@@ -75,13 +92,43 @@ public class ParameterResolver {
         );
     }
 
-    public static final Supplier<Account> ACCOUNT_A = () -> new Account(CUSTOMER_A.get(), 1, 10, FOP_BANK.get(), TestTransactionHistory.newInstance());
+    public static final Supplier<Account> ACCOUNT_A = () -> createAccount(CUSTOMER_A.get(), 1, 10, FOP_BANK.get(), TestTransactionHistory.newInstance());
 
-    public static final Supplier<Account> ACCOUNT_B = () -> new Account(CUSTOMER_B.get(), 2, 20, FOP_BANK.get(), TestTransactionHistory.newInstance());
+    public static final Supplier<Account> ACCOUNT_B = () -> createAccount(CUSTOMER_B.get(), 2, 20, FOP_BANK.get(), TestTransactionHistory.newInstance());
 
-    public static final Supplier<Account> ACCOUNT_C = () -> new Account(CUSTOMER_C.get(), 4, 30, FOP_BANK.get(), TestTransactionHistory.newInstance());
+    public static final Supplier<Account> ACCOUNT_C = () -> createAccount(CUSTOMER_C.get(), 4, 30, FOP_BANK.get(), TestTransactionHistory.newInstance());
 
-    public static final Supplier<Account> ACCOUNT_D = () -> new Account(CUSTOMER_D.get(), 10000, 40, FOP_BANK.get(), TestTransactionHistory.newInstance());
+    public static final Supplier<Account> ACCOUNT_D = () -> createAccount(CUSTOMER_D.get(), 10000, 40, FOP_BANK.get(), TestTransactionHistory.newInstance());
+
+    public static Account createAccount(Customer customer, long iban, double balance, Bank bank, TransactionHistory history) {
+        try {
+            return new Account(customer, iban, balance, bank, history);
+        } catch (Throwable e) {
+            Account account = mock(Account.class);
+
+            AtomicReference<TransactionHistory> transactionHistory = new AtomicReference<>(history);
+            AtomicDouble balanceRef = new AtomicDouble(balance);
+
+            when(account.getCustomer()).thenReturn(customer);
+            when(account.getIban()).thenReturn(iban);
+            when(account.getBalance()).thenAnswer(invocation -> balanceRef.get());
+            when(account.getBank()).thenReturn(bank);
+            when(account.getHistory()).thenAnswer(invocation -> transactionHistory.get());
+
+            doAnswer(invocation -> {
+                balanceRef.set(invocation.getArgument(0));
+                return null;
+            }).when(account).setBalance(anyDouble());
+
+            doAnswer(invocation -> {
+                transactionHistory.set(invocation.getArgument(0));
+                return null;
+            }).when(account).setHistory(any());
+
+
+            return account;
+        }
+    }
 
     public static final Map<String, Supplier<Account>> idToAccount = Map.of(
         "accountA", ACCOUNT_A,
@@ -98,7 +145,7 @@ public class ParameterResolver {
 
         Account defaultAccount = idToAccount.get(id).get();
 
-        return new Account(
+        return createAccount(
             getOrDefault(overrides, "customer", JsonConverters::toCustomer, defaultAccount.getCustomer()),
             getOrDefault(overrides, "iban", JsonNode::longValue, defaultAccount.getIban()),
             getOrDefault(overrides, "balance", JsonNode::doubleValue, defaultAccount.getBalance()),
@@ -111,7 +158,7 @@ public class ParameterResolver {
         return List.of(ACCOUNT_A.get(), ACCOUNT_B.get(), ACCOUNT_C.get(), ACCOUNT_D.get());
     }
 
-    public static final Supplier<Transaction> TRANSACTION_1 = () -> new Transaction(
+    public static final Supplier<Transaction> TRANSACTION_1 = () -> createTransaction(
         ACCOUNT_A.get(),
         ACCOUNT_C.get(),
         2,
@@ -121,7 +168,7 @@ public class ParameterResolver {
         Status.OPEN
     );
 
-    public static final Supplier<Transaction> TRANSACTION_2 = () -> new Transaction(
+    public static final Supplier<Transaction> TRANSACTION_2 = () -> createTransaction(
         ACCOUNT_A.get(),
         ACCOUNT_C.get(),
         3,
@@ -131,7 +178,7 @@ public class ParameterResolver {
         Status.CLOSED
     );
 
-    public static final Supplier<Transaction> TRANSACTION_3 = () -> new Transaction(
+    public static final Supplier<Transaction> TRANSACTION_3 = () -> createTransaction(
         ACCOUNT_B.get(),
         ACCOUNT_C.get(),
         4,
@@ -141,7 +188,7 @@ public class ParameterResolver {
         Status.CANCELLED
     );
 
-    public static final Supplier<Transaction> TRANSACTION_4 = () -> new Transaction(
+    public static final Supplier<Transaction> TRANSACTION_4 = () -> createTransaction(
         ACCOUNT_A.get(),
         ACCOUNT_C.get(),
         5,
@@ -151,7 +198,7 @@ public class ParameterResolver {
         Status.OPEN
     );
 
-    public static final Supplier<Transaction> TRANSACTION_5 = () -> new Transaction(
+    public static final Supplier<Transaction> TRANSACTION_5 = () -> createTransaction(
         ACCOUNT_D.get(),
         ACCOUNT_B.get(),
         6,
@@ -160,6 +207,30 @@ public class ParameterResolver {
         LocalDate.of(2020, 1, 5),
         Status.CLOSED
     );
+
+    public static Transaction createTransaction(Account sourceAccount,
+                                                Account targetAccount,
+                                                double amount,
+                                                long transactionNumber,
+                                                String description,
+                                                LocalDate date,
+                                                Status status) {
+        try {
+            return new Transaction(sourceAccount, targetAccount, amount, transactionNumber, description, date, status);
+        } catch (Throwable e) {
+            Transaction transaction = mock(Transaction.class);
+
+            when(transaction.sourceAccount()).thenReturn(sourceAccount);
+            when(transaction.targetAccount()).thenReturn(targetAccount);
+            when(transaction.amount()).thenReturn(amount);
+            when(transaction.transactionNumber()).thenReturn(transactionNumber);
+            when(transaction.description()).thenReturn(description);
+            when(transaction.date()).thenReturn(date);
+            when(transaction.status()).thenReturn(status);
+
+            return transaction;
+        }
+    }
 
     public static final Map<String, Supplier<Transaction>> idToTransaction = Map.of(
         "transaction1", TRANSACTION_1,
@@ -177,7 +248,7 @@ public class ParameterResolver {
 
         Transaction defaultTransaction = idToTransaction.get(id).get();
 
-        return new Transaction(
+        return createTransaction(
             getOrDefault(overrides, "sourceAccount", JsonConverters::toAccount, defaultTransaction.sourceAccount()),
             getOrDefault(overrides, "targetAccount", JsonConverters::toAccount, defaultTransaction.targetAccount()),
             getOrDefault(overrides, "amount", JsonNode::doubleValue, defaultTransaction.amount()),

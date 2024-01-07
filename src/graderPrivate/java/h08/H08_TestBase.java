@@ -20,8 +20,7 @@ import java.util.function.Function;
 import static h08.util.StudentLinks.BAD_TIME_STAMP_EXCEPTION_CONSTRUCTOR_LINK;
 import static org.mockito.Answers.CALLS_REAL_METHODS;
 import static org.mockito.Mockito.mockStatic;
-import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.assertEquals;
-import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.assertNotNull;
+import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 
 @SkipAfterFirstFailedTest(TestConstants.SKIP_AFTER_FIRST_FAILED_TEST)
 public abstract class H08_TestBase {
@@ -110,6 +109,16 @@ public abstract class H08_TestBase {
         if (expectedExceptionMessage !=  null) {
             assertEquals(expectedExceptionMessage, exception.getMessage(), context, TR -> "The thrown exception has the wrong message.");
         }
+    }
+
+    public static void assertTransactionEquals(Transaction expected, Transaction actual, Context context, String message) {
+        assertEquals(expected.sourceAccount(), actual.sourceAccount(), context, TR -> message + ". The source account is not correct.");
+        assertEquals(expected.targetAccount(), actual.targetAccount(), context, TR -> message + ". The target account is not correct.");
+        assertEquals(expected.amount(), actual.amount(), context, TR -> message + ". The amount is not correct.");
+        assertEquals(expected.transactionNumber(), actual.transactionNumber(), context, TR -> message + ". The transaction number is not correct.");
+        assertEquals(expected.description(), actual.description(), context, TR -> message + ". The description is not correct.");
+        assertEquals(expected.date(), actual.date(), context, TR -> message + ". The date is not correct.");
+        assertEquals(expected.status(), actual.status(), context, TR -> message + ". The status is not correct.");
     }
 
     public static void setBankAccounts(Bank bank, List<Account> accounts) throws ReflectiveOperationException{

@@ -3,9 +3,12 @@ package h08;
 import h08.implementations.TestBank;
 import h08.implementations.TestTransactionHistory;
 import h08.util.StudentLinks;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.mockito.MockedConstruction;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
 import org.tudalgo.algoutils.tutor.general.json.JsonParameterSet;
@@ -16,12 +19,35 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.Mockito.*;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 
 @TestForSubmission
 public class H5_3_Test extends H08_TestBase {
 
     public static final long TRANSACTION_NUMBER = 100L;
+
+    private static MockedConstruction<Transaction> transactionMockedConstruction;
+
+    @BeforeAll
+    public static void mockTransaction() {
+        transactionMockedConstruction = mockConstruction(Transaction.class,
+            withSettings().defaultAnswer(CALLS_REAL_METHODS), (mock, context) -> {
+
+            when(mock.sourceAccount()).thenReturn((Account) context.arguments().get(0));
+            when(mock.targetAccount()).thenReturn((Account) context.arguments().get(1));
+            when(mock.amount()).thenReturn((double) context.arguments().get(2));
+            when(mock.transactionNumber()).thenReturn((long) context.arguments().get(3));
+            when(mock.description()).thenReturn((String) context.arguments().get(4));
+            when(mock.date()).thenReturn((LocalDate) context.arguments().get(5));
+            when(mock.status()).thenReturn((Status) context.arguments().get(6));
+        });
+    }
+
+    @AfterAll
+    public static void closeTransactionMock() {
+        transactionMockedConstruction.close();
+    }
 
     private void setup(JsonParameterSet params) throws ReflectiveOperationException {
 
@@ -225,10 +251,10 @@ public class H5_3_Test extends H08_TestBase {
 
             Transaction expected = new Transaction(sender, receiver, amount, TRANSACTION_NUMBER, description, LocalDate.now(), Status.CANCELLED);
 
-            assertEquals(expected, sender.getHistory().get(0), context,
-                TR -> "The transaction added to the sender is not correct when %s throws an exception".formatted(methodName));
-            assertEquals(expected, receiver.getHistory().get(0), context,
-                TR -> "The transaction added to the receiver is not correct when %s throws an exception".formatted(methodName));
+            assertTransactionEquals(expected, sender.getHistory().get(0), context,
+                "The transaction added to the sender is not correct when %s throws an exception".formatted(methodName));
+            assertTransactionEquals(expected, receiver.getHistory().get(0), context,
+                "The transaction added to the receiver is not correct when %s throws an exception".formatted(methodName));
         }
     }
 
@@ -290,10 +316,10 @@ public class H5_3_Test extends H08_TestBase {
 
             Transaction expected = new Transaction(sender, receiver, amount, TRANSACTION_NUMBER, description, LocalDate.now(), Status.CLOSED);
 
-            assertEquals(expected, sender.getHistory().get(0), context,
-                TR -> "The transaction added to the sender is not correct when withdraw and deposit is successful");
-            assertEquals(expected, receiver.getHistory().get(0), context,
-                TR -> "The transaction added to the receiver is not correct when withdraw and deposit is successful");
+            assertTransactionEquals(expected, sender.getHistory().get(0), context,
+                "The transaction added to the sender is not correct when withdraw and deposit is successful");
+            assertTransactionEquals(expected, receiver.getHistory().get(0), context,
+                "The transaction added to the receiver is not correct when withdraw and deposit is successful");
         }
     }
 

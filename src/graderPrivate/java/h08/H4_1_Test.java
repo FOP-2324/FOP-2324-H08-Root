@@ -1,5 +1,6 @@
 package h08;
 
+import h08.util.ParameterResolver;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
@@ -52,7 +53,7 @@ public class H4_1_Test extends H08_TestBase {
     public void testAsserts() {
         Bank bank = new Bank("FOPBank", 1, 5);
         int customerAge = 20;
-        Customer customer = new Customer("Person", "A", "StreetA", LocalDate.now().minusYears(customerAge));
+        Customer customer = ParameterResolver.createCustomer("Person", "A", "StreetA", LocalDate.now().minusYears(customerAge));
         long iban = 1;
         double balance = 10;
         TransactionHistory transactionHistory = new TransactionHistory();

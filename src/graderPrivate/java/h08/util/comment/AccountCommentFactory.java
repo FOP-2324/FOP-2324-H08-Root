@@ -97,6 +97,11 @@ public class AccountCommentFactory extends CommentFactory<Account> {
     private static class NameOnlyAccountCommentFactory extends AccountCommentFactory {
         @Override
         public String build(Account account) {
+
+            if (account.getCustomer() == null) {
+                return account.toString();
+            }
+
             return "Account{name='" + account.getCustomer().firstName() + " " + account.getCustomer().lastName() + "'}";
         }
     }

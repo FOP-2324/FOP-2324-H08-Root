@@ -1,6 +1,7 @@
 package h08;
 
 import h08.implementations.TestBank;
+import h08.util.ParameterResolver;
 import h08.util.comment.AccountCommentFactory;
 import h08.util.comment.BankCommentFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,8 +16,7 @@ import org.tudalgo.algoutils.tutor.general.json.JsonParameterSetTest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Mockito.mockConstruction;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 
 @SuppressWarnings("DuplicatedCode")
@@ -147,8 +147,8 @@ public class H2_2_Test extends H08_TestBase {
             .build();
 
         try (MockedConstruction<Account> mockedConstruction = mockConstruction(Account.class,
-            (mock, mockContext) -> {
-                Account account = new Account(
+            withSettings().defaultAnswer(CALLS_REAL_METHODS), (mock, mockContext) -> {
+                Account account = ParameterResolver.createAccount(
                     (Customer) mockContext.arguments().get(0),
                     (long) mockContext.arguments().get(1),
                     (double) mockContext.arguments().get(2),
@@ -157,12 +157,6 @@ public class H2_2_Test extends H08_TestBase {
 
                 createdAccounts.add(account);
                 createdMocks.add(mock);
-
-                when(mock.getCustomer()).thenReturn(account.getCustomer());
-                when(mock.getIban()).thenReturn(account.getIban());
-                when(mock.getBalance()).thenReturn(account.getBalance());
-                when(mock.getBank()).thenReturn(account.getBank());
-                when(mock.getHistory()).thenReturn(account.getHistory());
             }
         )) {
 
@@ -183,7 +177,7 @@ public class H2_2_Test extends H08_TestBase {
             .add("System.nanoTime()", systemNanoTime)
             .add("generateIban(...) return value", ibanToGenerate)
             .add("transactionHistoryCapacity", transactionHistoryCapacity)
-            .add("created account", createdAccount)
+            .add("created account", createdMocks.get(0))
             .add("actual accounts", AccountCommentFactory.NAME_ONLY.build(actualAccounts))
             .build();
 

@@ -1,5 +1,8 @@
 package h08;
 
+import h08.implementations.TestBank;
+import h08.implementations.TestTransactionHistory;
+import h08.util.ParameterResolver;
 import h08.util.comment.AccountCommentFactory;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -61,19 +64,19 @@ public class H4_2_Test extends H08_TestBase {
 
     @Test
     public void testAsserts() {
-        Bank bank = new Bank("FOPBank", 1, 5);
-        Account sourceAccount = new Account(
-            new Customer("Person", "A", "StreetA", LocalDate.now().minusYears(20)),
+        TestBank bank = new TestBank("FOPBank", 1, 5);
+        Account sourceAccount = ParameterResolver.createAccount(
+            ParameterResolver.createCustomer("Person", "A", "StreetA", LocalDate.now().minusYears(20)),
             1,
             10,
             bank,
-            new TransactionHistory());
-        Account targetAccount = new Account(
-            new Customer("Person", "B", "StreetB", LocalDate.now().minusYears(20)),
+            TestTransactionHistory.newInstance());
+        Account targetAccount = ParameterResolver.createAccount(
+            ParameterResolver.createCustomer("Person", "B", "StreetB", LocalDate.now().minusYears(20)),
             2,
             10,
             bank,
-            new TransactionHistory());
+            TestTransactionHistory.newInstance());
         int amount = 10;
         int transactionNumber = 1;
         String description = "description";
