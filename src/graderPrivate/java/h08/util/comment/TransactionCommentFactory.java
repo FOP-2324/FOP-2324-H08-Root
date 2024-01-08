@@ -2,6 +2,9 @@ package h08.util.comment;
 
 import h08.Transaction;
 
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
+
 @SuppressWarnings("unused")
 public class TransactionCommentFactory extends CommentFactory<Transaction> {
 
@@ -12,6 +15,8 @@ public class TransactionCommentFactory extends CommentFactory<Transaction> {
     private boolean description;
     private boolean date;
     private boolean status;
+
+    private boolean daysOld;
 
     public static final TransactionCommentFactory NUMBER_ONLY = new TransactionCommentFactory().transactionNumber();
 
@@ -66,6 +71,12 @@ public class TransactionCommentFactory extends CommentFactory<Transaction> {
             }
             builder.append("status=").append(transaction.status());
         }
+        if (daysOld) {
+            if (!first) {
+                builder.append(", ");
+            }
+            builder.append("daysOld=").append(ChronoUnit.DAYS.between(transaction.date(), java.time.LocalDate.now()));
+        }
 
         builder.append('}');
 
@@ -104,6 +115,11 @@ public class TransactionCommentFactory extends CommentFactory<Transaction> {
 
     public TransactionCommentFactory status() {
         this.status = true;
+        return this;
+    }
+
+    public TransactionCommentFactory daysOld() {
+        this.daysOld = true;
         return this;
     }
 

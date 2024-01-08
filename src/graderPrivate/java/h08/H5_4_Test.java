@@ -17,17 +17,21 @@ import org.tudalgo.algoutils.tutor.general.json.JsonParameterSet;
 import org.tudalgo.algoutils.tutor.general.json.JsonParameterSetTest;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.CALLS_REAL_METHODS;
+import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.withSettings;
 import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 
 @TestForSubmission
 public class H5_4_Test extends H08_TestBase {
-
-    public static final long TRANSACTION_NUMBER = 100L;
 
     private static MockedConstruction<Transaction> transactionMockedConstruction;
 
@@ -134,7 +138,9 @@ public class H5_4_Test extends H08_TestBase {
                 .sourceAccount(AccountCommentFactory.IBAN_ONLY)
                 .transactionNumber()
                 .status()
-            );
+                .daysOld()
+            )
+            .newLine();
 
         BankCommentFactory bcf = new BankCommentFactory()
             .bic()
@@ -147,7 +153,7 @@ public class H5_4_Test extends H08_TestBase {
             .add("targetBank", bcf.build(targetBank))
             .add("sourceBank accounts", AccountCommentFactory.IBAN_ONLY.build(Arrays.asList(sourceBank.getAccounts())))
             .add("targetBank accounts", AccountCommentFactory.IBAN_ONLY.build(Arrays.asList(targetBank.getAccounts())))
-            .add("all accounts", acf.build(accounts))
+            .add("all accounts", acf.build(accounts, "\n\n"))
             .build();
     }
 
@@ -220,7 +226,7 @@ public class H5_4_Test extends H08_TestBase {
 
                     if (olderThanTwoWeeks) {
                         assertNotSame(originalTransaction, actualTransaction, context,
-                            TR -> "The transaction with transactionNumber " + originalTransaction.transactionNumber() + " was not changed");
+                            TR -> "The transaction with transactionNumber " + originalTransaction.transactionNumber() + " was not changed for Account{iban=" + account.getIban() + "}.");
 
                         Transaction expectedTransaction = new Transaction(
                             originalTransaction.sourceAccount(),
@@ -233,12 +239,12 @@ public class H5_4_Test extends H08_TestBase {
                         );
 
                         assertTransactionEquals(expectedTransaction, actualTransaction, context,
-                            "The transaction with transactionNumber " + originalTransaction.transactionNumber() + " was not changed correctly");
+                            "The transaction with transactionNumber " + originalTransaction.transactionNumber() + " was not changed correctly for Account{iban=" + account.getIban() + "}.");
                     }
 
                 } else {
                     assertTransactionEquals(originalTransaction, actualTransaction, context,
-                        "The transaction with transactionNumber " + originalTransaction.transactionNumber() + " was changed");
+                        "The transaction with transactionNumber " + originalTransaction.transactionNumber() + " was changed for Account{iban=" + account.getIban() + "} even though it was not open.");
                 }
 
             }

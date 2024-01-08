@@ -11,6 +11,8 @@ public class AccountCommentFactory extends CommentFactory<Account> {
     private BankCommentFactory bankCommentFactory;
     private TransactionCommentFactory transactionCommentFactory;
 
+    private boolean newLine;
+
     public static final AccountCommentFactory IBAN_ONLY = new AccountCommentFactory().iban();
     public static final AccountCommentFactory NAME_ONLY = new NameOnlyAccountCommentFactory();
 
@@ -56,6 +58,9 @@ public class AccountCommentFactory extends CommentFactory<Account> {
             for (Transaction transaction : account.getHistory().getTransactions()) {
                 if (!firstTransaction) {
                     builder.append(", ");
+                    if (newLine) {
+                        builder.append("\n    ");
+                    }
                 }
                 builder.append(transactionCommentFactory.build(transaction));
                 firstTransaction = false;
@@ -91,6 +96,11 @@ public class AccountCommentFactory extends CommentFactory<Account> {
 
     public AccountCommentFactory transaction(TransactionCommentFactory transactionCommentFactory) {
         this.transactionCommentFactory = transactionCommentFactory;
+        return this;
+    }
+
+    public AccountCommentFactory newLine() {
+        this.newLine = true;
         return this;
     }
 
