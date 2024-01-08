@@ -67,6 +67,7 @@ public class H5_3_Test extends H08_TestBase {
         setBank(receiver, receiverBank);
 
         setTransferableBanks(senderBank, new Bank[]{receiverBank});
+        setTransferableBanks(receiverBank, new Bank[]{senderBank});
     }
 
     @ParameterizedTest
