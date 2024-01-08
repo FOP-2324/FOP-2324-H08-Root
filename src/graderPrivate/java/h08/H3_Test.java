@@ -1,6 +1,7 @@
 package h08;
 
 import h08.util.comment.TransactionCommentFactory;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
@@ -31,9 +32,13 @@ public class H3_Test extends H08_TestBase {
         assertCorrectModifiers(badTimeStampExceptionLink, Modifier.CLASS, Modifier.NON_ABSTRACT);
         assertCorrectSuperType(badTimeStampExceptionLink, Matcher.of(type -> type.identifier().equals(RuntimeException.class.getSimpleName())));
 
+        // I don't know why this is needed, but it is when using graderPrivateRun
+        //
+        Assertions.assertEquals("h08.BadTimestampException", badTimeStampExceptionLink.reflection().getName(),
+            "BadTimestampException is not defined correct");
+
         BAD_TIME_STAMP_EXCEPTION_CONSTRUCTOR_LINK.get();
     }
-
 
     @Test
     public void testBadTimestampConstructor() {

@@ -2,7 +2,6 @@ package h08.util;
 
 import com.google.common.base.Suppliers;
 import h08.Transaction;
-import org.junit.jupiter.api.Assertions;
 import org.opentest4j.AssertionFailedError;
 import org.tudalgo.algoutils.tutor.general.assertions.Assertions3;
 import org.tudalgo.algoutils.tutor.general.match.*;
@@ -10,6 +9,7 @@ import org.tudalgo.algoutils.tutor.general.reflections.*;
 import org.tudalgo.algoutils.tutor.general.stringify.HTML;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.function.Supplier;
 
 import static h08.TestConstants.MINIMUM_SIMILARITY;
@@ -28,13 +28,22 @@ public class StudentLinks {
                 try {
                     return Assertions3.assertTypeExists(PACKAGE_LINK, Matcher.of(type -> type.identifier().equals(name), name));
                 } catch (AssertionFailedError  e) {
-                    return fail("Could not find a class named %s. (Exact match required)".formatted(name));
+                    return fail("Could not find a class named %s in package h08. (Exact match required)".formatted(name));
                 }
             }
             try {
+
                 return Assertions3.assertTypeExists(PACKAGE_LINK, similarityMatcher(name));
             } catch (AssertionFailedError e) {
-                return fail("Could not find a class named %s. (%d%% similarity match required)".formatted(name, (int) (MINIMUM_SIMILARITY * 100)));
+
+                for (PackageLink fallbackPackage : FALLBACK_PACKAGES) {
+                    try {
+                        return Assertions3.assertTypeExists(fallbackPackage, similarityMatcher(name));
+                    } catch (AssertionFailedError ignored) {
+                    }
+                }
+
+                return fail(classNotFoundMessage(name));
             }
         });
     }
@@ -51,12 +60,35 @@ public class StudentLinks {
         return Assertions3.assertMethodExists(tl.get(), Matcher.of(type -> type.identifier().equals(name), name));
     }
 
-    public static Class<?> getClassOfTypeLink(TypeLink tl) throws ClassNotFoundException {
-        return Class.forName(PACKAGE_LINK.name() + "." + tl.identifier());
+    public static Class<?> getClassOfTypeLink(TypeLink tl) {
+        try {
+            return Class.forName(PACKAGE_LINK.name() + "." + tl.identifier());
+        } catch (ClassNotFoundException e) {
+            for (PackageLink fallbackPackage : FALLBACK_PACKAGES) {
+                try {
+                    return Class.forName(fallbackPackage.name() + "." + tl.identifier());
+                } catch (ClassNotFoundException ignored) {
+                }
+            }
+            return fail(classNotFoundMessage(tl.identifier()));
+        }
+    }
+
+    private static String classNotFoundMessage(String name) {
+        return "Could not find a class named %s. (%d%% similarity match required. Searched in package: %s and %s)"
+            .formatted(name, (int) (MINIMUM_SIMILARITY * 100), PACKAGE_LINK.name(), FALLBACK_PACKAGES.stream().map(PackageLink::name).toList());
     }
 
 
     public static final PackageLink PACKAGE_LINK = BasicPackageLink.of("h08");
+
+    public static final List<PackageLink> FALLBACK_PACKAGES = List.of(
+        BasicPackageLink.of("h08.exceptions"),
+        BasicPackageLink.of("h08.Exceptions"),
+        BasicPackageLink.of("h08.exc"),
+        BasicPackageLink.of("h08.h3"),
+        BasicPackageLink.of("h3")
+    );
 
     public static final Supplier<TypeLink> BAD_TIME_STAMP_EXCEPTION_LINK = createTypeLink("BadTimestampException");
 
