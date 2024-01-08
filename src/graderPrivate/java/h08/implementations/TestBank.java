@@ -18,7 +18,7 @@ public class TestBank extends Bank {
     public long generateIbanlastSeed = -1L;
     public Customer generateIbanLastCustomer = null;
 
-    public long transactionNumberToGenerate = 0L;
+    public static long transactionNumberToGenerate = 0L;
 
     public boolean withdrawThrowsException = false;
     public boolean depositThrowsException = false;

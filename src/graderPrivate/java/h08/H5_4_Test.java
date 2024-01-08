@@ -98,6 +98,15 @@ public class H5_4_Test extends H08_TestBase {
 
         setBankAccounts(sourceBank, sourceBankAccounts);
         setBankAccounts(targetBank, targetBankAccounts);
+
+        long highestTransactionNumber = accounts.stream()
+            .map(Account::getHistory)
+            .flatMap(history -> Arrays.stream(history.getTransactions()))
+            .mapToLong(Transaction::transactionNumber)
+            .max()
+            .orElse(0);
+
+        TestBank.transactionNumberToGenerate = highestTransactionNumber + 1;
     }
 
     private void makeAllOneWeekOld(List<Account> accounts) throws Exception {
