@@ -208,6 +208,8 @@ public class ParameterResolver {
         Status.CLOSED
     );
 
+    public static boolean createTransactionFailed;
+
     public static Transaction createTransaction(Account sourceAccount,
                                                 Account targetAccount,
                                                 double amount,
@@ -218,6 +220,8 @@ public class ParameterResolver {
         try {
             return new Transaction(sourceAccount, targetAccount, amount, transactionNumber, description, date, status);
         } catch (Throwable e) {
+            createTransactionFailed = true;
+
             Transaction transaction = mock(Transaction.class);
 
             when(transaction.sourceAccount()).thenReturn(sourceAccount);

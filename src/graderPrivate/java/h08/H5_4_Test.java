@@ -37,22 +37,26 @@ public class H5_4_Test extends H08_TestBase {
 
     @BeforeAll
     public static void mockTransaction() {
-        transactionMockedConstruction = mockConstruction(Transaction.class,
-            withSettings().defaultAnswer(CALLS_REAL_METHODS), (mock, context) -> {
+        if (ParameterResolver.createTransactionFailed) {
+            transactionMockedConstruction = mockConstruction(Transaction.class,
+                withSettings().defaultAnswer(CALLS_REAL_METHODS), (mock, context) -> {
 
-                when(mock.sourceAccount()).thenReturn((Account) context.arguments().get(0));
-                when(mock.targetAccount()).thenReturn((Account) context.arguments().get(1));
-                when(mock.amount()).thenReturn((double) context.arguments().get(2));
-                when(mock.transactionNumber()).thenReturn((long) context.arguments().get(3));
-                when(mock.description()).thenReturn((String) context.arguments().get(4));
-                when(mock.date()).thenReturn((LocalDate) context.arguments().get(5));
-                when(mock.status()).thenReturn((Status) context.arguments().get(6));
-            });
+                    when(mock.sourceAccount()).thenReturn((Account) context.arguments().get(0));
+                    when(mock.targetAccount()).thenReturn((Account) context.arguments().get(1));
+                    when(mock.amount()).thenReturn((double) context.arguments().get(2));
+                    when(mock.transactionNumber()).thenReturn((long) context.arguments().get(3));
+                    when(mock.description()).thenReturn((String) context.arguments().get(4));
+                    when(mock.date()).thenReturn((LocalDate) context.arguments().get(5));
+                    when(mock.status()).thenReturn((Status) context.arguments().get(6));
+                });
+        }
     }
 
     @AfterAll
     public static void closeTransactionMock() {
-        transactionMockedConstruction.close();
+        if (transactionMockedConstruction != null) {
+            transactionMockedConstruction.close();
+        }
     }
 
     private void setupTransactions(List<Account> accounts) throws Exception {
