@@ -63,7 +63,7 @@ public class TestTransactionHistory extends TransactionHistory {
         if (t.isPresent()) {
             transactions.set(transactions.indexOf(t.get()), transaction);
         } else {
-            throw (Throwable) StudentLinks.TRANSACTION_EXCEPTION_TRANSACTION_CONSTRUCTOR_LINK.get().invoke(
+            throw (Throwable) StudentLinks.TRANSACTION_EXCEPTION_STRING_CONSTRUCTOR_LINK.get().invoke(
                 "Transaction does not exist!", transaction.transactionNumber());
         }
     }
