@@ -1,7 +1,13 @@
 [
   {
-    "sourceBank": "FOPBank",
-    "targetBank": "FOPBank2",
+    "sourceBank": {
+      "id": "FOPBank",
+      "capacity": 3
+    },
+    "targetBank": {
+      "id": "FOPBank2",
+      "capacity": 1
+    },
     "accounts": [
       {
         "id": "accountA",
@@ -78,8 +84,14 @@
     ]
   },
   {
-    "sourceBank": "FOPBank",
-    "targetBank": "FOPBank2",
+    "sourceBank": {
+      "id": "FOPBank",
+      "capacity": 3
+    },
+    "targetBank": {
+      "id": "FOPBank2",
+      "capacity": 1
+    },
     "accounts": [
       {
         "id": "accountA",
@@ -156,8 +168,14 @@
     ]
   },
   {
-    "sourceBank": "FOPBank",
-    "targetBank": "FOPBank2",
+    "sourceBank": {
+      "id": "FOPBank",
+      "capacity": 4
+    },
+    "targetBank": {
+      "id": "FOPBank2",
+      "capacity": 0
+    },
     "accounts": "all"
   }
 ]
