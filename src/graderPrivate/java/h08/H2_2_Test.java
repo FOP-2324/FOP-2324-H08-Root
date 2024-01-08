@@ -1,9 +1,11 @@
 package h08;
 
 import h08.implementations.TestBank;
+import h08.transformer.SystemNanoTimeTransformer;
 import h08.util.ParameterResolver;
 import h08.util.comment.AccountCommentFactory;
 import h08.util.comment.BankCommentFactory;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.mockito.MockedConstruction;
@@ -22,6 +24,12 @@ import static org.tudalgo.algoutils.tutor.general.assertions.Assertions2.*;
 @SuppressWarnings("DuplicatedCode")
 @TestForSubmission
 public class H2_2_Test extends H08_TestBase {
+
+
+    @AfterEach
+    public void resetSystemNanoTime() {
+        SystemNanoTimeTransformer.systemNanoTime = -1;
+    }
 
     @SuppressWarnings("unchecked")
     @ParameterizedTest
@@ -130,7 +138,7 @@ public class H2_2_Test extends H08_TestBase {
 
         bank.setTransactionHistoryCapacity(transactionHistoryCapacity);
 
-        H2_2_Test.systemNanoTime = systemNanoTime;
+        SystemNanoTimeTransformer.systemNanoTime = systemNanoTime;
         bank.ibanToGenerate = ibanToGenerate;
         bank.generateIbanCallsActual = false;
 
@@ -214,7 +222,7 @@ public class H2_2_Test extends H08_TestBase {
 
         bank.setTransactionHistoryCapacity(transactionHistoryCapacity);
 
-        H2_2_Test.systemNanoTime = systemNanoTime;
+        SystemNanoTimeTransformer.systemNanoTime = systemNanoTime;
         bank.ibanToGenerate = ibanToGenerate;
         bank.generateIbanCallsActual = false;
 
@@ -229,13 +237,6 @@ public class H2_2_Test extends H08_TestBase {
 
         checkExceptionThrown(() -> bank.add(customer), context, IllegalStateException.class, "Bank is full");
         checkBankSizeAndAccountsUnchanged(bank, accounts, context);
-    }
-
-    private static long systemNanoTime = 0L;
-
-    @SuppressWarnings("unused") // will be called instead of System.nanoTime() inside of the Bank class
-    public static long nanoTime() {
-        return systemNanoTime;
     }
 
 }

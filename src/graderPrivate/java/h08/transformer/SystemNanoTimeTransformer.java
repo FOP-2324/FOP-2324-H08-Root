@@ -41,7 +41,7 @@ public class SystemNanoTimeTransformer implements ClassTransformer {
             if (owner.equals("java/lang/System") && name.equals("nanoTime")) {
                 visitMethodInsn(
                     Opcodes.INVOKESTATIC,
-                    "h08/H2_2_Test",
+                    "h08/transformer/SystemNanoTimeTransformer",
                     "nanoTime",
                     "()J",
                     false
@@ -50,5 +50,16 @@ public class SystemNanoTimeTransformer implements ClassTransformer {
                 super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
             }
         }
+    }
+
+    public static long systemNanoTime = -1;
+
+    @SuppressWarnings("unused") // will be called instead of System.nanoTime() inside of the Bank class
+    public static long nanoTime() {
+        if (systemNanoTime < 0) {
+            return System.nanoTime();
+        }
+
+        return systemNanoTime;
     }
 }
