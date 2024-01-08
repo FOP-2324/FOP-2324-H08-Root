@@ -192,7 +192,8 @@ public class H5_4_Test extends H08_TestBase {
             call(() -> {throw e;});
         } catch (Exception e) {
             if (!e.getClass().equals(StudentLinks.TRANSACTION_EXCEPTION_LINK.get().reflection())) {
-                fail(context, TR -> "The method bank#checkOpenTransactions threw an unexpected exception of type " + e.getClass().getName() + ".");
+                fail(context, TR -> "The method bank#checkOpenTransactions threw an unexpected exception of type " +
+                    e.getClass().getName() + ".\n" + getStackTrace(e));
             }
         }
 
@@ -262,7 +263,8 @@ public class H5_4_Test extends H08_TestBase {
             call(() -> {throw e;});
         } catch (Exception e) {
             if (!e.getClass().equals(StudentLinks.TRANSACTION_EXCEPTION_LINK.get().reflection())) {
-                fail(context, TR -> "The method bank#checkOpenTransactions threw an unexpected exception of type " + e.getClass().getName() + ".");
+                fail(context, TR -> "The method bank#checkOpenTransactions threw an unexpected exception of type " +
+                    e.getClass().getName() + ".\n" + getStackTrace(e));
             }
         }
 
@@ -394,11 +396,28 @@ public class H5_4_Test extends H08_TestBase {
                     }
 
                 } else {
-                    fail(context, TR -> "The method bank#checkOpenTransactions threw an unexpected exception of type " + e.getClass().getName() + ".");
+
+                    fail(context, TR -> "The method bank#checkOpenTransactions threw an unexpected exception of type " +
+                        e.getClass().getName() + ".\n" + getStackTrace(e));
                 }
             }
         }
 
+    }
+
+    private String getStackTrace(Throwable throwable) {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(throwable.getClass().getName()).append(": ").append(throwable.getMessage()).append("\n");
+
+        StackTraceElement[] stackTrace = throwable.getStackTrace();
+
+        for (int i = 0; i < 7 && i < stackTrace.length; i++) {
+
+            sb.append("    at: ").append(stackTrace[i]).append("\n");
+        }
+
+        return sb.toString();
     }
 
     private Map<Account, List<Transaction>> getOriginalTransactions(List<Account> accounts) {
