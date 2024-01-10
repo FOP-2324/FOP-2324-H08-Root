@@ -226,6 +226,10 @@ public class H5_4_Test extends H08_TestBase {
 
                 if (originalTransaction.status() == Status.OPEN) {
 
+                    if (!originalTransaction.sourceAccount().equals(account)) {
+                        continue;
+                    }
+
                     boolean olderThanTwoWeeks = originalTransaction.date().plusWeeks(2).isBefore(LocalDate.now());
 
                     if (olderThanTwoWeeks) {
@@ -243,12 +247,12 @@ public class H5_4_Test extends H08_TestBase {
                         );
 
                         assertTransactionEquals(expectedTransaction, actualTransaction, context,
-                            "The transaction with transactionNumber " + originalTransaction.transactionNumber() + " was not changed correctly for Account{iban=" + account.getIban() + "}.");
+                            "The transaction with transactionNumber " + originalTransaction.transactionNumber() + " was not changed correctly for Account{iban=" + account.getIban() + "}");
                     }
 
                 } else {
                     assertTransactionEquals(originalTransaction, actualTransaction, context,
-                        "The transaction with transactionNumber " + originalTransaction.transactionNumber() + " was changed for Account{iban=" + account.getIban() + "} even though it was not open.");
+                        "The transaction with transactionNumber " + originalTransaction.transactionNumber() + " was changed for Account{iban=" + account.getIban() + "} even though it was not open");
                 }
 
             }
