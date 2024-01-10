@@ -7,9 +7,11 @@ import h08.TransactionHistory;
 import h08.util.StudentLinks;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doAnswer;
@@ -20,6 +22,7 @@ public class TestTransactionHistory extends TransactionHistory {
     public List<Transaction> transactions;
 
     public int addCalls;
+    public Set<Transaction> addedTransactions = new HashSet<>();
 
     private TestTransactionHistory(List<Transaction> transactions) {
         this.transactions = new ArrayList<>(transactions);
@@ -52,6 +55,7 @@ public class TestTransactionHistory extends TransactionHistory {
         if (transactions.stream().anyMatch(t -> t.transactionNumber() == transaction.transactionNumber()))
             throw new IllegalArgumentException("This transaction already exists!");
         transactions.add(transaction);
+        addedTransactions.add(transaction);
         addCalls++;
     }
 

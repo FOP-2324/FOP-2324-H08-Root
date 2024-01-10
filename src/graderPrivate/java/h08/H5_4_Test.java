@@ -1,6 +1,7 @@
 package h08;
 
 import h08.implementations.TestBank;
+import h08.implementations.TestTransactionHistory;
 import h08.util.ParameterResolver;
 import h08.util.StudentLinks;
 import h08.util.comment.AccountCommentFactory;
@@ -19,9 +20,11 @@ import org.tudalgo.algoutils.tutor.general.json.JsonParameterSetTest;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.CALLS_REAL_METHODS;
@@ -272,6 +275,12 @@ public class H5_4_Test extends H08_TestBase {
         setupTransactions(accounts);
 
         sourceBank.transferCallsActual = false;
+        TestBank.transactionNumberToGenerate = accounts.stream()
+            .map(Account::getHistory)
+            .flatMap(history -> Arrays.stream(history.getTransactions()))
+            .mapToLong(Transaction::transactionNumber)
+            .max()
+            .orElse(0) + 1;
 
         Context context = createContext(sourceBank, targetBank, accounts);
 
@@ -289,6 +298,42 @@ public class H5_4_Test extends H08_TestBase {
                 fail(context, TR -> "The method bank#checkOpenTransactions threw an unexpected exception of type " +
                     e.getClass().getName() + ".\n" + getStackTrace(e));
             }
+        }
+
+        if (transactionsToTransfer.isEmpty()) {
+            return;
+        }
+
+        // If transfer wasn't called, accept if a new, open transaction was added instead
+        if (sourceBank.transferCalls.isEmpty()) {
+
+            Map<Account, Set<Transaction>> newOpenTransactions = new HashMap<>();
+            for (Account account : sourceBank.getAccounts()) {
+                newOpenTransactions.put(account, ((TestTransactionHistory) account.getHistory()).addedTransactions);
+
+                assertEquals((int) transactionsToTransfer.stream().filter(transaction -> transaction.sourceAccount().equals(account)).count(),
+                    newOpenTransactions.get(account).size(), context,
+                    TR -> "The method bank#checkOpenTransactions did not call Bank#transfer and did not add the correct number of new transactions to the source account.");
+            }
+
+            for (Transaction transaction : transactionsToTransfer) {
+
+                Optional<Transaction> matchingTransaction = newOpenTransactions.get(transaction.sourceAccount()).stream()
+                    .filter(t -> t.sourceAccount() == transaction.sourceAccount() &&
+                        t.targetAccount() == transaction.targetAccount() &&
+                        t.amount() == transaction.amount() &&
+                        t.description().equals(transaction.description()))
+                    .findFirst();
+
+                assertTrue(matchingTransaction.isPresent(), context,
+                    TR -> "The method bank#checkOpenTransactions did not call Bank#transfer and did not add a new, matching transaction to the source account.");
+
+                assertEquals(Status.OPEN, matchingTransaction.get().status(), context,
+                    TR -> "The method bank#checkOpenTransactions did not call Bank#transfer and the new transaction added to the source account is not open.");
+
+            }
+
+            return;
         }
 
         assertEquals(transactionsToTransfer.size(), sourceBank.transferCalls.size(), context,
