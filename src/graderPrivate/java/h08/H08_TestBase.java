@@ -117,7 +117,7 @@ public abstract class H08_TestBase {
 
         try {
             if (misspelledExceptionMessages == 0) {
-                assertEquals(expected, actual, context, TR -> "");
+                assertEquals(expected, actual, context, TR -> description);
             } else {
 
                 double similarity = MatchingUtils.similarity(expected, actual);
@@ -131,6 +131,26 @@ public abstract class H08_TestBase {
             throw t;
         }
 
+    }
+
+    public static void assertOneTransactionEquals(List<Transaction> expected, Transaction actual, Context context, String message) {
+
+        AssertionError error = null;
+        int exceptionCount = 0;
+
+        for (Transaction transaction : expected) {
+            try {
+                assertTransactionEquals(transaction, actual, context, message);
+            } catch (AssertionError e) {
+                error = e;
+                exceptionCount++;
+            }
+        }
+
+        if (exceptionCount == expected.size()) {
+            assert error != null;
+            throw error;
+        }
     }
 
     public static void assertTransactionEquals(Transaction expected, Transaction actual, Context context, String message) {

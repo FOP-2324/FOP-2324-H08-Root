@@ -446,21 +446,20 @@ public class H5_4_Test extends H08_TestBase {
                             TR -> "The constructor TransactionException(Transaction[]) was called with a transaction with transactionNumber %d which wasn't expected."
                                 .formatted(actualTransaction.transactionNumber()));
 
-
-                        Transaction expectedTransaction = new Transaction(
+                        List<Transaction> expectedTransactions = getExpectedTransactions(
                             originalTransaction.get().sourceAccount(),
                             originalTransaction.get().targetAccount(),
                             originalTransaction.get().amount(),
                             originalTransaction.get().transactionNumber(),
                             originalTransaction.get().description(),
                             originalTransaction.get().date(),
+                            Status.OPEN,
                             Status.CANCELLED
                         );
 
-                        assertTransactionEquals(expectedTransaction, actualTransaction, context,
+                        assertOneTransactionEquals(expectedTransactions, actualTransaction, context,
                             "The constructor TransactionException(Transaction[]) was called with a incorrect transaction with transactionNumber %d"
                                 .formatted(actualTransaction.transactionNumber()));
-
                     }
 
                 } else {
@@ -471,6 +470,17 @@ public class H5_4_Test extends H08_TestBase {
             }
         }
 
+    }
+
+    private List<Transaction> getExpectedTransactions(Account sourceAccount, Account targetAccount, double amount, long transactionNumber, String description, LocalDate date, Status... status) {
+        List<Transaction> transactions = new ArrayList<>();
+
+        for (Status s : status) {
+            transactions.add(new Transaction(sourceAccount, targetAccount, amount, transactionNumber, description, date, s));
+            transactions.add(new Transaction(sourceAccount, targetAccount, amount, transactionNumber, description, LocalDate.now(), s));
+        }
+
+        return transactions;
     }
 
     private String getStackTrace(Throwable throwable) {
