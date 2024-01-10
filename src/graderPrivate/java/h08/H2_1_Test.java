@@ -31,7 +31,7 @@ public class H2_1_Test extends H08_TestBase {
                 .add("iban", account.getIban())
                 .add("accounts", AccountCommentFactory.IBAN_ONLY.build(accounts))
                 .build(),
-                TR -> "bank.isIbanAlreadyUsed() returned false for an iban that belongs to an account in the accounts array.");
+                TR -> "bank.isIbanAlreadyUsed() did not return true for an iban that belongs to an account in the accounts array.");
         }
     }
 
@@ -53,7 +53,7 @@ public class H2_1_Test extends H08_TestBase {
                     .add("iban", unusedIban)
                     .add("accounts", AccountCommentFactory.IBAN_ONLY.build(accounts))
                     .build(),
-                TR -> "bank.isIbanAlreadyUsed() returned true for an iban that does not belong to an account in the accounts array.");
+                TR -> "bank.isIbanAlreadyUsed() did not return false for an iban that does not belong to an account in the accounts array.");
         }
     }
 
