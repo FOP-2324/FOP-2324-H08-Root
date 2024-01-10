@@ -38,6 +38,7 @@ public class H4_1_Test extends H08_TestBase {
             .add("balance", balance)
             .add("bank", bank)
             .add("transactionHistory", "[]")
+            .add("current date", LocalDate.now())
             .build();
 
         if (customerAge < 18) {
