@@ -6,6 +6,7 @@ import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
 import org.tudalgo.algoutils.tutor.general.json.JsonParameterSet;
 import org.tudalgo.algoutils.tutor.general.json.JsonParameterSetTest;
+import spoon.support.compiler.jdt.ContextBuilder;
 
 import java.util.List;
 
@@ -105,23 +106,35 @@ public class H5_1_Test extends H08_TestBase {
             nextIndex = (nextIndex + 1) % capacity;
             expectedSize = Math.min(expectedSize + 1, capacity);
 
-            Context context = contextBuilder()
+            Context.Builder<?> contextBuilder = contextBuilder()
                 .subject("TransactionHistory#add")
-                .add("transactions", TransactionCommentFactory.NUMBER_ONLY.build(history.getTransactions()))
+                .add("previous transactions", TransactionCommentFactory.NUMBER_ONLY.build(getHistoryTransactions(history)))
                 .add("size", history.size())
                 .add("nextIndex", getHistoryNextIndex(history))
                 .add("capacity", history.capacity())
                 .add("transactionToAdd", TransactionCommentFactory.NUMBER_ONLY.build(transaction))
-                .add("expectedTransactions", TransactionCommentFactory.NUMBER_ONLY.build(expectedTransactions))
-                .build();
+                .add("expectedTransactions", TransactionCommentFactory.NUMBER_ONLY.build(expectedTransactions));
 
-            call(() -> history.add(transaction), context,
+            call(() -> history.add(transaction), contextBuilder.build(),
                 TR -> "TransactionHistory#add threw an unexpected exception.");
+
+            Context context = contextBuilder
+                .add("actual transactions", TransactionCommentFactory.NUMBER_ONLY.build(getHistoryTransactions(history)))
+                .build();
 
             for (int i = 0; i < capacity; i++) {
                 int finalI = i;
-                assertEquals(expectedTransactions[i], getHistoryTransactions(history)[i], context,
-                    TR -> "The transaction at index %d is not correct.".formatted(finalI));
+
+                if (expectedTransactions[i] == null) {
+                    assertNull(getHistoryTransactions(history)[i], context,
+                        TR -> "The transaction at index %d should be null.".formatted(finalI));
+                    continue;
+                }
+
+                assertEquals(expectedTransactions[i].transactionNumber(), getHistoryTransactions(history)[i].transactionNumber(), context,
+                    TR ->"The transactionNumber of the transaction at index %d is not correct".formatted(finalI));
+                assertTransactionEquals(expectedTransactions[i], getHistoryTransactions(history)[i], context,
+                    "The transaction at index %d is not correct".formatted(finalI));
             }
         }
     }
