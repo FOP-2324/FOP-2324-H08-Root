@@ -136,7 +136,7 @@ public class H08_RubricProvider implements RubricProvider {
         () -> H4_2_Test.class.getDeclaredMethod("testDateRestriction", JsonParameterSet.class),
         () -> H4_2_Test.class.getDeclaredMethod("testAsserts"));
 
-    public static final Criterion H4_2 = createParentCriterion("4.1", "Transaktionsvalidierung",
+    public static final Criterion H4_2 = createParentCriterion("4.2", "Transaktionsvalidierung",
         H4_2_1);
 
     public static final Criterion H4 = createParentCriterion("4", "Validierung von Daten",
