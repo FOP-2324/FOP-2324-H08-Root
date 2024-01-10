@@ -39,7 +39,7 @@ public class H5_2_Test extends H08_TestBase {
             .add("transactionToUpdate", TransactionCommentFactory.NUMBER_ONLY.build(missingTransaction))
             .build();
 
-        checkExceptionThrown(() -> history.update(missingTransaction),
+        assertExceptionThrown(() -> history.update(missingTransaction),
             context,
             StudentLinks.getClassOfTypeLink(StudentLinks.TRANSACTION_EXCEPTION_LINK.get()),
             "Transaction does not exist! " + missingTransaction.transactionNumber());

@@ -19,7 +19,7 @@ public class H1_Test extends H08_TestBase {
         String address = "Musterstraße 1, 12345 Musterstadt";
         LocalDate date = LocalDate.now().minusYears(18);
 
-        checkExceptionThrown(() -> new Customer(null, lastName, address, date), contextBuilder()
+        assertExceptionThrown(() -> new Customer(null, lastName, address, date), contextBuilder()
                 .subject("Customer#Customer()")
                 .add("firstName", "null")
                 .add("lastName", lastName)
@@ -27,7 +27,7 @@ public class H1_Test extends H08_TestBase {
                 .add("date", date)
                 .build(), AssertionError.class);
 
-        checkExceptionThrown(() -> new Customer(firstName, null, address, date), contextBuilder()
+        assertExceptionThrown(() -> new Customer(firstName, null, address, date), contextBuilder()
             .subject("Customer#Customer()")
             .add("firstName", firstName)
             .add("lastName", "null")
@@ -35,7 +35,7 @@ public class H1_Test extends H08_TestBase {
             .add("date", date)
             .build(), AssertionError.class);
 
-        checkExceptionThrown(() -> new Customer(firstName, lastName, null, date), contextBuilder()
+        assertExceptionThrown(() -> new Customer(firstName, lastName, null, date), contextBuilder()
             .subject("Customer#Customer()")
             .add("firstName", firstName)
             .add("lastName", lastName)
@@ -43,7 +43,7 @@ public class H1_Test extends H08_TestBase {
             .add("date", date)
             .build(), AssertionError.class);
 
-        checkExceptionThrown(() -> new Customer(firstName, lastName, address, null), contextBuilder()
+        assertExceptionThrown(() -> new Customer(firstName, lastName, address, null), contextBuilder()
             .subject("Customer#Customer()")
             .add("firstName", firstName)
             .add("lastName", lastName)

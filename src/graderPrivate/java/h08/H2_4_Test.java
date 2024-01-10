@@ -81,10 +81,10 @@ public class H2_4_Test extends H08_TestBase {
                 .add("amountToDeposit", amountToDeposit)
                 .build();
 
-            checkExceptionThrown(() -> bank.deposit(unusedIban, amountToDeposit), context, NoSuchElementException.class, Long.toString(unusedIban));
+            assertExceptionThrown(() -> bank.deposit(unusedIban, amountToDeposit), context, NoSuchElementException.class, Long.toString(unusedIban));
         }
 
-        checkExceptionThrown(() -> bank.deposit(accounts.get(0).getIban(), -1), contextBuilder()
+        assertExceptionThrown(() -> bank.deposit(accounts.get(0).getIban(), -1), contextBuilder()
             .subject("Bank#deposit()")
             .add("iban", accounts.get(0).getIban())
             .add("accounts", new AccountCommentFactory().iban().balance().build(accounts))
@@ -157,7 +157,7 @@ public class H2_4_Test extends H08_TestBase {
                 .add("amountToWithdraw", amountToWithdraw)
                 .build();
 
-            checkExceptionThrown(() -> bank.withdraw(unusedIban, amountToWithdraw), context, NoSuchElementException.class, Long.toString(unusedIban));
+            assertExceptionThrown(() -> bank.withdraw(unusedIban, amountToWithdraw), context, NoSuchElementException.class, Long.toString(unusedIban));
         }
 
         double resultingNegativeBalance = accounts.stream()
@@ -174,9 +174,9 @@ public class H2_4_Test extends H08_TestBase {
             .add("resultingBalance", resultingNegativeBalance)
             .build();
 
-        checkExceptionThrown(() -> bank.withdraw(negativeBalanceIban, amountToWithdraw), context, IllegalArgumentException.class, Double.toString(resultingNegativeBalance));
+        assertExceptionThrown(() -> bank.withdraw(negativeBalanceIban, amountToWithdraw), context, IllegalArgumentException.class, Double.toString(resultingNegativeBalance));
 
-        checkExceptionThrown(() -> bank.withdraw(accounts.get(0).getIban(), -1), contextBuilder()
+        assertExceptionThrown(() -> bank.withdraw(accounts.get(0).getIban(), -1), contextBuilder()
             .subject("Bank#withdraw()")
             .add("iban", accounts.get(0).getIban())
             .add("accounts", new AccountCommentFactory().iban().balance().build(accounts))

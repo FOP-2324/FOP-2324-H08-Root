@@ -38,7 +38,7 @@ public class H5_1_Test extends H08_TestBase {
             .add("transactionToAdd", TransactionCommentFactory.NUMBER_ONLY.build(doubledTransaction))
             .build();
 
-        checkExceptionThrown(() -> history.add(doubledTransaction),
+        assertExceptionThrown(() -> history.add(doubledTransaction),
             context,
             IllegalArgumentException.class,
             "This transaction already exists!");

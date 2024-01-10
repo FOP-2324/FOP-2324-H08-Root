@@ -98,9 +98,9 @@ public class H2_3_Test extends H08_TestBase {
                 .build();
 
             if (unusedIban >= 0) {
-                checkExceptionThrown(() -> bank.remove(unusedIban), context, NoSuchElementException.class, Long.toString(unusedIban));
+                assertExceptionThrown(() -> bank.remove(unusedIban), context, NoSuchElementException.class, Long.toString(unusedIban));
             } else {
-                checkExceptionThrown(() -> bank.remove(unusedIban), context, AssertionError.class);
+                assertExceptionThrown(() -> bank.remove(unusedIban), context, AssertionError.class);
             }
 
             checkBankSizeAndAccountsUnchanged(bank, accounts, context);

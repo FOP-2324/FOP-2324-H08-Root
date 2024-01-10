@@ -409,7 +409,7 @@ public class H5_4_Test extends H08_TestBase {
                         );
 
                         assertTransactionEquals(expectedTransaction, actualTransaction, context,
-                            "The constructor TransactionException(Transaction[]) was called with a incorrect transaction."
+                            "The constructor TransactionException(Transaction[]) was called with a incorrect transaction with transactionNumber %d"
                                 .formatted(actualTransaction.transactionNumber()));
 
                     }

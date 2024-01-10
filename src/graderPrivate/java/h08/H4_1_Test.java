@@ -41,7 +41,7 @@ public class H4_1_Test extends H08_TestBase {
             .build();
 
         if (customerAge < 18) {
-            checkExceptionThrown(() -> new Account(customer, iban, balance, bank, new TransactionHistory()),
+            assertExceptionThrown(() -> new Account(customer, iban, balance, bank, new TransactionHistory()),
                 context, getClassOfTypeLink(BAD_TIME_STAMP_EXCEPTION_LINK.get()), getExpectedBadTimeStepMessage(customer.dateOfBirth().toString()));
         } else {
             call(() -> new Account(customer, iban, balance, bank, new TransactionHistory()), context,
@@ -58,7 +58,7 @@ public class H4_1_Test extends H08_TestBase {
         double balance = 10;
         TransactionHistory transactionHistory = new TransactionHistory();
 
-        checkExceptionThrown(() -> new Account(null, iban, balance, bank, transactionHistory),
+        assertExceptionThrown(() -> new Account(null, iban, balance, bank, transactionHistory),
             contextBuilder()
                 .subject("Account#Account()")
                 .add("customer", null)
@@ -69,7 +69,7 @@ public class H4_1_Test extends H08_TestBase {
                 .add("transactionHistory", "[]")
                 .build(), AssertionError.class);
 
-        checkExceptionThrown(() -> new Account(customer, iban, balance, null, transactionHistory),
+        assertExceptionThrown(() -> new Account(customer, iban, balance, null, transactionHistory),
             contextBuilder()
                 .subject("Account#Account()")
                 .add("customer", customer)
@@ -80,7 +80,7 @@ public class H4_1_Test extends H08_TestBase {
                 .add("transactionHistory", "[]")
                 .build(), AssertionError.class);
 
-        checkExceptionThrown(() -> new Account(customer, iban, balance, bank, null),
+        assertExceptionThrown(() -> new Account(customer, iban, balance, bank, null),
             contextBuilder()
                 .subject("Account#Account()")
                 .add("customer", customer)
@@ -91,7 +91,7 @@ public class H4_1_Test extends H08_TestBase {
                 .add("transactionHistory", null)
                 .build(), AssertionError.class);
 
-        checkExceptionThrown(() -> new Account(customer, -1, balance, bank, transactionHistory),
+        assertExceptionThrown(() -> new Account(customer, -1, balance, bank, transactionHistory),
             contextBuilder()
                 .subject("Account#Account()")
                 .add("customer", customer)

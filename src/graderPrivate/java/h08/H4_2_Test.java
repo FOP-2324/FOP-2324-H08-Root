@@ -54,7 +54,7 @@ public class H4_2_Test extends H08_TestBase {
 
         if (dateInFuture) {
 
-            checkExceptionThrown(() -> new Transaction(sourceAccount, targetAccount, amount, transactionNumber, description, date, status),
+            assertExceptionThrown(() -> new Transaction(sourceAccount, targetAccount, amount, transactionNumber, description, date, status),
                 context, getClassOfTypeLink(BAD_TIME_STAMP_EXCEPTION_LINK.get()), getExpectedBadTimeStepMessage(date.toString()));
         } else {
             call(() -> new Transaction(sourceAccount, targetAccount, amount, transactionNumber, description, date, status), context,
@@ -83,7 +83,7 @@ public class H4_2_Test extends H08_TestBase {
         LocalDate date = LocalDate.now().minusDays(1);
         Status status = Status.OPEN;
 
-        checkExceptionThrown(() -> new Transaction(null, targetAccount, amount, transactionNumber, description, date, status),
+        assertExceptionThrown(() -> new Transaction(null, targetAccount, amount, transactionNumber, description, date, status),
             contextBuilder()
                 .subject("Transaction#Transaction()")
                 .add("sourceAccount", null)
@@ -97,7 +97,7 @@ public class H4_2_Test extends H08_TestBase {
                 .add("date in future", false)
                 .build(), AssertionError.class);
 
-        checkExceptionThrown(() -> new Transaction(sourceAccount, null, amount, transactionNumber, description, date, status),
+        assertExceptionThrown(() -> new Transaction(sourceAccount, null, amount, transactionNumber, description, date, status),
             contextBuilder()
                 .subject("Transaction#Transaction()")
                 .add("sourceAccount", AccountCommentFactory.NAME_ONLY.build(sourceAccount))
@@ -111,7 +111,7 @@ public class H4_2_Test extends H08_TestBase {
                 .add("date in future", false)
                 .build(), AssertionError.class);
 
-        checkExceptionThrown(() -> new Transaction(sourceAccount, targetAccount, amount, transactionNumber, null, date, status),
+        assertExceptionThrown(() -> new Transaction(sourceAccount, targetAccount, amount, transactionNumber, null, date, status),
             contextBuilder()
                 .subject("Transaction#Transaction()")
                 .add("sourceAccount", AccountCommentFactory.NAME_ONLY.build(sourceAccount))
@@ -125,7 +125,7 @@ public class H4_2_Test extends H08_TestBase {
                 .add("date in future", false)
                 .build(), AssertionError.class);
 
-        checkExceptionThrown(() -> new Transaction(sourceAccount, targetAccount, amount, transactionNumber, description, null, status),
+        assertExceptionThrown(() -> new Transaction(sourceAccount, targetAccount, amount, transactionNumber, description, null, status),
             contextBuilder()
                 .subject("Transaction#Transaction()")
                 .add("sourceAccount", AccountCommentFactory.NAME_ONLY.build(sourceAccount))
@@ -139,7 +139,7 @@ public class H4_2_Test extends H08_TestBase {
                 .add("date in future", false)
                 .build(), AssertionError.class);
 
-        checkExceptionThrown(() -> new Transaction(sourceAccount, targetAccount, amount, transactionNumber, description, date, null),
+        assertExceptionThrown(() -> new Transaction(sourceAccount, targetAccount, amount, transactionNumber, description, date, null),
             contextBuilder()
                 .subject("Transaction#Transaction()")
                 .add("sourceAccount", AccountCommentFactory.NAME_ONLY.build(sourceAccount))

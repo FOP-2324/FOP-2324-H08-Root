@@ -2,6 +2,7 @@ package h08;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import h08.util.JsonConverters;
+import h08.util.StudentLinks;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.mockito.MockedStatic;
@@ -9,6 +10,7 @@ import org.tudalgo.algoutils.student.CrashException;
 import org.tudalgo.algoutils.tutor.general.annotation.SkipAfterFirstFailedTest;
 import org.tudalgo.algoutils.tutor.general.assertions.Context;
 import org.tudalgo.algoutils.tutor.general.callable.Callable;
+import org.tudalgo.algoutils.tutor.general.match.MatchingUtils;
 
 import java.lang.reflect.Field;
 import java.time.LocalDate;
@@ -46,6 +48,8 @@ public abstract class H08_TestBase {
     ));
 
     private static MockedStatic<LocalDate> mockedLocalDate;
+
+    public static int misspelledExceptionMessages = 0;
 
     @BeforeAll
     public static void setupLocalDate() {
@@ -85,11 +89,11 @@ public abstract class H08_TestBase {
         }
     }
 
-    public static void checkExceptionThrown(Callable callable, Context context, Class<?> expectedExceptionClass) {
-        checkExceptionThrown(callable, context, expectedExceptionClass, null);
+    public static void assertExceptionThrown(Callable callable, Context context, Class<?> expectedExceptionClass) {
+        assertExceptionThrown(callable, context, expectedExceptionClass, null);
     }
 
-    public static void checkExceptionThrown(Callable callable, Context context, Class<?> expectedExceptionClass, String expectedExceptionMessage) {
+    public static void assertExceptionThrown(Callable callable, Context context, Class<?> expectedExceptionClass, String expectedExceptionMessage) {
 
         Throwable exception = null;
 
@@ -103,14 +107,30 @@ public abstract class H08_TestBase {
 
         assertNotNull(exception, context, TR -> "No exception was thrown. Expected exception of type " + expectedExceptionClass.getName() + ".");
 
-        if (exception instanceof CrashException crashException) {
-            throw crashException;
-        }
-
         assertEquals(expectedExceptionClass, exception.getClass(), context, TR -> "The thrown exception is not of the expected type.");
         if (expectedExceptionMessage !=  null) {
-            assertEquals(expectedExceptionMessage, exception.getMessage(), context, TR -> "The thrown exception has the wrong message.");
+            assertMessageCorrect(expectedExceptionMessage, exception.getMessage(), context, "The thrown exception has the wrong message.");
         }
+    }
+
+    public static void assertMessageCorrect(String expected, String actual, Context context, String description) {
+
+        try {
+            if (misspelledExceptionMessages == 0) {
+                assertEquals(expected, actual, context, TR -> "");
+            } else {
+
+                double similarity = MatchingUtils.similarity(expected, actual);
+
+                assertTrue(similarity >= TestConstants.MINIMUM_SIMILARITY,
+                    context, TR -> "%s (%d%% similarity required).\nExpected: \"%s\", but was: \"%s\". Similarity: %f%%."
+                        .formatted(description, (int) (TestConstants.MINIMUM_SIMILARITY * 100), expected, actual, similarity * 100));
+            }
+        } catch (Throwable t) {
+            misspelledExceptionMessages++;
+            throw t;
+        }
+
     }
 
     public static void assertTransactionEquals(Transaction expected, Transaction actual, Context context, String message) {
