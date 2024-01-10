@@ -174,7 +174,21 @@ public class H2_4_Test extends H08_TestBase {
             .add("resultingBalance", resultingNegativeBalance)
             .build();
 
-        assertExceptionThrown(() -> bank.withdraw(negativeBalanceIban, amountToWithdraw), context, IllegalArgumentException.class, Double.toString(resultingNegativeBalance));
+        Throwable throwable = null;
+
+        try {
+            bank.withdraw(negativeBalanceIban, amountToWithdraw);
+        } catch (Throwable t) {
+            throwable = t;
+        }
+
+        assertNotNull(throwable, context, TR -> "Bank#withdraw() did not throw an exception when the resulting balance is negative.");
+        assertEquals(IllegalArgumentException.class, throwable.getClass(), context, TR -> "Bank#withdraw() did not throw an IllegalArgumentException when the resulting balance is negative.");
+
+        if (!throwable.getMessage().equals(Double.toString(-amountToWithdraw))) {
+            assertEquals(Double.toString(resultingNegativeBalance), throwable.getMessage(), context,
+                TR -> "The thrown exception has the wrong message.");
+        }
 
         assertExceptionThrown(() -> bank.withdraw(accounts.get(0).getIban(), -1), contextBuilder()
             .subject("Bank#withdraw()")
