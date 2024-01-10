@@ -287,6 +287,9 @@ public class H5_3_Test extends H08_TestBase {
         TestBank senderBank = (TestBank) sender.getBank();
         TestBank receiverBank = (TestBank) receiver.getBank();
 
+        double senderBalance = sender.getBalance();
+        double receiverBalance = receiver.getBalance();
+
         senderBank.withdrawCallsActual = false;
         receiverBank.depositCallsActual = false;
 
@@ -304,13 +307,21 @@ public class H5_3_Test extends H08_TestBase {
             context,
             TR -> "Bank#transfer threw an unexpected exception when withdraw and deposit is successful");
 
-        assertEquals(1, senderBank.withdrawCallCount, context, TR -> "senderBank.withdraw has not been called exactly once");
-        assertEquals(sender.getIban(), senderBank.withdrawIban, context, TR -> "senderBank.withdraw has not been called with the correct iban");
-        assertEquals(amount, senderBank.withdrawAmount, context, TR -> "senderBank.withdraw has not been called with the correct amount to withdraw");
+        if (senderBank.withdrawCallCount == 0) {
+            assertEquals(senderBalance - amount, sender.getBalance(), context, TR -> "The sender's balance is not correct when withdraw and deposit is successful");
+        } else {
+            assertEquals(1, senderBank.withdrawCallCount, context, TR -> "senderBank.withdraw has not been called exactly once");
+            assertEquals(sender.getIban(), senderBank.withdrawIban, context, TR -> "senderBank.withdraw has not been called with the correct iban");
+            assertEquals(amount, senderBank.withdrawAmount, context, TR -> "senderBank.withdraw has not been called with the correct amount to withdraw");
+        }
 
-        assertEquals(1, receiverBank.depositCallCount, context, TR -> "receiverBank.deposit has not been called exactly once");
-        assertEquals(receiver.getIban(), receiverBank.depositIban, context, TR -> "receiverBank.deposit has not been called with the correct iban");
-        assertEquals(amount, receiverBank.depositAmount, context, TR -> "receiverBank.deposit has not been called with the correct amount to deposit in the receiver's account");
+        if (receiverBank.depositCallCount == 0) {
+            assertEquals(receiverBalance + amount, receiver.getBalance(), context, TR -> "The receiver's balance is not correct when withdraw and deposit is successful");
+        } else {
+            assertEquals(1, receiverBank.depositCallCount, context, TR -> "receiverBank.deposit has not been called exactly once");
+            assertEquals(receiver.getIban(), receiverBank.depositIban, context, TR -> "receiverBank.deposit has not been called with the correct iban");
+            assertEquals(amount, receiverBank.depositAmount, context, TR -> "receiverBank.deposit has not been called with the correct amount to deposit in the receiver's account");
+        }
 
         if (checkReturnStatus) {
             assertEquals(Status.CLOSED, actual, context, TR -> "Bank#transfer did not return the correct status when withdraw and deposit is successful.");
