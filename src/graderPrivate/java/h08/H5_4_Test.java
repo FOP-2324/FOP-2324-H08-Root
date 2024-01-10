@@ -239,7 +239,7 @@ public class H5_4_Test extends H08_TestBase {
                         assertNotSame(originalTransaction, actualTransaction, context,
                             TR -> "The transaction with transactionNumber " + originalTransaction.transactionNumber() + " was not changed for Account{iban=" + account.getIban() + "}.");
 
-                        Transaction expectedTransaction = new Transaction(
+                        List <Transaction> expectedTransactions = getExpectedTransactions(
                             originalTransaction.sourceAccount(),
                             originalTransaction.targetAccount(),
                             originalTransaction.amount(),
@@ -249,7 +249,7 @@ public class H5_4_Test extends H08_TestBase {
                             Status.CANCELLED
                         );
 
-                        assertTransactionEquals(expectedTransaction, actualTransaction, context,
+                        assertOneTransactionEquals(expectedTransactions, actualTransaction, context,
                             "The transaction with transactionNumber " + originalTransaction.transactionNumber() + " was not changed correctly for Account{iban=" + account.getIban() + "}");
                     }
 
