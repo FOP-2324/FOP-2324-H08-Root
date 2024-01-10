@@ -1,6 +1,9 @@
 [
   {
-    "bank": "FOPBank",
+    "bank": {
+      "id": "FOPBank",
+      "capacity": 4
+    },
     "accounts": "all",
     "amountToDeposit": 20,
     "unusedIbans": [
