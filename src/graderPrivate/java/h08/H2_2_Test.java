@@ -33,7 +33,7 @@ public class H2_2_Test extends H08_TestBase {
 
     @SuppressWarnings("unchecked")
     @ParameterizedTest
-    @JsonParameterSetTest(value = "H2_2.json", customConverters = "customConverters")
+    @JsonParameterSetTest(value = "H2_2_generateIban.json", customConverters = "customConverters")
     public void testGenerateIbanUnusedIban(JsonParameterSet params) throws ReflectiveOperationException {
 
         TestBank bank = params.get("bank", TestBank.class);
@@ -78,7 +78,7 @@ public class H2_2_Test extends H08_TestBase {
 
     @SuppressWarnings("unchecked")
     @ParameterizedTest
-    @JsonParameterSetTest(value = "H2_2.json", customConverters = "customConverters")
+    @JsonParameterSetTest(value = "H2_2_generateIban.json", customConverters = "customConverters")
     public void testGenerateIbanUsedIban(JsonParameterSet params) throws ReflectiveOperationException {
 
         TestBank bank = params.get("bank", TestBank.class);
@@ -124,7 +124,7 @@ public class H2_2_Test extends H08_TestBase {
     @SuppressWarnings("unchecked")
     @ParameterizedTest
     @ExtendWith(JagrExecutionCondition.class)
-    @JsonParameterSetTest(value = "H2_2.json", customConverters = "customConverters")
+    @JsonParameterSetTest(value = "H2_2_add_Normal.json", customConverters = "customConverters")
     public void testAccountCreation(JsonParameterSet params) throws ReflectiveOperationException {
 
         TestBank bank = params.get("bank", TestBank.class);
@@ -208,7 +208,7 @@ public class H2_2_Test extends H08_TestBase {
 
     @SuppressWarnings("unchecked")
     @ParameterizedTest
-    @JsonParameterSetTest(value = "H2_2_Exception.json", customConverters = "customConverters")
+    @JsonParameterSetTest(value = "H2_2_add_Exception.json", customConverters = "customConverters")
     public void testException(JsonParameterSet params) throws ReflectiveOperationException {
 
         TestBank bank = params.get("bank", TestBank.class);
