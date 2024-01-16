@@ -63,7 +63,7 @@ public class H3_Test extends H08_TestBase {
     @Test
     public void testBankExceptionDeclaration() {
 
-        TypeLink bankExceptionLink = createTypeLink("BankException", true).get();
+        TypeLink bankExceptionLink = createTypeLink("BankException").get();
 
         assertCorrectModifiers(bankExceptionLink, Modifier.CLASS, Modifier.NON_ABSTRACT);
         assertCorrectSuperType(bankExceptionLink, Matcher.of(type -> type.identifier().equals(Exception.class.getSimpleName())));
@@ -113,7 +113,7 @@ public class H3_Test extends H08_TestBase {
     @Test
     public void testTransactionExceptionStringConstructorDeclaration() {
 
-        TypeLink transactionExceptionLink = createTypeLink("TransactionException", true).get();
+        TypeLink transactionExceptionLink = createTypeLink("TransactionException").get();
 
         assertCorrectModifiers(transactionExceptionLink, Modifier.CLASS, Modifier.NON_ABSTRACT);
         assertCorrectSuperType(transactionExceptionLink, Matcher.of(type -> type.identifier().equals(Exception.class.getSimpleName())));

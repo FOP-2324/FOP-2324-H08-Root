@@ -9,6 +9,7 @@ import org.tudalgo.algoutils.tutor.general.reflections.*;
 import org.tudalgo.algoutils.tutor.general.stringify.HTML;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -82,13 +83,20 @@ public class StudentLinks {
 
     public static final PackageLink PACKAGE_LINK = BasicPackageLink.of("h08");
 
-    public static final List<PackageLink> FALLBACK_PACKAGES = List.of(
-        BasicPackageLink.of("h08.exceptions"),
-        BasicPackageLink.of("h08.Exceptions"),
-        BasicPackageLink.of("h08.exc"),
-        BasicPackageLink.of("h08.h3"),
-        BasicPackageLink.of("h3")
+    private static final List<String> TEST_PACKAGE_NAMES = List.of(
+        "h08.implementations",
+        "h08.transformer",
+        "h08.util",
+        "h08.util.comment"
     );
+
+    public static final List<PackageLink> FALLBACK_PACKAGES = Arrays.stream(Package.getPackages())
+        .map(Package::getName)
+        .filter(name -> name.startsWith("h08"))
+        .filter(name -> !TEST_PACKAGE_NAMES.contains(name))
+        .map(BasicPackageLink::of)
+        .map(PackageLink.class::cast)
+        .toList();
 
     public static final Supplier<TypeLink> BAD_TIME_STAMP_EXCEPTION_LINK = createTypeLink("BadTimestampException");
 
