@@ -1,0 +1,80 @@
+[
+  {
+    "accounts": [
+      "accountA",
+      "accountB"
+    ],
+    "amount": 10,
+    "transactionNumber": 1,
+    "description": "Transaction1",
+    "date": {
+      "year": 10
+    },
+    "status": "OPEN"
+  },
+  {
+    "accounts": [
+      "accountA",
+      "accountB"
+    ],
+    "amount": 20,
+    "transactionNumber": 2,
+    "description": "Transaction2",
+    "date": {
+      "year": 1
+    },
+    "status": "CLOSED"
+  },
+  {
+    "accounts": [
+      "accountA",
+      "accountB"
+    ],
+    "amount": 30,
+    "transactionNumber": 3,
+    "description": "Transaction3",
+    "date": {
+      "month": 1
+    },
+    "status": "CANCELLED"
+  },
+  {
+    "accounts": [
+      "accountA",
+      "accountB"
+    ],
+    "amount": 40,
+    "transactionNumber": 4,
+    "description": "Transaction4",
+    "date": {
+      "year": -10
+    },
+    "status": "OPEN"
+  },
+  {
+    "accounts": [
+      "accountA",
+      "accountB"
+    ],
+    "amount": 40,
+    "transactionNumber": 4,
+    "description": "Transaction4",
+    "date": {
+      "year": -1
+    },
+    "status": "CLOSED"
+  },
+  {
+    "accounts": [
+      "accountA",
+      "accountB"
+    ],
+    "amount": 40,
+    "transactionNumber": 4,
+    "description": "Transaction4",
+    "date": {
+      "month": -1
+    },
+    "status": "CANCELLED"
+  }
+]

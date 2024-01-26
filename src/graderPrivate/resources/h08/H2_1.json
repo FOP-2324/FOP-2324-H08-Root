@@ -1,0 +1,14 @@
+[
+  {
+    "bank": {
+      "id": "FOPBank",
+      "capacity": 4
+    },
+    "accounts": "all",
+    "unusedIbans": [
+      3,
+      -1,
+      20000
+    ]
+  }
+]

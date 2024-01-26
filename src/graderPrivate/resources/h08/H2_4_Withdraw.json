@@ -1,0 +1,10 @@
+[
+  {
+    "bank": {
+      "id": "FOPBank",
+      "capacity": 4
+    },
+    "accounts": "all",
+    "amountToWithdraw": 10
+  }
+]

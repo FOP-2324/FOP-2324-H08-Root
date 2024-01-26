@@ -1,0 +1,181 @@
+[
+  {
+    "sourceBank": {
+      "id": "FOPBank",
+      "capacity": 3
+    },
+    "targetBank": {
+      "id": "FOPBank2",
+      "capacity": 1
+    },
+    "accounts": [
+      {
+        "id": "accountA",
+        "history": [
+          {
+            "id": "transaction1",
+            "transactionNumber": 1,
+            "status": "OPEN",
+            "date": {
+              "week": -1
+            }
+          },
+          {
+            "id": "transaction1",
+            "transactionNumber": 2,
+            "status": "CLOSED",
+            "date": {
+              "week": -6
+            }
+          },
+          {
+            "id": "transaction1",
+            "transactionNumber": 3,
+            "status": "OPEN",
+            "date": {
+              "week": -3
+            }
+          },
+          {
+            "id": "transaction1",
+            "transactionNumber": 4,
+            "status": "OPEN",
+            "date": {
+              "week": -3
+            }
+          },
+          {
+            "id": "transaction1",
+            "transactionNumber": 5,
+            "status": "OPEN",
+            "date": {
+              "week": -5
+            }
+          },
+          {
+            "id": "transaction1",
+            "transactionNumber": 6,
+            "status": "OPEN",
+            "date": {
+              "week": -10
+            }
+          }
+        ]
+      },
+      {
+        "id": "accountB",
+        "history": [
+          {
+            "id": "transaction3",
+            "transactionNumber": 7,
+            "status": "OPEN",
+            "date": {
+              "week": -2,
+              "day": -1
+            }
+          }
+        ]
+      },
+      {
+        "id": "accountC",
+        "bank": "FOPBank2"
+      },
+      "accountD"
+    ]
+  },
+  {
+    "sourceBank": {
+      "id": "FOPBank",
+      "capacity": 3
+    },
+    "targetBank": {
+      "id": "FOPBank2",
+      "capacity": 1
+    },
+    "accounts": [
+      {
+        "id": "accountA",
+        "history": [
+          {
+            "id": "transaction1",
+            "transactionNumber": 1,
+            "status": "CLOSED",
+            "date": {
+              "week": -1
+            }
+          },
+          {
+            "id": "transaction1",
+            "transactionNumber": 2,
+            "status": "CLOSED",
+            "date": {
+              "week": -6
+            }
+          },
+          {
+            "id": "transaction1",
+            "transactionNumber": 3,
+            "status": "CLOSED",
+            "date": {
+              "week": -3
+            }
+          },
+          {
+            "id": "transaction1",
+            "transactionNumber": 4,
+            "status": "CLOSED",
+            "date": {
+              "week": -3
+            }
+          },
+          {
+            "id": "transaction1",
+            "transactionNumber": 5,
+            "status": "CLOSED",
+            "date": {
+              "week": -5
+            }
+          },
+          {
+            "id": "transaction1",
+            "transactionNumber": 6,
+            "status": "CLOSED",
+            "date": {
+              "week": -10
+            }
+          }
+        ]
+      },
+      {
+        "id": "accountB",
+        "history": [
+          {
+            "id": "transaction3",
+            "transactionNumber": 7,
+            "status": "CLOSED",
+            "date": {
+              "week": -2,
+              "day": -1
+            }
+          }
+        ]
+      },
+      {
+        "id": "accountC",
+        "bank": "FOPBank2"
+      },
+      "accountD"
+    ]
+  },
+  {
+    "sourceBank": {
+      "id": "FOPBank",
+      "capacity": 4
+    },
+    "targetBank": {
+      "id": "FOPBank2",
+      "capacity": 0
+    },
+    "accounts": "all"
+  }
+]

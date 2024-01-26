@@ -1,0 +1,15 @@
+[
+  {
+    "bank": {
+      "id": "FOPBank",
+      "capacity": 4
+    },
+    "accounts": "all",
+    "ibansToRemove": [
+      10000,
+      1,
+      2,
+      4
+    ]
+  }
+]

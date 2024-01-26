@@ -1,0 +1,36 @@
+[
+  {
+    "capacity": 3,
+    "transactions": [
+      "transaction1",
+      "transaction2"
+    ],
+    "transactionToUpdate": {
+      "id": "transaction1",
+      "status": "CLOSED"
+    }
+  },
+  {
+    "capacity": 3,
+    "transactions": [
+      "transaction1",
+      "transaction2"
+    ],
+    "transactionToUpdate": {
+      "id": "transaction2",
+      "status": "OPEN"
+    }
+  },
+  {
+    "capacity": 3,
+    "transactions": [
+      "transaction1",
+      "transaction2",
+      "transaction3"
+    ],
+    "transactionToUpdate": {
+      "id": "transaction3",
+      "status": "OPEN"
+    }
+  }
+]

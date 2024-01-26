@@ -1,0 +1,16 @@
+[
+  {
+    "bank": {
+      "id": "FOPBank",
+      "capacity": 4
+    },
+    "accounts": "all",
+    "amountToWithdraw": 20,
+    "unusedIbans": [
+      3,
+      -1,
+      20000
+    ],
+    "negativeBalanceIban": 1
+  }
+]

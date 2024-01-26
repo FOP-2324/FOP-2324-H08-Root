@@ -1,0 +1,79 @@
+[
+  {
+    "customer": {
+      "id": "customerA",
+      "dateOfBirth": {
+        "year": -16
+      }
+    },
+    "iban": 1,
+    "balance": 10,
+    "bank": "FOPBank"
+  },
+  {
+    "customer": {
+      "id": "customerA",
+      "dateOfBirth": {
+        "year": -17,
+        "month": -11
+      }
+    },
+    "iban": 1,
+    "balance": 10,
+    "bank": "FOPBank"
+  },
+  {
+    "customer": {
+      "id": "customerA",
+      "dateOfBirth": {
+        "year": -18,
+        "month": -1
+      }
+    },
+    "iban": 1,
+    "balance": 10,
+    "bank": "FOPBank"
+  },
+  {
+    "customer": {
+      "id": "customerA",
+      "dateOfBirth": {
+        "year": -20
+      }
+    },
+    "iban": 1,
+    "balance": 10,
+    "bank": "FOPBank"
+  },
+  {
+    "customer": {
+      "id": "customerA",
+      "dateOfBirth": {
+        "year": -999
+      }
+    },
+    "iban": 1,
+    "balance": 10,
+    "bank": "FOPBank"
+  },
+  {
+    "customer": {
+      "id": "customerA",
+      "dateOfBirth": {
+        "year": -1
+      }
+    },
+    "iban": 1,
+    "balance": 10,
+    "bank": "FOPBank"
+  },
+  {
+    "customer": {
+      "id": "customerA",
+      "dateOfBirth": {}
+    },
+    "iban": 1,
+    "balance": 10,
+    "bank": "FOPBank"
+  }
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "bank": {
+      "id": "FOPBank",
+      "capacity": 4
+    },
+    "accounts": [
+      "accountA",
+      "accountB",
+      "accountC",
+      {
+        "id": "accountD",
+        "balance": 0.0
+      }
+    ],
+    "amountToDeposit": 10
+  }
+]

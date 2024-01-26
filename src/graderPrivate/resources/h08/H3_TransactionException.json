@@ -1,0 +1,16 @@
+[
+  {
+    "transactions": "all"
+  },
+  {
+    "transactions": [
+      "transaction1",
+      "transaction2"
+    ]
+  },
+  {
+    "transactions": [
+      "transaction1"
+    ]
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "bank": {
+      "id": "FOPBank",
+      "capacity": 3
+    },
+    "accounts": [
+      "accountA",
+      "accountB",
+      "accountC"
+    ],
+    "customerToAdd": "customerD",
+    "ibanToGenerate": 10,
+    "systemNanoTime": 100,
+    "transactionHistoryCapacity": 30
+  }
+]
